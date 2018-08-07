@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_bg"
+        android:orientation="vertical">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civProfilePic"
+            android:layout_width="@dimen/x100"
+            android:layout_height="@dimen/x100"
+            android:layout_marginTop="@dimen/x30"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/gym_logo" />
+
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtGymName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x35"
+            android:layout_marginTop="@dimen/x25"
+            android:text="GOLD GYM"
+            android:textAllCaps="true"
+            android:textColor="@color/color_accent"
+            android:textSize="@dimen/x21"
+            app:typeface="@string/font_bold" />
+
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtGymAddress"
+            android:layout_width="@dimen/x210"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x20"
+            android:layout_marginStart="@dimen/x35"
+            android:layout_marginTop="@dimen/x7"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:text="The Beach Mall, JBR Unit 4404, Next to Busaba Duabi"
+            android:textColor="@color/black0"
+            android:textSize="@dimen/x16"
+            app:typeface="@string/font_normal" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x35"
+            android:layout_marginTop="@dimen/x20"
+            android:orientation="vertical">
+
+            <com.app.gymbuzz.ui.views.AnyTextView
+                android:id="@+id/txtStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Currently Member"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/x16"
+                app:typeface="@string/font_normal" />
+
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_below="@+id/spPriority"
+                android:layout_marginTop="@dimen/x11"
+                android:background="@color/color_accent" />
+
+        </LinearLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvGymImages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="@dimen/x40"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/anyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x35"
+            android:layout_marginTop="@dimen/x32"
+            android:text="@string/about"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x14"
+            app:typeface="@string/font_normal" />
+
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtAboutUs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/x15"
+            android:layout_marginStart="@dimen/x35"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginBottom="@dimen/x40"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/black0"
+            android:textSize="@dimen/x14"
+            app:typeface="@string/font_normal" />
+
+
+    </LinearLayout>
+
+</ScrollView>

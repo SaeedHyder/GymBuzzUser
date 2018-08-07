@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_bg"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/x20"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x25">
+
+            <com.app.gymbuzz.ui.views.AnyEditTextView
+                android:id="@+id/edtFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/full_name"
+                android:inputType="text"
+                android:textColor="@color/color_accent"
+                android:textSize="@dimen/x14"
+                android:maxLength="26"
+                app:typeface="@string/font_normal" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilExtercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/x20"
+        android:layout_marginEnd="@dimen/x25"
+        android:layout_marginStart="@dimen/x25"
+        android:layout_marginTop="@dimen/x5"
+        android:layout_below="@+id/tilFullName">
+
+        <com.app.gymbuzz.ui.views.AnyEditTextView
+            android:id="@+id/edtExtercise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/current_exercise"
+            android:inputType="text"
+            android:textColor="@color/color_accent"
+            android:textSize="@dimen/x14"
+            app:typeface="@string/font_normal" />
+
+    </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/tilLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/x20"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x5"
+            android:layout_below="@+id/tilExtercise">
+
+            <com.app.gymbuzz.ui.views.AnyEditTextView
+                android:id="@+id/edtLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/in_gym_location"
+                android:inputType="text"
+                android:textColor="@color/color_accent"
+                android:textSize="@dimen/x14"
+                app:typeface="@string/font_normal" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/spPriority"
+            style="@style/filter_spinner_style"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x40"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:textColor="@color/white"
+            android:layout_below="@+id/tilLocation"
+            android:textSize="@dimen/x15" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginBottom="@dimen/x35"
+            android:background="@color/black1"
+            android:layout_below="@+id/spPriority" />
+
+        <LinearLayout
+            android:id="@+id/llFeedback"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/x30"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_below="@+id/view2"
+            android:background="@drawable/drawable_square"
+            android:orientation="vertical">
+
+            <com.app.gymbuzz.ui.views.AnyEditTextView
+                android:id="@+id/edtFeedBack"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x150"
+                android:alpha="0.7"
+                android:background="@color/transparent"
+                android:gravity="left"
+                android:layout_gravity="left"
+                android:hint="@string/write_your_comments"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:padding="@dimen/x14"
+                android:singleLine="false"
+                android:textColor="@color/black0"
+                android:textColorHint="@color/black0"
+                android:textSize="@dimen/x16"
+                app:typeface="@string/font_normal" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x35"
+            android:background="@drawable/btn"
+            android:layout_marginBottom="@dimen/x40"
+            android:text="@string/req_support"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:layout_below="@+id/llFeedback" />
+
+    </RelativeLayout>
+
+</ScrollView>

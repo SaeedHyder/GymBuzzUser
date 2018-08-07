@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_bg">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <com.app.gymbuzz.ui.views.AnyTextView
+        android:id="@+id/anyTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/x32"
+        android:layout_marginStart="@dimen/x30"
+        android:text="@string/about_us"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        android:textSize="@dimen/x14"
+        app:typeface="@string/font_normal" />
+
+
+    <com.app.gymbuzz.ui.views.AnyTextView
+        android:id="@+id/txtAboutUs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/x25"
+        android:layout_marginStart="@dimen/x30"
+        android:layout_marginBottom="@dimen/x40"
+        android:layout_marginEnd="@dimen/x30"
+        android:text="@string/lorem_ipsum"
+        android:textColor="@color/black0"
+        android:textSize="@dimen/x14"
+        app:typeface="@string/font_normal" />
+
+    </LinearLayout>
+</ScrollView>

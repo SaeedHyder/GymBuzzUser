@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_bg">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civProfilePic"
+            android:layout_width="@dimen/x150"
+            android:layout_height="@dimen/x150"
+            android:layout_marginTop="@dimen/x30"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/profilepic" />
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x40"
+            android:layout_below="@+id/civProfilePic"
+            android:text="Jhon Doe Wellington"
+            android:textColor="@color/color_accent"
+            android:textSize="@dimen/x23"
+            app:typeface="@string/font_normal" />
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x5"
+            android:layout_below="@+id/txtName"
+            android:text="jhondoe@gymbuzz.com"
+            android:textColor="@color/black0"
+            android:textSize="@dimen/x16"
+            app:typeface="@string/font_normal" />
+
+        <LinearLayout
+            android:id="@+id/llAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtEmail"
+            android:layout_marginTop="@dimen/x30"
+            android:layout_marginStart="@dimen/x25"
+            android:orientation="vertical">
+
+            <com.app.gymbuzz.ui.views.AnyTextView
+                android:id="@+id/txtAgeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24"
+                android:textColor="@color/color_accent"
+                android:textSize="@dimen/x20"
+                app:typeface="@string/font_normal" />
+
+            <com.app.gymbuzz.ui.views.AnyTextView
+                android:id="@+id/txtAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/x5"
+                android:text="@string/age_"
+                android:textColor="@color/black0"
+                android:textSize="@dimen/x16"
+                app:typeface="@string/font_normal" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtEmail"
+            android:layout_toEndOf="@+id/llAge"
+            android:layout_marginTop="@dimen/x30"
+            android:layout_marginStart="@dimen/x25"
+            android:orientation="vertical">
+
+            <com.app.gymbuzz.ui.views.AnyTextView
+                android:id="@+id/txtWeightValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="61 lb"
+                android:textColor="@color/color_accent"
+                android:textSize="@dimen/x20"
+                app:typeface="@string/font_normal" />
+
+            <com.app.gymbuzz.ui.views.AnyTextView
+                android:id="@+id/txtWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/x5"
+                android:text="@string/weigh"
+                android:textColor="@color/black0"
+                android:textSize="@dimen/x16"
+                app:typeface="@string/font_normal" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llHeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtEmail"
+            android:layout_toEndOf="@+id/llWeight"
+            android:layout_marginTop="@dimen/x30"
+            android:layout_marginStart="@dimen/x25"
+            android:orientation="vertical">
+
+            <com.app.gymbuzz.ui.views.AnyTextView
+                android:id="@+id/txtHeightValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="159 cm"
+                android:textColor="@color/color_accent"
+                android:textSize="@dimen/x20"
+                app:typeface="@string/font_normal" />
+
+            <com.app.gymbuzz.ui.views.AnyTextView
+                android:id="@+id/txtHeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/x5"
+                android:text="@string/height"
+                android:textAllCaps="true"
+                android:textColor="@color/black0"
+                android:textSize="@dimen/x16"
+                app:typeface="@string/font_normal" />
+
+        </LinearLayout>
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtAboutUs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/x25"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginBottom="@dimen/x40"
+            android:layout_below="@+id/llHeight"
+            android:text="@string/lorem_ipsum"
+            android:textColor="@color/black0"
+            android:textSize="@dimen/x14"
+            app:typeface="@string/font_normal" />
+
+    </RelativeLayout>
+
+</ScrollView>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg">
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtViewProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x32"
+            android:paddingBottom="@dimen/x5"
+            android:paddingTop="@dimen/x5"
+            android:text="@string/view_profile"
+            android:textColor="@color/black1"
+            android:textSize="@dimen/x14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.126"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:typeface="@string/font_normal" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/black1"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x15"
+            app:layout_constraintStart_toStartOf="@+id/txtViewProfile"
+            app:layout_constraintTop_toBottomOf="@+id/txtViewProfile" />
+
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtUnits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingBottom="@dimen/x5"
+            android:paddingTop="@dimen/x5"
+            android:visibility="gone"
+            android:text="@string/units"
+            android:textColor="@color/black1"
+            android:textSize="@dimen/x14"
+            app:layout_constraintStart_toStartOf="@+id/view1"
+            app:layout_constraintTop_toBottomOf="@+id/view1"
+            app:typeface="@string/font_normal" />
+
+
+        <CheckBox
+            android:id="@+id/cbLbs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="@dimen/x16"
+            android:checked="false"
+            android:visibility="gone"
+            android:paddingLeft="@dimen/x7"
+            android:button="@drawable/btn_checkbox"
+            android:paddingBottom="@dimen/x5"
+            android:paddingTop="@dimen/x5"
+            android:text="Lbs"
+            android:textColor="@color/black1"
+            app:layout_constraintEnd_toStartOf="@+id/cbKgs"
+            app:layout_constraintTop_toBottomOf="@+id/view1" />
+
+        <CheckBox
+            android:id="@+id/cbKgs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="@dimen/x16"
+            android:paddingBottom="@dimen/x5"
+            android:paddingTop="@dimen/x5"
+            android:paddingLeft="@dimen/x7"
+            android:visibility="gone"
+            android:text="Kgs"
+            android:checked="true"
+            android:button="@drawable/btn_checkbox"
+            android:textColor="@color/black1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.91"
+            app:layout_constraintStart_toEndOf="@id/txtUnits"
+            app:layout_constraintTop_toBottomOf="@+id/view1" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/black1"
+            android:layout_marginEnd="@dimen/x25"
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x15"
+            app:layout_constraintStart_toStartOf="@+id/txtUnits"
+            app:layout_constraintTop_toBottomOf="@+id/txtUnits" />
+
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingBottom="@dimen/x5"
+            android:paddingTop="@dimen/x5"
+            android:text="@string/notification"
+            android:textColor="@color/black1"
+            android:textSize="@dimen/x14"
+            app:layout_constraintStart_toStartOf="@+id/view1"
+            app:layout_constraintTop_toBottomOf="@+id/view1"
+            app:typeface="@string/font_normal" />
+
+        <ToggleButton
+            android:id="@+id/toggleNotification"
+            android:layout_width="@dimen/x35"
+            android:layout_height="@dimen/x22"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/selector_toggle"
+            android:checked="true"
+            android:gravity="right|center_vertical"
+            android:text=""
+            android:textOff=""
+            android:textOn=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.91"
+            app:layout_constraintStart_toEndOf="@+id/txtNotification"
+            app:layout_constraintTop_toBottomOf="@+id/view1" />
+
+
+        <View
+            android:id="@+id/view3"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/black1"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x15"
+            app:layout_constraintStart_toStartOf="@+id/txtNotification"
+            app:layout_constraintTop_toBottomOf="@+id/txtNotification" />
+
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtChangePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x16"
+            android:paddingBottom="@dimen/x5"
+            android:paddingTop="@dimen/x5"
+            android:text="@string/change_password"
+            android:textColor="@color/black1"
+            android:textSize="@dimen/x14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.126"
+            app:layout_constraintStart_toStartOf="@+id/view3"
+            app:layout_constraintTop_toBottomOf="@+id/view3"
+            app:typeface="@string/font_normal" />
+
+        <View
+            android:id="@+id/view4"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/black1"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x15"
+            app:layout_constraintStart_toStartOf="@+id/txtChangePassword"
+            app:layout_constraintTop_toBottomOf="@+id/txtChangePassword" />
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtAboutUs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x16"
+            android:paddingBottom="@dimen/x5"
+            android:paddingTop="@dimen/x5"
+            android:text="@string/about_us"
+            android:textColor="@color/black1"
+            android:textSize="@dimen/x14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.126"
+            app:layout_constraintStart_toStartOf="@+id/view4"
+            app:layout_constraintTop_toBottomOf="@+id/view4"
+            app:typeface="@string/font_normal" />
+
+        <View
+            android:id="@+id/view5"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/black1"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x15"
+            app:layout_constraintStart_toStartOf="@+id/txtAboutUs"
+            app:layout_constraintTop_toBottomOf="@+id/txtAboutUs" />
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtContactUs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x16"
+            android:paddingBottom="@dimen/x5"
+            android:paddingTop="@dimen/x5"
+            android:text="@string/contact_us"
+            android:textColor="@color/black1"
+            android:textSize="@dimen/x14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.126"
+            app:layout_constraintStart_toStartOf="@+id/view5"
+            app:layout_constraintTop_toBottomOf="@+id/view5"
+            app:typeface="@string/font_normal" />
+
+        <View
+            android:id="@+id/view6"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/black1"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x15"
+            app:layout_constraintStart_toStartOf="@+id/txtContactUs"
+            app:layout_constraintTop_toBottomOf="@+id/txtContactUs" />
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x16"
+            android:paddingBottom="@dimen/x5"
+            android:paddingTop="@dimen/x5"
+            android:text="@string/log_out"
+            android:layout_marginBottom="@dimen/x40"
+            android:textColor="@color/black1"
+            android:textSize="@dimen/x14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.126"
+            app:layout_constraintStart_toStartOf="@+id/view6"
+            app:layout_constraintTop_toBottomOf="@+id/view6"
+            app:typeface="@string/font_normal" />
+
+
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

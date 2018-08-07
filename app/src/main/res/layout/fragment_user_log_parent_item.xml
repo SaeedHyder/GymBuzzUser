@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/color_bg">
+
+    <ImageView
+        android:id="@+id/ivBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/frontshape"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/x20"
+        android:padding="@dimen/x17"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:alpha="0.1"
+        android:background="@color/black0"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+    <com.app.gymbuzz.ui.views.AnyTextView
+        android:id="@+id/txtHeadder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:padding="@dimen/x17"
+        android:text="Chest"
+        android:textAllCaps="true"
+        android:textColor="@color/black1"
+        android:textSize="@dimen/x16"
+        app:typeface="@string/font_normal" />
+
+
+        <ImageView
+            android:id="@+id/ivIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_gravity="center"
+            android:src="@drawable/rightarrow" />
+
+    </LinearLayout>
+
+</LinearLayout>
