@@ -68,7 +68,7 @@ public class WorkoutSummaryFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
                 getDockActivity().popBackStackTillEntry(0);
-                getDockActivity().replaceDockableFragment(HomeFragment.newInstance(), HomeFragment.class.getSimpleName());
+                getDockActivity().replaceDockableFragment(HomeMenuFragment.newInstance(), HomeMenuFragment.class.getSimpleName());
             }
         });
     }

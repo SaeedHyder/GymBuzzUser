@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorLogItemBg"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_accent">
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@string/filter"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/x15"
+            app:typeface="@string/font_normal" />
+    </FrameLayout>
+
+    <com.app.gymbuzz.ui.views.AnyTextView
+        android:id="@+id/txtDateRange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="@string/sort_date"
+        android:textAllCaps="true"
+        android:textColor="@color/filterTextColor"
+        android:textSize="15sp"
+        app:typeface="@string/font_normal" />
+
+    <LinearLayout
+        android:id="@+id/llHeadder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtSatartDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/date_bg_drawable"
+            android:ellipsize="end"
+            android:maxLength="10"
+            android:maxLines="1"
+            android:paddingBottom="@dimen/x4"
+            android:paddingLeft="@dimen/x8"
+            android:paddingRight="@dimen/x8"
+            android:paddingTop="@dimen/x4"
+            android:text="12-04-2018"
+            android:textColor="@color/filterTextColor"
+            android:textSize="13sp"
+            app:typeface="@string/font_normal" />
+
+        <View
+            android:layout_width="@dimen/x7"
+            android:layout_height="@dimen/x1"
+            android:layout_marginLeft="@dimen/x10"
+            android:background="@color/filterTextColor" />
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtEndDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x10"
+            android:background="@drawable/date_bg_drawable"
+            android:ellipsize="end"
+            android:maxLength="10"
+            android:maxLines="1"
+            android:paddingBottom="@dimen/x4"
+            android:paddingLeft="@dimen/x8"
+            android:paddingRight="@dimen/x8"
+            android:paddingTop="@dimen/x4"
+            android:text="12-04-2018"
+            android:textColor="@color/filterTextColor"
+            android:textSize="13sp"
+            app:typeface="@string/font_normal" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorLogItemName" />
+
+    <com.app.gymbuzz.ui.views.AnyTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="@string/sort_exercise"
+        android:textAllCaps="true"
+        android:textColor="@color/filterTextColor"
+        android:textSize="15sp"
+        app:typeface="@string/font_normal" />
+
+    <com.app.gymbuzz.ui.views.CustomRecyclerView
+        android:id="@+id/rvExercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btnApply"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginEnd="@dimen/x15"
+        android:layout_marginStart="@dimen/x15"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn"
+        android:elevation="@dimen/x10"
+        android:text="@string/apply"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+</LinearLayout>

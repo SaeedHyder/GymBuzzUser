@@ -44,11 +44,12 @@
     <color name="default_hint_text">#757575</color>
 
     //New Colors
-    <color name="color_bg">#E4D6C9</color>
+    <color name="color_bg">#E7DBCF</color>
     <color name="color_accent">#0FA9B3</color>
     <color name="text_color">#AAAAAA</color>
     <color name="black0">#7B7E7F</color>
     <color name="black1">#6A6E70</color>
+    <color name="log_title_color">#E7DBCF</color>
     <color name="tabbar_color">#102331</color>
     <color name="colorSkipButton">#102331</color>
     <color name="colorLogItemBg">#102331</color>
@@ -56,6 +57,7 @@
     <!--<color name="colorLogItemDetail">#1A4048</color>-->
     <color name="colorLogItemDetail">#245B60</color>
     <color name="time_separator">#0F9CA7</color>
+    <color name="filterTextColor">#D2D4D6</color>
 
 
 

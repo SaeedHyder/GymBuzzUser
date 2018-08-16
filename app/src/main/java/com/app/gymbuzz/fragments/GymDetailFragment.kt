@@ -56,7 +56,7 @@ class GymDetailFragment:BaseFragment(),ItemClickListener{
         gymImageList.add(1,"drawable://" + R.drawable.gym_floor_2)
         gymImageList.add(2,"drawable://" + R.drawable.gym_floor_1)
 
-        rvAdapter = RecyclerViewAdapter(gymImageList, BinderGymDetail(this), dockActivity, R.layout.gym_detail_item)
+        //rvAdapter = RecyclerViewAdapter(gymImageList, BinderGymDetail(this), dockActivity, R.layout.gym_detail_item)
         rvGymImages.setLayoutManager(LinearLayoutManager(mainActivity,LinearLayoutManager.HORIZONTAL,false))
         rvGymImages.setAdapter(rvAdapter)
         rvAdapter?.notifyDataSetChanged()

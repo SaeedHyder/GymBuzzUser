@@ -5,27 +5,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/colorLogItemBg"
-    android:padding="@dimen/x20"
+    android:padding="@dimen/x10"
     android:gravity="center_vertical|center_horizontal">
 
 
 
-    <com.app.gymbuzz.ui.views.AnyTextView
-        android:id="@+id/txtName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="CHEST FLY"
-        android:textAllCaps="true"
-        android:textColor="@color/colorLogItemName"
-        android:textSize="@dimen/x15"
-        app:typeface="@string/font_normal" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/x20"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
@@ -46,7 +35,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text=" REPS"
+            android:text=" SETS"
             android:textColor="@color/colorLogItemDetail"
             android:textSize="@dimen/x15"
             app:typeface="@string/font_normal" />
@@ -104,7 +93,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text=" SETS"
+            android:text=" REPS"
             android:textColor="@color/colorLogItemDetail"
             android:textSize="@dimen/x15"
             app:typeface="@string/font_normal" />

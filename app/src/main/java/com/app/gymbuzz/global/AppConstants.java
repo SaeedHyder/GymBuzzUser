@@ -15,6 +15,7 @@ public class AppConstants {
     // id to handle the notification in the notification tray
     public static  int NOTIFICATION_ID = 100;
     public static String DateFormat_DMY2 = "dd-MM-yy";
+    public static String LOG_DATE_FORMAT = "dd/MM/yyyy";
     public static String DateFormat_HM = "HH:mm";
     public static String DateFormat_YMDHMS = "yyyy-MM-dd HH:mm:ss";
 

@@ -6,11 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 public abstract class RecyclerViewBinder<T> {
-
-	public RecyclerViewBinder() {
+	private int LayoutResId;
+	public RecyclerViewBinder(int LayoutResId) {
+		this.LayoutResId = LayoutResId;
 	}
 
-	public View createView (Context activity, int LayoutResId) {
+	public View createView (Context activity) {
 		LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		final View view = inflater.inflate( LayoutResId , null );
 		view.setTag( createViewHolder( view ) );
@@ -35,7 +36,4 @@ public abstract class RecyclerViewBinder<T> {
 			super(itemView);
 		}
 	}
-
-	public abstract void bindItemId(int position);
-
 }

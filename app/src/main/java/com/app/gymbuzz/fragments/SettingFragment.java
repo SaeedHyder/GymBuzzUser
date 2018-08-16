@@ -1,5 +1,7 @@
 package com.app.gymbuzz.fragments;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ToggleButton;
 
 import com.app.gymbuzz.R;
@@ -61,6 +63,20 @@ public class SettingFragment extends BaseFragment {
     @BindView(R.id.txtLogout)
     AnyTextView txtLogout;
     Unbinder unbinder;
+    @BindView(R.id.txtRateUs)
+    AnyTextView txtRateUs;
+    @BindView(R.id.txtVersionNumber)
+    AnyTextView txtVersionNumber;
+    @BindView(R.id.btnFacebook)
+    FrameLayout btnFacebook;
+    @BindView(R.id.btnInsta)
+    FrameLayout btnInsta;
+    @BindView(R.id.btnSnapchat)
+    FrameLayout btnSnapchat;
+    @BindView(R.id.btnTwitter)
+    FrameLayout btnTwitter;
+    @BindView(R.id.btnYoutube)
+    FrameLayout btnYoutube;
 
     public static SettingFragment newInstance() {
         return new SettingFragment();
@@ -87,8 +103,12 @@ public class SettingFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
+        try {
+            PackageInfo pInfo = getDockActivity().getPackageManager().getPackageInfo(getDockActivity().getPackageName(), 0);
+            txtVersionNumber.setText(pInfo.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -101,13 +121,8 @@ public class SettingFragment extends BaseFragment {
         titleBar.setSubHeading(getString(R.string.settings));
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        //unbinder.unbind();
-    }
 
-    @OnClick({R.id.txtViewProfile, R.id.txtChangePassword, R.id.txtAboutUs, R.id.txtContactUs, R.id.txtLogout})
+    @OnClick({R.id.txtViewProfile, R.id.txtChangePassword, R.id.txtAboutUs, R.id.txtContactUs, R.id.txtLogout, R.id.txtRateUs, R.id.btnFacebook, R.id.btnInsta, R.id.btnSnapchat, R.id.btnTwitter, R.id.btnYoutube})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
@@ -126,7 +141,18 @@ public class SettingFragment extends BaseFragment {
             case R.id.txtContactUs:
                 getDockActivity().replaceDockableFragment(ContactusFragment.newInstance(), ContactusFragment.class.getSimpleName());
                 break;
-
+            case R.id.txtRateUs:
+                break;
+            case R.id.btnFacebook:
+                break;
+            case R.id.btnInsta:
+                break;
+            case R.id.btnSnapchat:
+                break;
+            case R.id.btnTwitter:
+                break;
+            case R.id.btnYoutube:
+                break;
             case R.id.txtLogout:
 
 
@@ -154,4 +180,6 @@ public class SettingFragment extends BaseFragment {
                 break;
         }
     }
+
+
 }

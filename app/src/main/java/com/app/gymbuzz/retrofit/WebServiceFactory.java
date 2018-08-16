@@ -10,15 +10,17 @@ public class WebServiceFactory {
 
     private static WebService webService;
 
-    public static WebService getWebServiceInstanceWithCustomInterceptor(Context context, String endPoint) {
+    public static WebService getWebServiceInstanceWithCustomInterceptor( String endPoint) {
+
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(endPoint)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(OKHttpClientCreator.createCustomInterceptorClient(context))
+                .client(OKHttpClientCreator.createCustomInterceptorClient())
                 .build();
 
         webService = retrofit.create(WebService.class);
+
 
         return webService;
 

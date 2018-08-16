@@ -78,7 +78,7 @@ public class HomeMenuFragment extends BaseFragment {
     @Override
     public void setTitleBar(TitleBar titleBar) {
         super.setTitleBar(titleBar);
-
+        titleBar.hideTitleBar();
         titleBar.hideButtons();
         titleBar.showBackButton();
         titleBar.setSubHeading(getString(R.string.view_profile));
@@ -89,12 +89,12 @@ public class HomeMenuFragment extends BaseFragment {
         super.onDestroyView();
     }
 
-    @OnClick({R.id.ivNotification,R.id.btnMembership, R.id.btnWrkout, R.id.btnLog, R.id.btnGuide})
+    @OnClick({R.id.ivNotification, R.id.btnMembership, R.id.btnWrkout, R.id.btnLog, R.id.btnGuide})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
             case R.id.ivNotification:
-                UIHelper.showShortToastInCenter(getMainActivity(),getString(R.string.will_be_imp_beta));
+                UIHelper.showShortToastInCenter(getMainActivity(), getString(R.string.will_be_imp_beta));
                 break;
 
             case R.id.btnMembership:
@@ -116,7 +116,7 @@ public class HomeMenuFragment extends BaseFragment {
                 break;
 
             case R.id.btnGuide:
-                UIHelper.showShortToastInCenter(getMainActivity(),getString(R.string.will_be_imp_beta));
+                UIHelper.showShortToastInCenter(getMainActivity(), getString(R.string.will_be_imp_beta));
                 break;
         }
     }

@@ -16,43 +16,46 @@ public class RecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerViewBin
     private List<T> collections;
     private RecyclerViewBinder<T> viewBinder;
     private Context mContext;
-    private int mLayoutResouceID;
 
-    public RecyclerViewAdapter(List<T> collections, RecyclerViewBinder<T> viewBinder, Context context, int mLayoutResouceID) {
+
+    public RecyclerViewAdapter(List<T> collections, RecyclerViewBinder<T> viewBinder, Context context) {
         this.collections = collections;
         this.viewBinder = viewBinder;
         this.mContext = context;
-        this.mLayoutResouceID = mLayoutResouceID;
+
     }
 
     @Override
     public RecyclerViewBinder.BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        return (RecyclerViewBinder.BaseViewHolder) this.viewBinder.createViewHolder(this.viewBinder.createView(this.mContext,this.mLayoutResouceID));
+        return (RecyclerViewBinder.BaseViewHolder) this.viewBinder.createViewHolder(this.viewBinder.createView(this.mContext));
     }
 
     @Override
     public void onBindViewHolder(RecyclerViewBinder.BaseViewHolder holder, int position) {
-        T entity = (T)this.collections.get(position);
-        this.viewBinder.bindView(entity,position,holder,this.mContext);
+        T entity = (T) this.collections.get(position);
+        this.viewBinder.bindView(entity, position, holder, this.mContext);
+
     }
 
     @Override
-    public long getItemId(int position) {
-        return super.getItemId(position);
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
     public int getItemCount() {
         return this.collections.size();
     }
-    public T getItemFromList(int index ) {
-        return collections.get( index );
+
+    public T getItemFromList(int index) {
+        return collections.get(index);
     }
 
     public List<T> getList() {
         return collections;
     }
+
     /**
      * Clears the internal list
      */
@@ -67,8 +70,8 @@ public class RecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerViewBin
      *
      * @see #addAll(List)
      */
-    public void add( T entity ) {
-        collections.add( entity );
+    public void add(T entity) {
+        collections.add(entity);
         notifyDataSetChanged();
     }
 
@@ -79,8 +82,8 @@ public class RecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerViewBin
      *
      * @see #addAll(List)
      */
-    public void addAll( List<T> entityList ) {
-        collections.addAll( entityList );
+    public void addAll(List<T> entityList) {
+        collections.addAll(entityList);
         notifyDataSetChanged();
     }
 }

@@ -89,6 +89,11 @@ public class TitleBar extends RelativeLayout {
 		btnLeft.setOnClickListener(menuButtonListener);
 		btnLeft.setImageResource(R.mipmap.ic_launcher);
 	}
+	public void showFilterButton() {
+		btnRight2.setVisibility(View.VISIBLE);
+		btnRight2.setOnClickListener(menuButtonListener);
+		btnRight2.setImageResource(R.mipmap.ic_launcher);
+	}
 
 	public void setSubHeading(String heading) {
 		txtTitle.setVisibility(View.VISIBLE);
@@ -111,11 +116,6 @@ public class TitleBar extends RelativeLayout {
 	}
 
 	public void showRightButton(int id,boolean isOnlyVisble,OnClickListener onClickListener) {
-
-		if(isOnlyVisble){
-			btnRight2.setVisibility(GONE);
-		}
-
 		btnRight.setVisibility(View.VISIBLE);
 		btnRight.setOnClickListener(onClickListener);
 		btnRight.setImageResource(id);

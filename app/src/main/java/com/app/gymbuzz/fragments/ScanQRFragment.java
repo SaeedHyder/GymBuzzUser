@@ -3,6 +3,7 @@ package com.app.gymbuzz.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -83,17 +84,14 @@ public class ScanQRFragment extends BaseFragment implements BarcodeRetriever {
     @Override
     public void onRetrieved(final Barcode barcode) {
 
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-                UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.scanned_complete));
-                if (isWorkout) {
-                    getDockActivity().replaceDockableFragment(WorkOutMachineFragment.newInstance(), WorkOutMachineFragment.class.getSimpleName());
-                }
-                else {
-                    getDockActivity().replaceDockableFragment(GymDetailFragment.Companion.newInstance(), GymDetailFragment.class.getSimpleName());
-                }
+        getMainActivity().runOnUiThread(() -> {
+            Log.d("ScanQRFragment", "onRetrieved: "+barcode.toString());
+            UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.scanned_complete));
+            if (isWorkout) {
+                getDockActivity().replaceDockableFragment(WorkOutMachineFragment.newInstance(), WorkOutMachineFragment.class.getSimpleName());
+            }
+            else {
+                getDockActivity().replaceDockableFragment(GymDetailFragment.Companion.newInstance(), GymDetailFragment.class.getSimpleName());
             }
         });
 

@@ -7,8 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_bg">
 
-    <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -35,10 +34,11 @@
             android:id="@+id/view1"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/black1"
             android:layout_marginEnd="@dimen/x25"
             android:layout_marginStart="@dimen/x25"
             android:layout_marginTop="@dimen/x15"
+            android:background="@color/black1"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/txtViewProfile"
             app:layout_constraintTop_toBottomOf="@+id/txtViewProfile" />
 
@@ -50,10 +50,10 @@
             android:layout_marginTop="16dp"
             android:paddingBottom="@dimen/x5"
             android:paddingTop="@dimen/x5"
-            android:visibility="gone"
             android:text="@string/units"
             android:textColor="@color/black1"
             android:textSize="@dimen/x14"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/view1"
             app:layout_constraintTop_toBottomOf="@+id/view1"
             app:typeface="@string/font_normal" />
@@ -65,14 +65,14 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="@dimen/x16"
-            android:checked="false"
-            android:visibility="gone"
-            android:paddingLeft="@dimen/x7"
             android:button="@drawable/btn_checkbox"
+            android:checked="false"
             android:paddingBottom="@dimen/x5"
+            android:paddingLeft="@dimen/x7"
             android:paddingTop="@dimen/x5"
             android:text="Lbs"
             android:textColor="@color/black1"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/cbKgs"
             app:layout_constraintTop_toBottomOf="@+id/view1" />
 
@@ -82,14 +82,14 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="@dimen/x16"
-            android:paddingBottom="@dimen/x5"
-            android:paddingTop="@dimen/x5"
-            android:paddingLeft="@dimen/x7"
-            android:visibility="gone"
-            android:text="Kgs"
-            android:checked="true"
             android:button="@drawable/btn_checkbox"
+            android:checked="true"
+            android:paddingBottom="@dimen/x5"
+            android:paddingLeft="@dimen/x7"
+            android:paddingTop="@dimen/x5"
+            android:text="Kgs"
             android:textColor="@color/black1"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.91"
             app:layout_constraintStart_toEndOf="@id/txtUnits"
@@ -99,11 +99,11 @@
             android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/black1"
             android:layout_marginEnd="@dimen/x25"
-            android:visibility="gone"
             android:layout_marginStart="@dimen/x25"
             android:layout_marginTop="@dimen/x15"
+            android:background="@color/black1"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="@+id/txtUnits"
             app:layout_constraintTop_toBottomOf="@+id/txtUnits" />
 
@@ -145,10 +145,10 @@
             android:id="@+id/view3"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/black1"
             android:layout_marginEnd="@dimen/x25"
             android:layout_marginStart="@dimen/x25"
             android:layout_marginTop="@dimen/x15"
+            android:background="@color/black1"
             app:layout_constraintStart_toStartOf="@+id/txtNotification"
             app:layout_constraintTop_toBottomOf="@+id/txtNotification" />
 
@@ -175,10 +175,10 @@
             android:id="@+id/view4"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/black1"
             android:layout_marginEnd="@dimen/x25"
             android:layout_marginStart="@dimen/x25"
             android:layout_marginTop="@dimen/x15"
+            android:background="@color/black1"
             app:layout_constraintStart_toStartOf="@+id/txtChangePassword"
             app:layout_constraintTop_toBottomOf="@+id/txtChangePassword" />
 
@@ -201,15 +201,44 @@
             app:typeface="@string/font_normal" />
 
         <View
-            android:id="@+id/view5"
+            android:id="@+id/view8"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/black1"
             android:layout_marginEnd="@dimen/x25"
             android:layout_marginStart="@dimen/x25"
             android:layout_marginTop="@dimen/x15"
+            android:background="@color/black1"
             app:layout_constraintStart_toStartOf="@+id/txtAboutUs"
             app:layout_constraintTop_toBottomOf="@+id/txtAboutUs" />
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtRateUs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x16"
+            android:paddingBottom="@dimen/x5"
+            android:paddingTop="@dimen/x5"
+            android:text="@string/rate"
+            android:textColor="@color/black1"
+            android:textSize="@dimen/x14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.126"
+            app:layout_constraintStart_toStartOf="@+id/view8"
+            app:layout_constraintTop_toBottomOf="@+id/view8"
+            app:typeface="@string/font_normal" />
+
+        <View
+            android:id="@+id/view5"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x15"
+            android:background="@color/black1"
+            app:layout_constraintStart_toStartOf="@+id/txtRateUs"
+            app:layout_constraintTop_toBottomOf="@+id/txtRateUs" />
 
         <com.app.gymbuzz.ui.views.AnyTextView
             android:id="@+id/txtContactUs"
@@ -233,10 +262,10 @@
             android:id="@+id/view6"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/black1"
             android:layout_marginEnd="@dimen/x25"
             android:layout_marginStart="@dimen/x25"
             android:layout_marginTop="@dimen/x15"
+            android:background="@color/black1"
             app:layout_constraintStart_toStartOf="@+id/txtContactUs"
             app:layout_constraintTop_toBottomOf="@+id/txtContactUs" />
 
@@ -244,13 +273,13 @@
             android:id="@+id/txtLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/x40"
             android:layout_marginEnd="@dimen/x25"
             android:layout_marginStart="@dimen/x25"
             android:layout_marginTop="@dimen/x16"
             android:paddingBottom="@dimen/x5"
             android:paddingTop="@dimen/x5"
             android:text="@string/log_out"
-            android:layout_marginBottom="@dimen/x40"
             android:textColor="@color/black1"
             android:textSize="@dimen/x14"
             app:layout_constraintEnd_toEndOf="parent"
@@ -259,7 +288,106 @@
             app:layout_constraintTop_toBottomOf="@+id/view6"
             app:typeface="@string/font_normal" />
 
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txtVersionNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/x40"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x16"
+            android:paddingBottom="@dimen/x5"
+            android:paddingTop="@dimen/x5"
+            android:text="@string/app_version"
+            android:textColor="@color/black1"
+            android:textSize="@dimen/x14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtLogout"
+            app:typeface="@string/font_normal" />
 
+        <LinearLayout
+            android:id="@+id/ConSocialFootprint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x25"
+            android:layout_marginStart="@dimen/x25"
+            android:layout_marginTop="@dimen/x15"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtVersionNumber">
 
+            <FrameLayout
+                android:id="@+id/btnFacebook"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/log" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/btnInsta"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/log" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/btnSnapchat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/log" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/btnTwitter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/log" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/btnYoutube"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/log" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/x15"
+            app:layout_constraintTop_toBottomOf="@+id/ConSocialFootprint" />
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

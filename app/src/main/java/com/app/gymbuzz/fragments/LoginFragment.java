@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import com.app.gymbuzz.R;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
 import com.app.gymbuzz.helpers.UIHelper;
@@ -82,13 +83,12 @@ public class LoginFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    public boolean isValidated(){
+    public boolean isValidated() {
 
-        if(edtEmail.testValidity()){
-            if(edtPassword.getText().toString().length() >= 6){
+        if (edtEmail.testValidity()) {
+            if (edtPassword.getText().toString().length() >= 6) {
                 return true;
-            }
-            else{
+            } else {
                 edtPassword.setError(getString(R.string.password_length));
             }
         }
@@ -96,22 +96,25 @@ public class LoginFragment extends BaseFragment {
         return false;
     }
 
-    @OnClick({R.id.btnLogin, R.id.btn_forgot_password})
+    @OnClick({R.id.btnLogin, R.id.btn_forgot_password, R.id.btnSignUp})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
             case R.id.btnLogin:
 
-                if(isValidated()){
+                if (isValidated()) {
                     prefHelper.setLoginStatus(true);
                     getDockActivity().popBackStackTillEntry(0);
-                    getDockActivity().replaceDockableFragment(HomeFragment.newInstance(), HomeFragment.class.getSimpleName());
+                    getDockActivity().replaceDockableFragment(HomeMenuFragment.newInstance(), HomeMenuFragment.class.getSimpleName());
                 }
 
                 break;
 
             case R.id.btn_forgot_password:
-                UIHelper.showShortToastInCenter(getMainActivity(),getString(R.string.will_be_imp_beta));
+                UIHelper.showShortToastInCenter(getMainActivity(), getString(R.string.will_be_imp_beta));
+                break;
+            case R.id.btnSignUp:
+                getDockActivity().replaceDockableFragment(SignupFragment.newInstance(), SignupFragment.class.getSimpleName());
                 break;
         }
     }

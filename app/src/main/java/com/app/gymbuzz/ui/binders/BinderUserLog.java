@@ -21,8 +21,6 @@ import com.app.gymbuzz.ui.views.AnyTextView;
 public class BinderUserLog  extends ExpandableListViewBinder<String,ExserciseLogEnt> {
 
     public DockActivity context;
-    private Integer IN_STOCK;
-    private Integer NEW_RELEASE;
     public BinderUserLog(DockActivity context) {
 
         super(R.layout.fragment_user_log_parent_item, R.layout.fragment_user_log_child_item);
@@ -46,30 +44,14 @@ public class BinderUserLog  extends ExpandableListViewBinder<String,ExserciseLog
 
         viewHolder2.tv_header.setText(entity);
 
-        if(AppConstants.isShow){
-            viewHolder2.ivBody.setVisibility(View.VISIBLE);
-        }else{
-            viewHolder2.ivBody.setVisibility(View.GONE);
-        }
-
-        if(isExpanded){
-            viewHolder2.ivIndicator.setImageResource(R.drawable.downarrow);
-        }else{
-            viewHolder2.ivIndicator.setImageResource(R.drawable.rightarrow);
-        }
-
     }
 
     public static class ViewHolder2 extends BaseGroupViewHolder {
 
         AnyTextView tv_header;
-        ImageView ivBody;
-        ImageView ivIndicator;
 
         public ViewHolder2(View view) {
-            tv_header = (AnyTextView) view.findViewById(R.id.txtHeadder);
-            ivBody = (ImageView) view.findViewById(R.id.ivBody);
-            ivIndicator = (ImageView) view.findViewById(R.id.ivIndicator);
+            tv_header = (AnyTextView) view.findViewById(R.id.txtName);
         }
     }
 
@@ -77,8 +59,6 @@ public class BinderUserLog  extends ExpandableListViewBinder<String,ExserciseLog
     public void bindChildView(final ExserciseLogEnt entity, int position, int grpPosition, View view, Activity activity) {
 
         final BinderUserLog.ViewHolder viewHolder = (BinderUserLog.ViewHolder) view.getTag();
-
-        viewHolder.txtName.setText(entity.getExcerciseSubType());
         viewHolder.txtReps.setText(entity.getReps());
         viewHolder.txtKgs.setText(entity.getKgs());
         viewHolder.txtSets.setText(entity.getSets());
@@ -86,14 +66,13 @@ public class BinderUserLog  extends ExpandableListViewBinder<String,ExserciseLog
 
     public static class ViewHolder extends BaseChildViewHolder{
 
-        AnyTextView txtName;
+
         AnyTextView txtReps;
         AnyTextView txtKgs;
         AnyTextView txtSets;
 
 
         public ViewHolder(View view) {
-            txtName = (AnyTextView) view.findViewById(R.id.txtName);
             txtReps = (AnyTextView) view.findViewById(R.id.txtReps);
             txtKgs = (AnyTextView) view.findViewById(R.id.txtKgs);
             txtSets = (AnyTextView) view.findViewById(R.id.txtSets);

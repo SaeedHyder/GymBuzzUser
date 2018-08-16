@@ -15,7 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoader
  */
 
 
-class BinderGymDetail constructor(itemClickListener: ItemClickListener) : RecyclerViewBinder<String>() {
+class BinderGymDetail constructor(itemClickListener: ItemClickListener) : RecyclerViewBinder<String>(R.layout.gym_detail_item) {
 
      var imageLoader: ImageLoader
      var itemClickListener: ItemClickListener? = null
@@ -42,9 +42,7 @@ class BinderGymDetail constructor(itemClickListener: ItemClickListener) : Recycl
 
     }
 
-    override fun bindItemId(position: Int) {
 
-    }
 
     class ViewHolder(view: View) : BaseViewHolder(view) {
 

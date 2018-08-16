@@ -44,7 +44,6 @@
     <string name="message_wait">Please wait while data is loading.</string>
     <string name="email_address">Email Address</string>
     <string name="password">Password</string>
-    <string name="confirm_pass">Confirm Password</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="click_here">  Click Here</string>
     <string name="imgdesc_signup">Sign Up</string>
@@ -124,7 +123,7 @@
     <string name="update_profile">Update Profile</string>
     <string name="update_profile_">UPDATE PROFILE</string>
     <string name="please_enter_fullname">Please enter full name</string>
-    <string name="membership">MEMBERSHIP</string>
+    <string name="membership">MY GYM</string>
     <string name="workout">WORKOUT</string>
     <string name="log">LOG</string>
     <string name="guide">GUIDE</string>
@@ -165,6 +164,27 @@
     <string name="signin">SIGNIN</string>
     <string name="about">About</string>
     <string name="height">Height</string>
+    <string name="new_to_gym_buz">New to Gym Buz?</string>
+    <string name="signup_now">Signup Now</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="signin_">Sign In</string>
+    <string name="name">Name</string>
+    <string name="mobile">Mobile (Optional)</string>
+    <string name="signup">SIGNUP</string>
 
-
+    <string name="enter_valid_email">Please Enter Valid Email</string>
+    <string name="enter_password">Password Field cannot be Empty</string>
+    <string name="passwordLength">Password cannot be less than 6 characters</string>
+    <string name="forgot_email_message">Please enter your Phone Number</string>
+    <string name="confirm_pass">Confirm Password</string>
+    <string name="confirm_password_error">Confirm Password did not match</string>
+    <string name="enter_FullName">Name cannot be Empty</string>
+    <string name="settings_">SETTINGS</string>
+    <string name="bmi">BMI</string>
+    <string name="rate">Rate</string>
+    <string name="app_version">App Verison 1.0.1</string>
+    <string name="filter">Filter</string>
+    <string name="sort_date">Sort by Date</string>
+    <string name="sort_exercise">Sort by exercise</string>
+    <string name="apply">Apply</string>
 </resources>

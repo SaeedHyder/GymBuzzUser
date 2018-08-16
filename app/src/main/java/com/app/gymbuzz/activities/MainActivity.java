@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 
 import com.app.gymbuzz.R;
 import com.app.gymbuzz.fragments.HomeFragment;
+import com.app.gymbuzz.fragments.HomeMenuFragment;
+import com.app.gymbuzz.fragments.LogFilterFragment;
 import com.app.gymbuzz.fragments.LoginFragment;
 import com.app.gymbuzz.fragments.NotificationsFragment;
 import com.app.gymbuzz.fragments.SideMenuFragment;
@@ -61,6 +64,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Image
 
     private String sideMenuType;
     private String sideMenuDirection;
+    private LogFilterFragment filterFragment;
 
     private ImageChooserManager imageChooserManager;
     private int chooserType;
@@ -82,7 +86,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Image
         Log.i("Screen Density", ScreenHelper.getDensity(this) + "");
 
         sideMenuType = SideMenuChooser.DRAWER.getValue();
-        sideMenuDirection = SideMenuDirection.LEFT.getValue();
+        sideMenuDirection = SideMenuDirection.RIGHT.getValue();
 
         settingSideMenu(sideMenuType, sideMenuDirection);
 
@@ -140,8 +144,11 @@ public class MainActivity extends DockActivity implements OnClickListener, Image
 
         if (type.equals(SideMenuChooser.DRAWER.getValue())) {
 
-
-            DrawerLayout.LayoutParams params = new DrawerLayout.LayoutParams((int) getResources().getDimension(R.dimen.x300), (int) DrawerLayout.LayoutParams.MATCH_PARENT);
+            DisplayMetrics matrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(matrics);
+            Long longwidth = Math.round(matrics.widthPixels * 0.65);
+            int drawerwidth = longwidth.intValue();
+            DrawerLayout.LayoutParams params = new DrawerLayout.LayoutParams(drawerwidth, (int) DrawerLayout.LayoutParams.MATCH_PARENT);
 
 
             if (direction.equals(SideMenuDirection.LEFT.getValue())) {
@@ -153,10 +160,10 @@ public class MainActivity extends DockActivity implements OnClickListener, Image
             }
             drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-            sideMenuFragment = SideMenuFragment.newInstance();
+            filterFragment = LogFilterFragment.newInstance();
             FragmentTransaction transaction = getSupportFragmentManager()
                     .beginTransaction();
-            transaction.replace(getSideMenuFrameLayoutId(), sideMenuFragment).commit();
+            transaction.replace(getSideMenuFrameLayoutId(), filterFragment).commit();
 
             drawerLayout.closeDrawers();
         } else {
@@ -200,22 +207,20 @@ public class MainActivity extends DockActivity implements OnClickListener, Image
     public void initFragment() {
         getSupportFragmentManager().addOnBackStackChangedListener(getListener());
         if (prefHelper.isLogin()) {
-            replaceDockableFragment(HomeFragment.newInstance(), "HomeFragment");
+            replaceDockableFragment(HomeMenuFragment.newInstance(), "HomeMenuFragment");
         } else {
             replaceDockableFragment(LoginFragment.newInstance(), "LoginFragment");
         }
     }
 
     private FragmentManager.OnBackStackChangedListener getListener() {
-        FragmentManager.OnBackStackChangedListener result = new FragmentManager.OnBackStackChangedListener() {
-            public void onBackStackChanged() {
+        FragmentManager.OnBackStackChangedListener result = () -> {
 
-                FragmentManager manager = getSupportFragmentManager();
-                if (manager != null) {
-                    BaseFragment currFrag = (BaseFragment) manager.findFragmentById(getDockFrameLayoutId());
-                    if (currFrag != null) {
-                        currFrag.fragmentResume();
-                    }
+            FragmentManager manager = getSupportFragmentManager();
+            if (manager != null) {
+                BaseFragment currFrag = (BaseFragment) manager.findFragmentById(getDockFrameLayoutId());
+                if (currFrag != null) {
+                    currFrag.fragmentResume();
                 }
             }
         };

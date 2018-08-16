@@ -8,9 +8,7 @@
     android:background="@color/color_bg"
     android:fillViewport="true">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/scrollview_bigdaddy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.22" />
+            app:layout_constraintGuide_percent="0.24" />
 
         <android.support.constraint.Guideline
             android:id="@+id/glBox"
@@ -44,25 +42,47 @@
 
         <LinearLayout
             android:id="@+id/llBox"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/shape"
             android:orientation="vertical"
             android:paddingEnd="@dimen/x20"
             android:paddingStart="@dimen/x20"
+            android:layout_marginStart="@dimen/x10"
+            android:layout_marginEnd="@dimen/x10"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/glBox"
-            app:layout_constraintVertical_bias="0.0">
-
+           >
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_marginRight="@dimen/x20"
-                android:layout_marginTop="@dimen/x50">
+                android:layout_marginTop="@dimen/x50"
+                >
+
+                <com.app.gymbuzz.ui.views.AnyEditTextView
+                    android:id="@+id/edtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/name"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:maxLines="1"
+                    android:textSize="@dimen/x14"
+                    app:typeface="@string/font_normal" />
+
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_marginRight="@dimen/x20"
+                android:layout_marginTop="@dimen/x15"
+               >
 
                 <com.app.gymbuzz.ui.views.AnyEditTextView
                     android:id="@+id/edtEmail"
@@ -78,6 +98,25 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_marginRight="@dimen/x20"
+                android:layout_marginTop="@dimen/x15">
+
+                <com.app.gymbuzz.ui.views.AnyEditTextView
+                    android:id="@+id/edtMobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/mobile"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:textSize="@dimen/x14"
+                    app:typeface="@string/font_normal" />
+
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -91,6 +130,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textSize="@dimen/x14"
+                    app:typeface="@string/font_normal" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/x20"
+                android:layout_marginRight="@dimen/x20"
+                android:layout_marginTop="@dimen/x15">
+
+                <com.app.gymbuzz.ui.views.AnyEditTextView
+                    android:id="@+id/edtConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/confirm_pass"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:maxLines="1"
@@ -99,42 +158,35 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <com.app.gymbuzz.ui.views.AnyTextView
-                android:id="@+id/btn_forgot_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="15dp"
-                android:text="@string/forgot_password"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/x14"
-                app:typeface="@string/font_normal" />
 
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="@dimen/x5"
                 android:layout_marginStart="@dimen/x5"
                 android:background="@drawable/btn"
                 android:elevation="@dimen/x10"
-                android:text="@string/signin"
+                android:text="@string/signup"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
+               android:layout_marginTop="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="50dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <com.app.gymbuzz.ui.views.AnyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/new_to_gym_buz"
-                    android:textColor="@color/tabbar_color"
+                    android:text="@string/already_have_an_account"
+                    android:textColor="@color/text_color"
                     android:textSize="@dimen/x14"
                     app:typeface="@string/font_normal" />
 
@@ -143,7 +195,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
-                    android:text="@string/signup_now"
+                    android:text="@string/signin_"
                     android:textColor="@color/color_accent"
                     android:textSize="@dimen/x14"
                     app:typeface="@string/font_normal" />

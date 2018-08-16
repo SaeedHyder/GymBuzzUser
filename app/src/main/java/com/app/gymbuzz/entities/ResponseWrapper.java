@@ -2,31 +2,31 @@ package com.app.gymbuzz.entities;
 
 public class ResponseWrapper<T> {
 
-    private String Message;
-    private String Response;
-    private T Result;
+    private String message;
+    private String response;
+    private T result;
 
     public String getMessage() {
-        return Message;
+        return message;
     }
 
     public void setMessage(String message) {
-        Message = message;
+        message = message;
     }
 
     public String getResponse() {
-        return Response;
+        return response;
     }
 
     public void setResponse(String response) {
-        Response = response;
+        response = response;
     }
 
     public T getResult() {
-        return Result;
+        return result;
     }
 
     public void setResult(T result) {
-        Result = result;
+        result = result;
     }
 }

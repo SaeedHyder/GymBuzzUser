@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.app.gymbuzuser"
@@ -39,7 +39,7 @@ ext {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':nineoldandroids-library-2.4.0')
     implementation project(':commons-lang3-3.1')
@@ -62,8 +62,8 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.4.0'
 
     //For retorfit
-    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.0.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     implementation 'com.google.code.gson:gson:2.6.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
 
@@ -97,11 +97,10 @@ dependencies {
     implementation 'com.yanzhenjie:permission:2.0.0-rc5'
 
     //File picker
-    compile 'com.droidninja:filepicker:2.1.5'
+    implementation 'com.droidninja:filepicker:2.1.5'
 
     //Rounded ImageView
-    compile 'com.makeramen:roundedimageview:2.3.0'
-
+    implementation 'com.makeramen:roundedimageview:2.3.0'
     /* //Photo View Library
    implementation 'com.github.chrisbanes:PhotoView:'+photoview*/
 
