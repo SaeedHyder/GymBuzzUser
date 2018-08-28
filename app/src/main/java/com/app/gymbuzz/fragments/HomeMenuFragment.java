@@ -89,7 +89,7 @@ public class HomeMenuFragment extends BaseFragment {
         super.onDestroyView();
     }
 
-    @OnClick({R.id.ivNotification, R.id.btnMembership, R.id.btnWrkout, R.id.btnLog, R.id.btnGuide})
+    @OnClick({R.id.ivNotification, R.id.btnMembership, R.id.btnWrkout, R.id.btnLog, R.id.btnGuide,R.id.btnBMI,R.id.btnSetting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
@@ -117,6 +117,13 @@ public class HomeMenuFragment extends BaseFragment {
 
             case R.id.btnGuide:
                 UIHelper.showShortToastInCenter(getMainActivity(), getString(R.string.will_be_imp_beta));
+                break;
+            case R.id.btnBMI:
+                getDockActivity().replaceDockableFragment(CalculateBmiFragment.newInstance(), CalculateBmiFragment.class.getSimpleName());
+                break;
+
+            case R.id.btnSetting:
+                getDockActivity().replaceDockableFragment(SettingFragment.newInstance(), SettingFragment.class.getSimpleName());
                 break;
         }
     }

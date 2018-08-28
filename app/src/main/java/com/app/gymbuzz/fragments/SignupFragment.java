@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 
 import com.app.gymbuzz.R;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
-import com.app.gymbuzz.helpers.UIHelper;
+import com.app.gymbuzz.global.WebServiceConstants;
 import com.app.gymbuzz.ui.views.AnyEditTextView;
+import com.app.gymbuzz.ui.views.AnyTextView;
 import com.app.gymbuzz.ui.views.TitleBar;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.hbb20.CountryCodePicker;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +32,11 @@ public class SignupFragment extends BaseFragment {
     @BindView(R.id.edtConfirmPassword)
     AnyEditTextView edtConfirmPassword;
     Unbinder unbinder;
+    @BindView(R.id.btnPhoneCountryPicker)
+    AnyTextView btnPhoneCountryPicker;
+    @BindView(R.id.phoneCountryPicker)
+    CountryCodePicker phoneCountryPicker;
+    private CountryCodePicker.OnCountryChangeListener countrySelectListener = this::setCountryNames;
 
     public static SignupFragment newInstance() {
         Bundle args = new Bundle();
@@ -46,6 +54,10 @@ public class SignupFragment extends BaseFragment {
 
     }
 
+    private void setCountryNames() {
+        btnPhoneCountryPicker.setText(String.format("%s ( %s ) ", phoneCountryPicker.getSelectedCountryNameCode(), phoneCountryPicker.getSelectedCountryCodeWithPlus()));
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
@@ -56,7 +68,9 @@ public class SignupFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        phoneCountryPicker.setOnCountryChangeListener(countrySelectListener);
+        phoneCountryPicker.registerCarrierNumberEditText(edtMobile);
+        setCountryNames();
     }
 
     @Override
@@ -104,13 +118,28 @@ public class SignupFragment extends BaseFragment {
                 setEditTextFocus(edtConfirmPassword);
             }
             return false;
+        } else if (!edtMobile.getText().toString().equals("") && !phoneCountryPicker.isValidFullNumber()) {
+            edtMobile.setError(getString(R.string.invalid_phone_number));
+            if (edtMobile.requestFocus()) {
+                setEditTextFocus(edtMobile);
+            }
+            return false;
         } else {
             return true;
         }
 
     }
 
-    @OnClick({R.id.btnLogin, R.id.btnSignUp})
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
+            case WebServiceConstants.REGISTER:
+                getDockActivity().replaceDockableFragment(VerifyEmailFragment.newInstance(edtEmail.getText().toString()),"VerifyEmailFragment");
+                break;
+        }
+    }
+
+    @OnClick({R.id.btnLogin, R.id.btnSignUp, R.id.btnPhoneCountryPicker})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnLogin:
@@ -118,8 +147,18 @@ public class SignupFragment extends BaseFragment {
                 getDockActivity().replaceDockableFragment(LoginFragment.newInstance(), LoginFragment.class.getSimpleName());
                 break;
             case R.id.btnSignUp:
-                if (isValidated())
-                    break;
+                if (isValidated()) {
+                    boolean isPhoneAvailable = !edtMobile.getText().toString().equals("");
+                    serviceHelper.enqueueCall(webService.registerUser(edtName.getText().toString(), edtEmail.getText().toString(),
+                            isPhoneAvailable ? edtMobile.getText().toString() : null, isPhoneAvailable ? phoneCountryPicker.getSelectedCountryCodeAsInt() : 0,
+                            edtConfirmPassword.getText().toString(), WebServiceConstants.ROLE_ID,
+                            FirebaseInstanceId.getInstance().getToken(), WebServiceConstants.DEVICE_TYPE,
+                            WebServiceConstants.LANGUAGE_CODE), WebServiceConstants.REGISTER);
+                }
+                break;
+            case R.id.btnPhoneCountryPicker:
+                phoneCountryPicker.launchCountrySelectionDialog();
+                break;
         }
     }
 }

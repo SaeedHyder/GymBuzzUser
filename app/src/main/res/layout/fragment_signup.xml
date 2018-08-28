@@ -97,26 +97,84 @@
                     app:typeface="@string/font_normal" />
 
             </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/x20"
                 android:layout_marginRight="@dimen/x20"
-                android:layout_marginTop="@dimen/x15">
+                android:layout_marginTop="@dimen/x15"
 
-                <com.app.gymbuzz.ui.views.AnyEditTextView
-                    android:id="@+id/edtMobile"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="2dp"
+                    android:orientation="vertical">
+
+                    <com.app.gymbuzz.ui.views.AnyTextView
+                        android:id="@+id/btnPhoneCountryPicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingEnd="@dimen/x10"
+                        android:paddingTop="@dimen/x10"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/x14"
+                        app:typeface="@string/font_normal"/>
+
+                    <com.hbb20.CountryCodePicker
+                        android:id="@+id/phoneCountryPicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="bottom|start"
+                        android:visibility="gone"
+                        app:ccp_autoDetectCountry="false"
+                        app:ccp_contentColor="@color/black"
+                        app:ccp_defaultNameCode="SA"
+                        app:ccp_hintExampleNumber="false"
+                        app:ccp_hintExampleNumberType="MOBILE"
+                        app:ccp_showArrow="false"
+                        app:ccp_showFlag="false"
+                        app:ccp_textGravity="LEFT"
+                        app:ccp_textSize="@dimen/x14"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="1dp"
+                        android:background="@color/text_color"/>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/mobile"
-                    android:imeOptions="actionNext"
-                    android:inputType="numberDecimal"
-                    android:maxLines="1"
-                    android:textSize="@dimen/x14"
-                    app:typeface="@string/font_normal" />
+                    android:layout_marginStart="@dimen/x5"
+                    android:orientation="vertical">
 
-            </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                       >
+
+                        <com.app.gymbuzz.ui.views.AnyEditTextView
+                            android:id="@+id/edtMobile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/mobile"
+                            android:imeOptions="actionNext"
+                            android:inputType="numberDecimal"
+                            android:text=""
+                            android:maxLines="1"
+                            android:textSize="@dimen/x14"
+                            app:typeface="@string/font_normal" />
+
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"

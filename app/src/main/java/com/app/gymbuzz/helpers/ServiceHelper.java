@@ -34,10 +34,17 @@ public class ServiceHelper<T> {
                 @Override
                 public void onResponse(Call<ResponseWrapper<T>> call, Response<ResponseWrapper<T>> response) {
                     context.onLoadingFinished();
-                    if (response.body().getResponse().equals(WebServiceConstants.SUCCESS_RESPONSE_CODE)) {
-                        serviceResponseLisener.ResponseSuccess(response.body().getResult(), tag);
+                    if (response.body() != null) {
+                        if (response.body().getResponse().equalsIgnoreCase( WebServiceConstants.SUCCESS_RESPONSE_CODE)){
+                            serviceResponseLisener.ResponseSuccess(response.body().getResult(), tag);
+                        } else {
+                            serviceResponseLisener.ResponseFailure(tag);
+                            UIHelper.showShortToastInCenter(context, response.body().getMessage());
+                        }
                     } else {
-                        UIHelper.showShortToastInCenter(context, response.body().getMessage());
+                        serviceResponseLisener.ResponseFailure(tag);
+                        UIHelper.showShortToastInCenter(context, response.message()+"");
+//                        UIHelper.showShortToastInCenter(context, context.getResources().getString(R.string.server_response_error));
                     }
 
                 }
@@ -45,6 +52,7 @@ public class ServiceHelper<T> {
                 @Override
                 public void onFailure(Call<ResponseWrapper<T>> call, Throwable t) {
                     context.onLoadingFinished();
+                    serviceResponseLisener.ResponseFailure(tag);
                     t.printStackTrace();
                     Log.e(ServiceHelper.class.getSimpleName()+" by tag: " + tag, t.toString());
                 }

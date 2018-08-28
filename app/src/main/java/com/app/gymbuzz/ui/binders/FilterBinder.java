@@ -5,10 +5,9 @@ import android.view.View;
 import android.widget.CheckBox;
 
 import com.app.gymbuzz.R;
+import com.app.gymbuzz.interfaces.OnFilterSetListener;
 import com.app.gymbuzz.ui.viewbinders.abstracts.RecyclerViewBinder;
 
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 
@@ -22,10 +21,12 @@ import butterknife.ButterKnife;
 public class FilterBinder extends RecyclerViewBinder<String> {
     private ArrayList<String> filterCheckIDs;
     private boolean isAllClear = true;
+    private OnFilterSetListener.onFilterCheckListener changeListener;
 
-    public FilterBinder() {
+    public FilterBinder(OnFilterSetListener.onFilterCheckListener changeListener) {
         super(R.layout.row_item_filter_exercise);
         filterCheckIDs = new ArrayList<>();
+        this.changeListener = changeListener;
     }
 
     @Override
@@ -43,6 +44,9 @@ public class FilterBinder extends RecyclerViewBinder<String> {
         }
         holder.chkGenre.setText(entity + "");
         holder.chkGenre.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (changeListener != null) {
+                changeListener.onCheckChangeListener(isChecked);
+            }
             if (isChecked) {
                 if (!filterCheckIDs.contains(entity)) {
                     isAllClear = false;
@@ -70,9 +74,9 @@ public class FilterBinder extends RecyclerViewBinder<String> {
         }
     }
 
-    public String getFilterCheckIDs() {
+    public ArrayList<String> getFilterCheckIDs() {
 
-        return StringUtils.join(filterCheckIDs, ',');
+        return filterCheckIDs;
     }
 
 

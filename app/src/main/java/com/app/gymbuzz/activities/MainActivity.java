@@ -64,7 +64,7 @@ public class MainActivity extends DockActivity implements OnClickListener, Image
 
     private String sideMenuType;
     private String sideMenuDirection;
-    private LogFilterFragment filterFragment;
+    public LogFilterFragment filterFragment;
 
     private ImageChooserManager imageChooserManager;
     private int chooserType;

@@ -63,7 +63,7 @@
             android:paddingLeft="@dimen/x8"
             android:paddingRight="@dimen/x8"
             android:paddingTop="@dimen/x4"
-            android:text="12-04-2018"
+            android:text="@string/start_date"
             android:textColor="@color/filterTextColor"
             android:textSize="13sp"
             app:typeface="@string/font_normal" />
@@ -87,7 +87,7 @@
             android:paddingLeft="@dimen/x8"
             android:paddingRight="@dimen/x8"
             android:paddingTop="@dimen/x4"
-            android:text="12-04-2018"
+            android:text="@string/end_date"
             android:textColor="@color/filterTextColor"
             android:textSize="13sp"
             app:typeface="@string/font_normal" />

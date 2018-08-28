@@ -59,9 +59,9 @@ public class BinderUserLog  extends ExpandableListViewBinder<String,ExserciseLog
     public void bindChildView(final ExserciseLogEnt entity, int position, int grpPosition, View view, Activity activity) {
 
         final BinderUserLog.ViewHolder viewHolder = (BinderUserLog.ViewHolder) view.getTag();
-        viewHolder.txtReps.setText(entity.getReps());
+        viewHolder.txtSets.setText(entity.getReps());
         viewHolder.txtKgs.setText(entity.getKgs());
-        viewHolder.txtSets.setText(entity.getSets());
+        viewHolder.txtReps .setText(entity.getSets());
     }
 
     public static class ViewHolder extends BaseChildViewHolder{

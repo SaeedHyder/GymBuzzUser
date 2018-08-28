@@ -8,8 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.app.gymbuzz.R;
+import com.app.gymbuzz.entities.UserModel;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
+import com.app.gymbuzz.ui.views.AnyTextView;
 import com.app.gymbuzz.ui.views.TitleBar;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created on 5/24/2018.
@@ -17,6 +25,20 @@ import com.app.gymbuzz.ui.views.TitleBar;
 
 public class ViewProfileFragment extends BaseFragment {
 
+
+    @BindView(R.id.civProfilePic)
+    CircleImageView civProfilePic;
+    @BindView(R.id.txtName)
+    AnyTextView txtName;
+    @BindView(R.id.txtEmail)
+    AnyTextView txtEmail;
+    @BindView(R.id.txtAgeValue)
+    AnyTextView txtAgeValue;
+    @BindView(R.id.txtWeightValue)
+    AnyTextView txtWeightValue;
+    @BindView(R.id.txtHeightValue)
+    AnyTextView txtHeightValue;
+    Unbinder unbinder;
 
     public static ViewProfileFragment newInstance() {
         return new ViewProfileFragment();
@@ -35,6 +57,7 @@ public class ViewProfileFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_view_profile, container, false);
 
 
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -42,6 +65,12 @@ public class ViewProfileFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        UserModel user = prefHelper.getUser();
+        ImageLoader.getInstance().displayImage(user.getProfileimagepath(),civProfilePic);
+        txtName.setText(user.getFullname());
+        txtEmail.setText(user.getEmail());
+        txtHeightValue.setText(user.getHeight()+" lb");
+        txtWeightValue.setText(user.getWeight()+" cm");
     }
 
     @Override
@@ -51,12 +80,12 @@ public class ViewProfileFragment extends BaseFragment {
         titleBar.hideButtons();
         titleBar.showBackButton();
         titleBar.setSubHeading(getString(R.string.view_profile));
-        titleBar.showRightButton(R.drawable.edit, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getDockActivity().replaceDockableFragment(UpdateProfileFragment.newInstance(), UpdateProfileFragment.class.getSimpleName());
-            }
-        });
+        titleBar.showRightButton(R.drawable.edit, true, view -> getDockActivity().replaceDockableFragment(UpdateProfileFragment.newInstance(), UpdateProfileFragment.class.getSimpleName()));
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

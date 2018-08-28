@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.app.gymbuzz.R;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
+import com.app.gymbuzz.global.WebServiceConstants;
 import com.app.gymbuzz.helpers.UIHelper;
 import com.app.gymbuzz.ui.views.AnyEditTextView;
 import com.app.gymbuzz.ui.views.TitleBar;
@@ -85,35 +86,43 @@ public class ChangePasswordFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    public boolean isvalidated(){
+    public boolean isvalidated() {
 
-        if(edtOldPassword.getText().toString().length() >= 6){
-            if(edtNewPassword.getText().toString().length() >= 6){
-                if(edtConfirmPassword.getText().toString().length() >= 6){
-                    if(edtNewPassword.getText().toString().equals(edtConfirmPassword.getText().toString())){
+        if (edtOldPassword.getText().toString().length() >= 6) {
+            if (edtNewPassword.getText().toString().length() >= 6) {
+                if (edtConfirmPassword.getText().toString().length() >= 6) {
+                    if (edtNewPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
                         return true;
-                    }else{
-                        UIHelper.showShortToastInCenter(getMainActivity(),getString(R.string.password_not_equal));
+                    } else {
+                        UIHelper.showShortToastInCenter(getMainActivity(), getString(R.string.password_not_equal));
                     }
-                }
-                else{
+                } else {
                     edtConfirmPassword.setError(getString(R.string.password_length));
                 }
-            }else{
+            } else {
                 edtNewPassword.setError(getString(R.string.password_length));
             }
-        }else{
+        } else {
             edtOldPassword.setError(getString(R.string.password_length));
         }
 
         return false;
     }
 
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag){
+            case WebServiceConstants.CHANGE_PASSWORD:
+                UIHelper.showShortToastInCenter(getDockActivity(),getString(R.string.password_message));
+                break;
+        }
+    }
+
     @OnClick(R.id.btnSave)
     public void onViewClicked() {
 
-        if(isvalidated()){
-            UIHelper.showShortToastInCenter(getMainActivity(),getString(R.string.will_be_imp_beta));
+        if (isvalidated()) {
+            serviceHelper.enqueueCall(webService.changePassword(edtOldPassword.getText().toString(), edtConfirmPassword.getText().toString(), prefHelper.getUserToken()), WebServiceConstants.CHANGE_PASSWORD);
         }
 
     }

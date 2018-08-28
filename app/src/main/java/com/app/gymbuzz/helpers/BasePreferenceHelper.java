@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.app.gymbuzz.entities.UserModel;
+import com.app.gymbuzz.retrofit.GsonFactory;
+
 
 public class BasePreferenceHelper extends PreferenceHelper {
 
@@ -19,7 +22,8 @@ public class BasePreferenceHelper extends PreferenceHelper {
 
     protected static final String KEY_IS_UNIT_KG = "isUnitKg";
 
-
+    protected static final String KEY_USER = "key_user";
+    private static final String KEY_USERID = "USERID";
     public BasePreferenceHelper(Context c) {
         this.context = c;
     }
@@ -56,7 +60,22 @@ public class BasePreferenceHelper extends PreferenceHelper {
     public void setUnitKg( boolean isUnitKg ) {
         putBooleanPreference( context, FILENAME, KEY_IS_UNIT_KG, isUnitKg );
     }
+    public String getUserToken() {
+        return getStringPreference(context, FILENAME, KEY_USERID);
+    }
 
+    public void setUserToken(String userID) {
+        putStringPreference(context, FILENAME, KEY_USERID, userID);
+    }
+
+    public UserModel getUser() {
+        return GsonFactory.getConfiguredGson().fromJson(
+                getStringPreference(context, FILENAME, KEY_USER), UserModel.class);
+    }
+
+    public void putUser(UserModel user) {
+        putStringPreference(context, FILENAME, KEY_USER, GsonFactory.getConfiguredGson().toJson(user));
+    }
     public boolean isUnitKg() {
         return getBooleanPreference(context, FILENAME, KEY_IS_UNIT_KG);
     }

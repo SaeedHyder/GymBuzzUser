@@ -182,9 +182,21 @@
     <string name="settings_">SETTINGS</string>
     <string name="bmi">BMI</string>
     <string name="rate">Rate</string>
-    <string name="app_version">App Verison 1.0.1</string>
+    <string name="app_version">App Version 1.0.1</string>
     <string name="filter">Filter</string>
     <string name="sort_date">Sort by Date</string>
     <string name="sort_exercise">Sort by exercise</string>
     <string name="apply">Apply</string>
+    <string name="resetPasswordMessage">Enter your email address and we\'ll send you a code to reset your password</string>
+    <string name="update">Update</string>
+    <string name="forgotPassword">Forgot Password</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="invalid_phone_number">Invalid Phone Number</string>
+    <string name="verifyEmailMessage">We have send you a code to verify your email address.</string>
+    <string name="reset_code">Resend Code</string>
+    <string name="reset_code_question">Didn\'t receive a code yet?</string>
+    <string name="verify_email_title">Verify Email Address</string>
+    <string name="email_code_send_message">New Code has been send to your Email.</string>
+    <string name="password_message">Password change successful</string>
 </resources>

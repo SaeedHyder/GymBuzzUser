@@ -1,10 +1,14 @@
 package com.app.gymbuzz.entities;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created on 5/4/2017.
  */
 
 public class AndroidInfo {
+
     private String name;
 
     public AndroidInfo(String name, String version) {
@@ -17,6 +21,7 @@ public class AndroidInfo {
     public String getVersion() {
         return version;
     }
+
     public String getName() {
         return name;
     }
@@ -29,4 +34,6 @@ public class AndroidInfo {
 
         this.name = name;
     }
+
+
 }

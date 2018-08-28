@@ -16,13 +16,14 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.app.gymbuzz.R;
+import com.app.gymbuzz.entities.UserModel;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
-import com.app.gymbuzz.helpers.CameraHelper;
+import com.app.gymbuzz.global.WebServiceConstants;
 import com.app.gymbuzz.helpers.UIHelper;
-import com.app.gymbuzz.interfaces.ImageSetter;
 import com.app.gymbuzz.ui.views.AnyEditTextView;
 import com.app.gymbuzz.ui.views.TitleBar;
 import com.bumptech.glide.Glide;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 
@@ -37,6 +38,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
 import droidninja.filepicker.utils.Orientation;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * Created on 5/24/2018.
@@ -78,7 +82,7 @@ public class UpdateProfileFragment extends BaseFragment {
     Button btnUpdate;
     Unbinder unbinder;
 
-    ArrayList genderList = new ArrayList() ;
+    ArrayList genderList = new ArrayList();
     ArrayAdapter<String> genderAdapter;
 
     File profilePic;
@@ -127,32 +131,34 @@ public class UpdateProfileFragment extends BaseFragment {
         titleBar.setSubHeading(getString(R.string.update_profile));
     }
 
-    private void setData(){
-
-        edtFullName.setText("Jhon Doe");
-        edtEmail.setText("jhon@gmail.com");
+    private void setData() {
+        // TODO: 8/27/18 GET Age and Gender in User Response
         edtAge.setText("26");
         spGender.setSelection(0);
-        edtHeight.setText("69");
-        edtWeight.setText("81");
+
+        UserModel user = prefHelper.getUser();
+        ImageLoader.getInstance().displayImage(user.getProfileimagepath(), civProfilePic);
+        edtFullName.setText(user.getFullname());
+        edtEmail.setText(user.getEmail());
+        edtHeight.setText(user.getHeight() + "");
+        edtWeight.setText(user.getWeight() + "");
 
     }
 
-    private boolean isValidated(){
+    private boolean isValidated() {
 
 
-        if(edtFullName.getText().toString().length() > 0){
-            if(edtHeight.getText().toString().length() > 0){
-                if(edtWeight.getText().toString().length() > 0){
+        if (edtFullName.getText().toString().length() > 0) {
+            if (edtHeight.getText().toString().length() > 0) {
+                if (edtWeight.getText().toString().length() > 0) {
                     return true;
-                }else{
+                } else {
                     edtWeight.setError(getString(R.string.please_enter_weight));
                 }
-            }
-            else{
+            } else {
                 edtHeight.setError(getString(R.string.please_enter_height));
             }
-        }else{
+        } else {
             edtFullName.setError(getString(R.string.please_enter_fullname));
         }
 
@@ -185,8 +191,22 @@ public class UpdateProfileFragment extends BaseFragment {
 
             case R.id.btnUpdate:
 
-                if(isValidated()){
-                    UIHelper.showLongToastInCenter(getMainActivity(),getString(R.string.will_be_imp_beta));
+                if (isValidated()) {
+                    MultipartBody.Part filePart;
+                    if (profilePic != null) {
+                        filePart = MultipartBody.Part.createFormData("file",
+                                profilePic.getName(), RequestBody.create(MediaType.parse("image/*"), profilePic));
+                    } else {
+                        filePart = MultipartBody.Part.createFormData("file", "",
+                                RequestBody.create(MediaType.parse("*/*"), ""));
+                    }
+                    serviceHelper.enqueueCall(webService.editProfile(RequestBody.create(MediaType.parse("text/plain"), edtFullName.getText().toString()),
+                            RequestBody.create(MediaType.parse("text/plain"), String.valueOf(spGender.getSelectedItemPosition())),
+                            RequestBody.create(MediaType.parse("text/plain"), edtAge.getText().toString()),
+                            RequestBody.create(MediaType.parse("text/plain"), edtHeight.getText().toString()),
+                            RequestBody.create(MediaType.parse("text/plain"), edtWeight.getText().toString()),
+                            filePart,
+                            prefHelper.getUserToken()), WebServiceConstants.EDIT_PROFILE);
                 }
 
                 break;
@@ -194,7 +214,7 @@ public class UpdateProfileFragment extends BaseFragment {
         }
     }
 
-    public void checkPermission(){
+    public void checkPermission() {
 
         AndPermission.with(this)
                 .runtime()

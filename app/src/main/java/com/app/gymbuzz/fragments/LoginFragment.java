@@ -11,11 +11,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.app.gymbuzz.R;
+import com.app.gymbuzz.entities.UserModel;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
+import com.app.gymbuzz.global.WebServiceConstants;
 import com.app.gymbuzz.helpers.UIHelper;
 import com.app.gymbuzz.ui.views.AnyEditTextView;
 import com.app.gymbuzz.ui.views.AnyTextView;
 import com.app.gymbuzz.ui.views.TitleBar;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,6 +99,24 @@ public class LoginFragment extends BaseFragment {
         return false;
     }
 
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
+            case WebServiceConstants.LOGIN:
+                UserModel user = (UserModel) result;
+                prefHelper.putUser(user);
+                prefHelper.setUserToken(WebServiceConstants.TOKEN_TYPE + user.getAuthtoken());
+                if (user.isIsverified()) {
+                    prefHelper.setLoginStatus(true);
+                    getDockActivity().popBackStackTillEntry(0);
+                    getDockActivity().replaceDockableFragment(HomeMenuFragment.newInstance(), HomeMenuFragment.class.getSimpleName());
+                } else {
+                    getDockActivity().replaceDockableFragment(VerifyEmailFragment.newInstance(edtEmail.getText().toString()), "VerifyEmailFragment");
+                }
+                break;
+        }
+    }
+
     @OnClick({R.id.btnLogin, R.id.btn_forgot_password, R.id.btnSignUp})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -103,15 +124,14 @@ public class LoginFragment extends BaseFragment {
             case R.id.btnLogin:
 
                 if (isValidated()) {
-                    prefHelper.setLoginStatus(true);
-                    getDockActivity().popBackStackTillEntry(0);
-                    getDockActivity().replaceDockableFragment(HomeMenuFragment.newInstance(), HomeMenuFragment.class.getSimpleName());
+                    serviceHelper.enqueueCall(webService.loginUser(edtEmail.getText().toString(), edtPassword.getText().toString(),
+                            "FirebaseInstanceId.getInstance().getToken()", WebServiceConstants.DEVICE_TYPE), WebServiceConstants.LOGIN);
                 }
 
                 break;
 
             case R.id.btn_forgot_password:
-                UIHelper.showShortToastInCenter(getMainActivity(), getString(R.string.will_be_imp_beta));
+                getDockActivity().replaceDockableFragment(ForgotPasswordEmailFragment.newInstance(), "ForgotPasswordEmailFragment");
                 break;
             case R.id.btnSignUp:
                 getDockActivity().replaceDockableFragment(SignupFragment.newInstance(), SignupFragment.class.getSimpleName());

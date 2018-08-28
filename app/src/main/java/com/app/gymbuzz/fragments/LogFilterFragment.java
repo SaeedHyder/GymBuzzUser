@@ -9,7 +9,10 @@ import android.view.ViewGroup;
 
 import com.app.gymbuzz.R;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
+import com.app.gymbuzz.global.AppConstants;
+import com.app.gymbuzz.helpers.DateHelper;
 import com.app.gymbuzz.helpers.DatePickerHelper;
+import com.app.gymbuzz.interfaces.OnFilterSetListener;
 import com.app.gymbuzz.ui.binders.BinderGymDetail;
 import com.app.gymbuzz.ui.binders.FilterBinder;
 import com.app.gymbuzz.ui.views.AnyTextView;
@@ -17,6 +20,7 @@ import com.app.gymbuzz.ui.views.CustomRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import butterknife.BindView;
@@ -34,6 +38,23 @@ public class LogFilterFragment extends BaseFragment {
     Unbinder unbinder;
     String startDate = "";
     String endDate = "";
+    boolean isFilterByBodyPart = false;
+    private ArrayList<String> exerciseCollection;
+    private FilterBinder filterBinder;
+    private OnFilterSetListener filterSetListener;
+    private OnFilterSetListener.onFilterCheckListener checkChangeListener = (isChecked -> {
+        isFilterByBodyPart = true;
+        txtSatartDate.setText(R.string.start_date);
+        txtEndDate.setText(R.string.end_date);
+        startDate = null;
+        endDate = null;
+    });
+
+
+    public void setFilterSetListener(OnFilterSetListener filterSetListener) {
+        this.filterSetListener = filterSetListener;
+    }
+
     public static LogFilterFragment newInstance() {
         Bundle args = new Bundle();
 
@@ -57,26 +78,43 @@ public class LogFilterFragment extends BaseFragment {
         return view;
     }
 
+    public void setExerciseCollection(ArrayList<String> exerciseCollection) {
+        this.exerciseCollection.clear();
+        this.exerciseCollection.addAll(exerciseCollection);
+        if (rvExercise != null) {
+            rvExercise.notifyDataSetChanged();
+        }
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ArrayList<String> exerciseCollection = new ArrayList<>();
-        exerciseCollection.add("Chest");
-        exerciseCollection.add("Leg");
-        exerciseCollection.add("Nest");
-        exerciseCollection.add("Arm");
-        exerciseCollection.add("Stomach");
-        exerciseCollection.add("Collar");
-        rvExercise.BindRecyclerView(new FilterBinder(), exerciseCollection,
+
+        filterBinder = new FilterBinder(checkChangeListener);
+        exerciseCollection = new ArrayList<>();
+        rvExercise.BindRecyclerView(filterBinder, exerciseCollection,
                 new LinearLayoutManager(getDockActivity(), LinearLayoutManager.VERTICAL, false),
                 new DefaultItemAnimator());
         rvExercise.setNestedScrollingEnabled(false);
     }
+
     private void initDatePicker(final AnyTextView textView, final boolean isStartDate) {
+        if (filterBinder != null) {
+            filterBinder.clearFilterIDs();
+            rvExercise.notifyDataSetChanged();
+            isFilterByBodyPart = false;
+        }
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.DATE, 1);
-
+        Date maxDate = new Date();
+        Date minDate = null;
+        if (isStartDate) {
+            maxDate = new Date();
+        } else {
+            minDate = DateHelper.stringToDate(startDate, AppConstants.LOG_SEARCH_DATE_FORMAT);
+        }
         Calendar calendar = Calendar.getInstance();
+
         final DatePickerHelper datePickerHelper = new DatePickerHelper();
         datePickerHelper.initDateDialog(
                 getDockActivity(),
@@ -97,17 +135,30 @@ public class LogFilterFragment extends BaseFragment {
                     }
 
                     if (isStartDate) {
-                        startDate = dayOfMonth + "-" + _month + "-" + year;
+                        startDate = year + "-" + _month + "-" + dayOfMonth;
+                        endDate = null;
+                        txtEndDate.setText(R.string.end_date);
                     } else {
-                        endDate = dayOfMonth + "-" + _month + "-" + year;
+                        endDate = year + "-" + _month + "-" + dayOfMonth;
                     }
 
                     textView.setText(dayOfMonth + "-" + _month + "-" + year);
-
-                }, "PreferredDate", gc.getTime(), gc.getTime());
+                }, "PreferredDate", maxDate, minDate);
 
         datePickerHelper.showDate();
     }
+
+    void applyFilters() {
+        if (filterSetListener != null && filterBinder != null) {
+            if (isFilterByBodyPart && !filterBinder.isAllClear()) {
+                filterSetListener.onFilterChange(startDate, endDate, filterBinder.getFilterCheckIDs(), isFilterByBodyPart);
+            } else if (!stringNullOrEmpty(startDate) && !stringNullOrEmpty(endDate)) {
+                filterSetListener.onFilterChange(startDate, endDate, filterBinder.getFilterCheckIDs(), isFilterByBodyPart);
+            }
+
+        }
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -118,13 +169,16 @@ public class LogFilterFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.txtSatartDate:
-                initDatePicker(txtSatartDate,true);
+                initDatePicker(txtSatartDate, true);
                 break;
             case R.id.txtEndDate:
-                initDatePicker(txtSatartDate,false);
+                initDatePicker(txtEndDate, false);
                 break;
             case R.id.btnApply:
+                applyFilters();
                 getMainActivity().closeDrawer();
+
+
                 break;
         }
     }

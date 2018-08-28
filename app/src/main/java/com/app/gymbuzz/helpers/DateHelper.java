@@ -912,5 +912,8 @@ public class DateHelper {
         }
         return date;
     }
-
+    public static String getDateInStringFormat(Date data,String format) {
+        DateFormat dateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
+        return dateFormat.format(data.getTime());
+    }
 }

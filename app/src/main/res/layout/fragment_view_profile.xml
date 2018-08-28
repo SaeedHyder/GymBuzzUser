@@ -146,6 +146,7 @@
             android:layout_marginBottom="@dimen/x40"
             android:layout_below="@+id/llHeight"
             android:text="@string/lorem_ipsum"
+            android:visibility="gone"
             android:textColor="@color/black0"
             android:textSize="@dimen/x14"
             app:typeface="@string/font_normal" />

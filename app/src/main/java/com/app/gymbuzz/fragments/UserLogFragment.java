@@ -1,33 +1,39 @@
 package com.app.gymbuzz.fragments;
 
-import android.app.DatePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.app.gymbuzz.R;
 import com.app.gymbuzz.entities.ExserciseLogEnt;
+import com.app.gymbuzz.entities.GetExerciseLogAppModel;
+import com.app.gymbuzz.entities.UserExerciseDetail;
+import com.app.gymbuzz.entities.UserExerciseDetails;
 import com.app.gymbuzz.entities.UserLogEnt;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
 import com.app.gymbuzz.global.AppConstants;
 import com.app.gymbuzz.global.WebServiceConstants;
 import com.app.gymbuzz.helpers.DatePickerHelper;
+import com.app.gymbuzz.interfaces.OnFilterSetListener;
 import com.app.gymbuzz.ui.adapters.ArrayListExpandableAdapter;
 import com.app.gymbuzz.ui.binders.BinderUserLog;
 import com.app.gymbuzz.ui.views.AnyTextView;
 import com.app.gymbuzz.ui.views.CustomExpandableListView;
 import com.app.gymbuzz.ui.views.TitleBar;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
@@ -40,7 +46,7 @@ import butterknife.Unbinder;
  * Created on 5/28/2018.
  */
 
-public class UserLogFragment extends BaseFragment {
+public class UserLogFragment extends BaseFragment implements OnFilterSetListener {
 
     @BindView(R.id.txtDateRange)
     AnyTextView txtDateRange;
@@ -64,9 +70,25 @@ public class UserLogFragment extends BaseFragment {
     AnyTextView txtItemHeading;
     @BindView(R.id.imgNext)
     ImageView imgNext;
+    @BindView(R.id.parentScrollView)
+    NestedScrollView parentScrollView;
 
+    private int dataLimit = 10;
+    private int currentPageNumber = 1;
+    private boolean loadMore = true;
+    private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private ArrayListExpandableAdapter<String, ExserciseLogEnt> adapter;
     private ArrayList<String> collectionGroup;
+    private ArrayList<String> bodyPartsCollection;
+    private ArrayList<String> filteredBodyPartsCollection;
+    private ArrayList<String> bodyImageCollection;
+    private ArrayList<String> exerciseDatesCollection;
+
+    private ArrayList<UserLogEnt> results;
+
+    private boolean isFilterByBodyPart;
+
+    private int currentHeadingIndex = 0;
 
     private HashMap<String, ArrayList<ExserciseLogEnt>> listDataChild;
 
@@ -94,34 +116,131 @@ public class UserLogFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setLogData();
         DisplayMetrics metrics = new DisplayMetrics();
         getMainActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
+        getMainActivity().filterFragment.setFilterSetListener(this);
         int width = metrics.widthPixels;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
             elLog.setIndicatorBounds(width - GetPixelFromDips(35), width - GetPixelFromDips(5));
         } else {
             elLog.setIndicatorBoundsRelative(width - GetPixelFromDips(35), width - GetPixelFromDips(5));
         }
+        initAndLoadData();
 
-        serviceHelper.enqueueCall(webService.getAllExerciseLogs("2018-1-1","2018-8-30",10,1,"bearer STc2WVpRRw=="), WebServiceConstants.GET_ALL_EXERCISE_LOGS);
+    }
 
+    private void initAndLoadData() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.MONTH, -1);
+        currentPageNumber = 1;
+      /*  startDate = DateHelper.getDateInStringFormat(calendar.getTime(), AppConstants.LOG_SEARCH_DATE_FORMAT);
+        endDate = DateHelper.getDateInStringFormat(new Date(), AppConstants.LOG_SEARCH_DATE_FORMAT);*/
+        startDate = "2018-1-30";
+        endDate = "2018-8-30";
+        callAndGetLogData(WebServiceConstants.GET_ALL_EXERCISE_LOGS);
+
+        setScrollListner();
+    }
+
+    private void callAndGetLogData(String getAllExerciseLogs) {
+        serviceHelper.enqueueCall(webService.getAllExerciseLogs(startDate,
+                endDate, dataLimit, currentPageNumber, prefHelper.getUserToken()), getAllExerciseLogs);
+    }
+
+    private void setScrollListner() {
+        parentScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (v.getChildAt(v.getChildCount() - 1) != null) {
+                if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
+                        scrollY > oldScrollY) {
+
+                    visibleItemCount = elLog.getChildCount();
+                    totalItemCount = elLog.getCheckedItemCount();
+                    pastVisiblesItems = elLog.getFirstVisiblePosition();
+                    if (loadMore) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            currentPageNumber = currentPageNumber + 1;
+                            callAndGetLogData(WebServiceConstants.GET_ALL_EXERCISE_LOGS_PAGED);
+
+                            loadMore = false;
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
     public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag){
+        switch (Tag) {
             case WebServiceConstants.GET_ALL_EXERCISE_LOGS:
-                filterAndBindLogData((ArrayList<UserLogEnt>)result);
+                filterAndBindLogData((ArrayList<UserLogEnt>) result);
+                break;
+            case WebServiceConstants.GET_ALL_EXERCISE_LOGS_PAGED:
+                filterAndBindPagedLogData((ArrayList<UserLogEnt>) result);
                 break;
         }
     }
 
-    private void filterAndBindLogData(ArrayList<UserLogEnt> result) {
-        for (int i = 0; i < result.size(); i++) {
-
+    private void filterAndBindPagedLogData(ArrayList<UserLogEnt> result) {
+        loadMore = true;
+        this.results.addAll(result);
+        for (int i = 0; i < results.size(); i++) {
+            UserLogEnt logItem = results.get(i);
+            bodyPartsCollection.add(logItem.getBodypartname());
+            exerciseDatesCollection.add(logItem.getExerciseDate());
         }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void filterAndBindLogData(ArrayList<UserLogEnt> result) {
+        bodyImageCollection = new ArrayList<>();
+        bodyPartsCollection = new ArrayList<>();
+        exerciseDatesCollection = new ArrayList<>();
+        results = result;
+        for (int i = 0; i < result.size(); i++) {
+            UserLogEnt logItem = result.get(i);
+            if (i == 0) {
+                txtItemHeading.setText(result.get(i).getExerciseDate());
+                ImageLoader.getInstance().displayImage(result.get(i).getBodypartimage(), ivBody);
+            }
+            bodyImageCollection.add(logItem.getBodypartimage());
+            bodyPartsCollection.add(logItem.getBodypartname());
+            exerciseDatesCollection.add(logItem.getExerciseDate());
+        }
+        getMainActivity().filterFragment.setExerciseCollection(bodyPartsCollection);
+        showSelectedHeaderItemList();
+
+    }
+
+    private void showSelectedHeaderItemList() {
+        collectionGroup = new ArrayList<>();
+        listDataChild = new HashMap<>();
+        for (UserLogEnt logItem :
+                results) {
+            ArrayList<ExserciseLogEnt> children = new ArrayList<>();
+            String itemNameToLook = isFilterByBodyPart ? logItem.getBodypartname() : logItem.getExerciseDate();
+            if (itemNameToLook.equals(txtItemHeading.getText().toString())) {
+                for (GetExerciseLogAppModel appModel : logItem.getGetexerciselogappmodel()
+                        ) {
+                    for (UserExerciseDetails details : appModel.getUserexercisedetails()
+                            ) {
+                        UserExerciseDetail setsDetails = details.getUserexercisedetail();
+                        children.add(new ExserciseLogEnt(logItem.getBodypartname(), setsDetails.getReps() + "", setsDetails.getWeight() + "", setsDetails.getSetnumber() + ""));
+                    }
+
+                }
+                if (isFilterByBodyPart) {
+                    collectionGroup.add(logItem.getExerciseDate());
+                    listDataChild.put(logItem.getExerciseDate(), children);
+                } else {
+                    collectionGroup.add(logItem.getBodypartname());
+                    listDataChild.put(logItem.getBodypartname(), children);
+                }
+            }
+        }
+
+        bindDataUserInfo();
     }
 
     public int GetPixelFromDips(float pixels) {
@@ -156,71 +275,6 @@ public class UserLogFragment extends BaseFragment {
 
     }
 
-    private void setLogData() {
-
-        collectionGroup = new ArrayList<>();
-        listDataChild = new HashMap<>();
-
-        collectionGroup.add("Chest");
-        collectionGroup.add("legs");
-        collectionGroup.add("Chest1");
-        collectionGroup.add("legs2");
-        collectionGroup.add("Chest3");
-        collectionGroup.add("legs4");
-        collectionGroup.add("Chest5");
-        collectionGroup.add("legs6");
-        collectionGroup.add("Chest7");
-        collectionGroup.add("legs8");
-
-        ArrayList<ExserciseLogEnt> list1 = new ArrayList<>();
-        list1.add(new ExserciseLogEnt("Chest Fly", "1", "55", "02"));
-        list1.add(new ExserciseLogEnt("Bench Press", "2", "55", "02"));
-
-        ArrayList<ExserciseLogEnt> list2 = new ArrayList<>();
-        list2.add(new ExserciseLogEnt("Chest Fly", "3", "55", "02"));
-        list2.add(new ExserciseLogEnt("Bench Press", "4", "55", "02"));
-        ArrayList<ExserciseLogEnt> list3 = new ArrayList<>();
-        list3.add(new ExserciseLogEnt("Chest Fly", "5", "55", "02"));
-        list3.add(new ExserciseLogEnt("Bench Press", "5", "55", "02"));
-        ArrayList<ExserciseLogEnt> list4 = new ArrayList<>();
-        list4.add(new ExserciseLogEnt("Chest Fly", "7", "55", "02"));
-        list4.add(new ExserciseLogEnt("Bench Press", "8", "55", "02"));
-        ArrayList<ExserciseLogEnt> list5 = new ArrayList<>();
-        list5.add(new ExserciseLogEnt("Chest Fly", "9", "55", "02"));
-        list5.add(new ExserciseLogEnt("Bench Press", "10", "55", "02"));
-        ArrayList<ExserciseLogEnt> list6 = new ArrayList<>();
-        list6.add(new ExserciseLogEnt("Chest Fly", "11", "55", "02"));
-        list6.add(new ExserciseLogEnt("Bench Press", "12", "55", "02"));
-        ArrayList<ExserciseLogEnt> list7 = new ArrayList<>();
-        list7.add(new ExserciseLogEnt("Chest Fly", "13", "55", "02"));
-        list7.add(new ExserciseLogEnt("Bench Press", "14", "55", "02"));
-        ArrayList<ExserciseLogEnt> list8 = new ArrayList<>();
-        list8.add(new ExserciseLogEnt("Chest Fly", "15", "55", "02"));
-        list8.add(new ExserciseLogEnt("Bench Press", "16", "55", "02"));
-        ArrayList<ExserciseLogEnt> list9 = new ArrayList<>();
-        list9.add(new ExserciseLogEnt("Chest Fly", "17", "55", "02"));
-        list9.add(new ExserciseLogEnt("Bench Press", "18", "55", "02"));
-        ArrayList<ExserciseLogEnt> list10 = new ArrayList<>();
-        list10.add(new ExserciseLogEnt("Chest Fly", "19", "55", "02"));
-        list10.add(new ExserciseLogEnt("Bench Press", "20", "55", "02"));
-
-        listDataChild.put(collectionGroup.get(0), list1);
-        listDataChild.put(collectionGroup.get(1), list2);
-        listDataChild.put(collectionGroup.get(2), list3);
-        listDataChild.put(collectionGroup.get(3), list4);
-        listDataChild.put(collectionGroup.get(4), list5);
-        listDataChild.put(collectionGroup.get(5), list6);
-        listDataChild.put(collectionGroup.get(6), list7);
-        listDataChild.put(collectionGroup.get(7), list8);
-        listDataChild.put(collectionGroup.get(8), list9);
-        listDataChild.put(collectionGroup.get(9), list10);
-
-
-        bindDataUserInfo();
-
-    }
-
-
     private void initDatePicker(final AnyTextView textView, final boolean isStartDate) {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.DATE, 1);
@@ -246,12 +300,12 @@ public class UserLogFragment extends BaseFragment {
                     }
 
                     if (isStartDate) {
-                        startDate = dayOfMonth + "-" + _month + "-" + year;
+                        startDate = year + "-" + _month + "-" + dayOfMonth;
                     } else {
-                        endDate = dayOfMonth + "-" + _month + "-" + year;
+                        endDate = year + "-" + _month + "-" + dayOfMonth;
                     }
 
-                    textView.setText(dayOfMonth + "-" + _month + "-" + year);
+                    textView.setText(year + "-" + _month + "-" + dayOfMonth);
 
                 }, "PreferredDate", gc.getTime(), gc.getTime());
 
@@ -277,28 +331,93 @@ public class UserLogFragment extends BaseFragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.txtSatartDate, R.id.txtEndDate,R.id.imgPrevious, R.id.txtItemHeading, R.id.imgNext})
+    private void setNextItem() {
+        try {
+            if (isFilterByBodyPart && filteredBodyPartsCollection != null) {
+                changeHeadingIndex(filteredBodyPartsCollection.size(), true);
+                txtItemHeading.setText(filteredBodyPartsCollection.get(currentHeadingIndex));
+            } else {
+                changeHeadingIndex(exerciseDatesCollection.size(), true);
+                txtItemHeading.setText(exerciseDatesCollection.get(currentHeadingIndex));
+            }
+            ImageLoader.getInstance().displayImage(bodyImageCollection.get(currentHeadingIndex), ivBody);
+            showSelectedHeaderItemList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void setPreviousItem() {
+        try {
+            if (isFilterByBodyPart && filteredBodyPartsCollection != null) {
+                changeHeadingIndex(filteredBodyPartsCollection.size(), false);
+                txtItemHeading.setText(filteredBodyPartsCollection.get(currentHeadingIndex));
+            } else {
+                changeHeadingIndex(exerciseDatesCollection.size(), false);
+                txtItemHeading.setText(exerciseDatesCollection.get(currentHeadingIndex));
+            }
+            ImageLoader.getInstance().displayImage(bodyImageCollection.get(currentHeadingIndex), ivBody);
+            showSelectedHeaderItemList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void changeHeadingIndex(int size, boolean doIncrement) {
+        if (doIncrement) {
+            if (currentHeadingIndex < size) {
+                currentHeadingIndex = currentHeadingIndex + 1;
+            }
+        } else {
+            if (currentHeadingIndex > 0) {
+                currentHeadingIndex = currentHeadingIndex - 1;
+            }
+        }
+    }
+
+    @OnClick({R.id.txtSatartDate, R.id.txtEndDate, R.id.imgPrevious, R.id.txtItemHeading, R.id.imgNext})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.txtSatartDate:
-
                 initDatePicker(txtSatartDate, true);
 
                 break;
             case R.id.txtEndDate:
-
                 initDatePicker(txtEndDate, false);
-
-                break;
-            case R.id.imgPrevious:
                 break;
             case R.id.txtItemHeading:
-                initDatePicker(txtItemHeading, true);
+                if (!isFilterByBodyPart) {
+                    initDatePicker(txtItemHeading, true);
+                }
+                break;
+            case R.id.imgPrevious:
+                setPreviousItem();
                 break;
             case R.id.imgNext:
+                setNextItem();
                 break;
         }
     }
 
 
+    @Override
+    public void onFilterChange(String startDate, String endDate, ArrayList<String> filters, boolean isFilterByBodyPart) {
+        this.isFilterByBodyPart = isFilterByBodyPart;
+        currentHeadingIndex = 0;
+        if (isFilterByBodyPart) {
+            filteredBodyPartsCollection = new ArrayList<>();
+            filteredBodyPartsCollection.addAll(filters);
+            txtItemHeading.setText(filteredBodyPartsCollection.get(0));
+            ImageLoader.getInstance().displayImage(bodyImageCollection.get(0), ivBody);
+
+            showSelectedHeaderItemList();
+        } else {
+            this.startDate = startDate;
+            this.endDate = endDate;
+            callAndGetLogData(WebServiceConstants.GET_ALL_EXERCISE_LOGS);
+        }
+
+        Log.d("LogFragment ", "onFilterChange: StartDate : " + startDate + " EndDate : " + endDate + " Filters : " + filters.toArray().toString());
+    }
 }

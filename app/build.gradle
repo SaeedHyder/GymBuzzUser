@@ -101,6 +101,7 @@ dependencies {
 
     //Rounded ImageView
     implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation 'com.hbb20:ccp:2.2.2'
     /* //Photo View Library
    implementation 'com.github.chrisbanes:PhotoView:'+photoview*/
 
