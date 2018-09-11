@@ -55,27 +55,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         showNotificationMessage(MyFirebaseMessagingService.this, title, message, "", resultIntent);
     }
 
-    /*private void getNotificaitonCount() {
-        webservice = WebServiceFactory.getWebServiceInstanceWithCustomInterceptor(this, WebServiceConstants.Local_SERVICE_URL);
-        preferenceHelper = new BasePreferenceHelper(this);
-        Call<ResponseWrapper<countEnt>> call = webservice.getNotificationCount(preferenceHelper.getMerchantId());
-        call.enqueue(new Callback<ResponseWrapper<countEnt>>() {
-            @Override
-            public void onResponse(Call<ResponseWrapper<countEnt>> call, Response<ResponseWrapper<countEnt>> response) {
-                preferenceHelper.setNotificationCount(response.body().getResult().getCount());
-            }
-
-            @Override
-            public void onFailure(Call<ResponseWrapper<countEnt>> call, Throwable t) {
-
-            }
-        });
-    }*/
-
-    private void SendNotification(int count, JSONObject json) {
-
-    }
-
     /**
      * Showing notification with text only
      */

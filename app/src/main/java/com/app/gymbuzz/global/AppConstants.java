@@ -2,6 +2,7 @@ package com.app.gymbuzz.global;
 
 public class AppConstants {
 
+    public static final int MAX_WORKOUT_SETS_LIMIT = 5;
     public static String twitter = "twitter";
     public static final String Device_Type = "android";
     public static final String SOCIAL_MEDIA_TYPE = "facebook";

@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -46,6 +47,45 @@ public abstract class BaseFragment extends Fragment implements webServiceRespons
 
     protected DockActivity myDockActivity;
     //private DockActivity activity;
+    /**
+     * Trigger when receives broadcasts from device to check wifi connectivity
+     * using connectivity manager
+     * <p>
+     * Usage : registerBroadcastReceiver() on resume of activity to receive
+     * notifications where needed and unregisterBroadcastReceiver() when not
+     * needed.
+     *
+     * @return The connectivity of wifi/mobile carrier connectivity.
+     */
+
+    protected BroadcastReceiver mConnectionReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            boolean isWifiConnected = false;
+            boolean isMobileConnected = false;
+
+            ConnectivityManager connMgr = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            NetworkInfo networkInfo = connMgr
+                    .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+            if (networkInfo != null)
+                isWifiConnected = networkInfo.isConnected();
+
+            networkInfo = connMgr
+                    .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+
+            if (networkInfo != null)
+                isMobileConnected = networkInfo.isConnected();
+
+            Log.d("NETWORK STATUS", "wifi==" + isWifiConnected + " & mobile=="
+                    + isMobileConnected);
+        }
+    };
+    private boolean isLoading;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +108,12 @@ public abstract class BaseFragment extends Fragment implements webServiceRespons
     }
 
     protected void setEditTextFocus(AnyEditTextView textFocus) {
+        InputMethodManager imm = (InputMethodManager) getDockActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null)
+            imm.showSoftInput(textFocus, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    protected void setEditTextFocus(AppCompatEditText textFocus) {
         InputMethodManager imm = (InputMethodManager) getDockActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null)
             imm.showSoftInput(textFocus, InputMethodManager.SHOW_IMPLICIT);
@@ -101,6 +147,10 @@ public abstract class BaseFragment extends Fragment implements webServiceRespons
 
     public boolean stringNullOrEmpty(String item) {
         return item == null || item.isEmpty();
+    }
+
+    public String getStringFromEdittext(AnyEditTextView editTextView) {
+        return editTextView.getText().toString();
     }
 
     @Override
@@ -154,7 +204,7 @@ public abstract class BaseFragment extends Fragment implements webServiceRespons
     }
 
     protected DockActivity getDockActivity() {
-		
+
 		/*DockActivity activity = (DockActivity) getActivity();
 		while ( activity == null ) {
 			activity = (DockActivity) getActivity();
@@ -176,10 +226,6 @@ public abstract class BaseFragment extends Fragment implements webServiceRespons
         return getMainActivity().titleBar;
     }
 
-    public String getTitleName() {
-        return "";
-    }
-
     /**
      * This is called in the end to modify titlebar. after all changes.
      *
@@ -188,6 +234,10 @@ public abstract class BaseFragment extends Fragment implements webServiceRespons
     public void setTitleBar(TitleBar titleBar) {
         titleBar.showTitleBar();
         // titleBar.refreshListener();
+    }
+
+    public String getTitleName() {
+        return "";
     }
 
     /**
@@ -245,67 +295,6 @@ public abstract class BaseFragment extends Fragment implements webServiceRespons
                         + "are you connected to the internet?");
     }
 
-    /**
-     * This generic null string validator to be used FormEditText
-     * <p>
-     * Usage : formEditText.addValicator(new EmptyStringValidator);
-     *
-     * @return Boolean and setError on respective field.
-     */
-    protected class EmptyStringValidator extends Validator {
-
-        public EmptyStringValidator() {
-            super("The field must not be empty");
-        }
-
-        @Override
-        public boolean isValid(EditText et) {
-            return et.getText().toString().trim().length() >= 1;
-        }
-
-    }
-
-    /**
-     * Trigger when receives broadcasts from device to check wifi connectivity
-     * using connectivity manager
-     * <p>
-     * Usage : registerBroadcastReceiver() on resume of activity to receive
-     * notifications where needed and unregisterBroadcastReceiver() when not
-     * needed.
-     *
-     * @return The connectivity of wifi/mobile carrier connectivity.
-     */
-
-    protected BroadcastReceiver mConnectionReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            boolean isWifiConnected = false;
-            boolean isMobileConnected = false;
-
-            ConnectivityManager connMgr = (ConnectivityManager) context
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-
-            NetworkInfo networkInfo = connMgr
-                    .getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-            if (networkInfo != null)
-                isWifiConnected = networkInfo.isConnected();
-
-            networkInfo = connMgr
-                    .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-
-            if (networkInfo != null)
-                isMobileConnected = networkInfo.isConnected();
-
-            Log.d("NETWORK STATUS", "wifi==" + isWifiConnected + " & mobile=="
-                    + isMobileConnected);
-        }
-    };
-
-    private boolean isLoading;
-
     protected void finishLoading() {
         getActivity().runOnUiThread(new Runnable() {
 
@@ -323,6 +312,26 @@ public abstract class BaseFragment extends Fragment implements webServiceRespons
             return false;
         } else {
             return true;
+        }
+
+    }
+
+    /**
+     * This generic null string validator to be used FormEditText
+     * <p>
+     * Usage : formEditText.addValicator(new EmptyStringValidator);
+     *
+     * @return Boolean and setError on respective field.
+     */
+    protected class EmptyStringValidator extends Validator {
+
+        public EmptyStringValidator() {
+            super("The field must not be empty");
+        }
+
+        @Override
+        public boolean isValid(EditText et) {
+            return et.getText().toString().trim().length() >= 1;
         }
 
     }

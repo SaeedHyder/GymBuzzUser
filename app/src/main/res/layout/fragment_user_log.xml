@@ -81,36 +81,46 @@
         </LinearLayout>
 
         <FrameLayout
+            android:id="@+id/containerBody"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_bg">
+            android:background="@color/color_bg"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/imgBodyBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="250dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/x20"
+                android:padding="@dimen/x17"
+                android:src="@drawable/full_front"
+                android:visibility="visible" />
 
             <ImageView
                 android:id="@+id/ivBody"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="250dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/x20"
                 android:padding="@dimen/x17"
-                android:src="@drawable/frontshape"
-                android:visibility="gone" />
+                android:src="@drawable/full_front"
+                android:visibility="visible" />
         </FrameLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/color_bg"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp">
+            android:background="@color/color_bg">
 
             <ImageView
                 android:id="@+id/imgPrevious"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/x30"
+                android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:rotation="180"
-               android:padding="15dp"
+                android:scaleType="centerInside"
                 android:src="@drawable/rightarrow" />
 
             <com.app.gymbuzz.ui.views.AnyTextView
@@ -123,18 +133,18 @@
                 android:ellipsize="marquee"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="12-04-2018"
+                android:text="@string/no_data_found"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:typeface="@string/font_normal" />
 
             <ImageView
                 android:id="@+id/imgNext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/x30"
+                android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:padding="15dp"
                 android:layout_centerVertical="true"
+                android:scaleType="centerInside"
                 android:src="@drawable/rightarrow" />
 
 

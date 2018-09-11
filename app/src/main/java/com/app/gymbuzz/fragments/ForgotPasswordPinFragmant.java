@@ -60,6 +60,7 @@ public class ForgotPasswordPinFragmant extends BaseFragment {
     @Override
     public void setTitleBar(TitleBar titleBar) {
         super.setTitleBar(titleBar);
+        titleBar.hideButtons();
         titleBar.showBackButton();
         titleBar.setSubHeading(getString(R.string.forgotPassword));
     }
@@ -102,7 +103,7 @@ public class ForgotPasswordPinFragmant extends BaseFragment {
             case WebServiceConstants.FORGOT_PASSWORD_VERIFY_CODE:
                 UserModel user = (UserModel) result;
                 prefHelper.putUser(user);
-                prefHelper.setUserToken(WebServiceConstants.TOKEN_TYPE + user.getAuthtoken());
+                prefHelper.setUserToken(WebServiceConstants.TOKEN_TYPE +" "+ user.getAuthtoken());
                 getDockActivity().replaceDockableFragment(ChangeForgotPasswordFragment.newInstance(), "ChangeForgotPasswordFragment");
                 break;
         }

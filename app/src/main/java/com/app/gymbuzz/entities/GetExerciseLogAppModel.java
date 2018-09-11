@@ -8,7 +8,7 @@ import java.util.List;
 public class GetExerciseLogAppModel {
     @Expose
     @SerializedName("userExerciseDetails")
-    private List<UserExerciseDetails> userexercisedetails;
+    private List<UserLogExerciseDetails> userexercisedetails;
     @Expose
     @SerializedName("exerciseName")
     private String exercisename;
@@ -28,7 +28,7 @@ public class GetExerciseLogAppModel {
     @SerializedName("userExerciseID")
     private int userexerciseid;
 
-    public List<UserExerciseDetails> getUserexercisedetails() {
+    public List<UserLogExerciseDetails> getUserexercisedetails() {
         return userexercisedetails;
     }
 

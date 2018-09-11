@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/roundshapelayout"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/textLayout"
+        android:layout_width="@dimen/x300"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/x10"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txt_category_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
+            android:alpha="0.7"
+            android:gravity="center"
+            android:text="Request Feedback"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:typeface="Roboto-Regular.ttf" />
+
+        <com.app.gymbuzz.ui.views.AnyTextView
+            android:id="@+id/txt_description"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_marginTop="@dimen/x10"
+            android:alpha="0.7"
+            android:gravity="center"
+            android:text="Fan is not working"
+            android:textColor="@color/black"
+            android:textSize="@dimen/x14"
+            android:visibility="gone"
+            app:typeface="Roboto-Regular.ttf" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x1"
+            android:layout_marginTop="@dimen/x10"
+            android:alpha="0.2"
+            android:background="@color/grey" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x30"
+            android:layout_margin="@dimen/x15"
+            android:background="@drawable/about_box"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.app.gymbuzz.ui.views.AnyTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/x10"
+                android:text="@string/rate_traner"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/x12"
+                app:typeface="Roboto-Regular.ttf" />
+
+            <com.app.gymbuzz.ui.views.CustomRatingBar
+                android:id="@+id/rbAddRating"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:isIndicator="true"
+                android:visibility="visible"
+                app:maxStars="5"
+                app:starOff="@drawable/rate_star_unselected"
+                app:starOn="@drawable/rate_star_selected"
+                app:starPadding="@dimen/x3"
+                app:stars="1" />
+
+
+        </LinearLayout>
+
+        <com.app.gymbuzz.ui.views.AnyEditTextView
+            android:id="@+id/txt_feedback"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x100"
+            android:layout_marginEnd="@dimen/x15"
+            android:layout_marginStart="@dimen/x15"
+            android:background="@drawable/about_box"
+            android:gravity="top"
+            android:hint="Write Feedback here"
+            android:padding="@dimen/x10"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/x12"
+            app:typeface="@string/font_normal" />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x35"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/x10"
+        android:layout_marginEnd="@dimen/x25"
+        android:layout_marginStart="@dimen/x25"
+        android:layout_marginTop="@dimen/x10"
+        android:background="@drawable/btn"
+        android:text="@string/submit"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/x16" />
+
+
+</LinearLayout>

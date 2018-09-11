@@ -103,7 +103,7 @@ public class VerifyEmailFragment extends BaseFragment {
             case WebServiceConstants.VERIFY_CODE_SIGNUP:
                 UserModel user = (UserModel) result;
                 prefHelper.putUser(user);
-                prefHelper.setUserToken(WebServiceConstants.TOKEN_TYPE + user.getAuthtoken());
+                prefHelper.setUserToken(WebServiceConstants.TOKEN_TYPE +" "+ user.getAuthtoken());
                 prefHelper.setLoginStatus(true);
                 getDockActivity().popBackStackTillEntry(0);
                 getDockActivity().replaceDockableFragment(HomeMenuFragment.newInstance(), HomeMenuFragment.class.getSimpleName());

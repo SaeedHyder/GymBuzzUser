@@ -39,6 +39,8 @@ public class ViewProfileFragment extends BaseFragment {
     @BindView(R.id.txtHeightValue)
     AnyTextView txtHeightValue;
     Unbinder unbinder;
+    @BindView(R.id.txtAboutUs)
+    AnyTextView txtAboutUs;
 
     public static ViewProfileFragment newInstance() {
         return new ViewProfileFragment();
@@ -66,21 +68,23 @@ public class ViewProfileFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         UserModel user = prefHelper.getUser();
-        ImageLoader.getInstance().displayImage(user.getProfileimagepath(),civProfilePic);
+        ImageLoader.getInstance().displayImage(user.getProfileimagepath(), civProfilePic);
         txtName.setText(user.getFullname());
         txtEmail.setText(user.getEmail());
-        txtHeightValue.setText(user.getHeight()+" lb");
-        txtWeightValue.setText(user.getWeight()+" cm");
+        txtHeightValue.setText(user.getHeight() + " lb");
+        txtWeightValue.setText(user.getWeight() + " cm");
+        txtAboutUs.setText(user.getAbout() + "");
+        txtAgeValue.setText(user.getUserAge());
+
     }
 
     @Override
     public void setTitleBar(TitleBar titleBar) {
         super.setTitleBar(titleBar);
-
         titleBar.hideButtons();
         titleBar.showBackButton();
         titleBar.setSubHeading(getString(R.string.view_profile));
-        titleBar.showRightButton(R.drawable.edit, true, view -> getDockActivity().replaceDockableFragment(UpdateProfileFragment.newInstance(), UpdateProfileFragment.class.getSimpleName()));
+        titleBar.showRightButton(R.drawable.edit, view -> getDockActivity().replaceDockableFragment(UpdateProfileFragment.newInstance(), UpdateProfileFragment.class.getSimpleName()));
     }
 
     @Override

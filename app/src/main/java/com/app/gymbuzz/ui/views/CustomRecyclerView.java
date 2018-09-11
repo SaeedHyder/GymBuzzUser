@@ -32,7 +32,7 @@ public class CustomRecyclerView<T> extends RecyclerView {
         super(context, attrs, defStyle);
     }
 
-    public void BindRecyclerView(RecyclerViewBinder<T> viewBinder,
+    public void bindRecyclerView(RecyclerViewBinder<T> viewBinder,
                                  ArrayList<T> dataCollection, LayoutManager layoutManager, ItemAnimator animator) {
 //        this.userCollection = new ArrayList<>();
 //        this.userCollection.addAll(dataCollection);

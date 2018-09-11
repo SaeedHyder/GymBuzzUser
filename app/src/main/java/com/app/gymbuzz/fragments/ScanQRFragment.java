@@ -1,8 +1,6 @@
 package com.app.gymbuzz.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.InflateException;
@@ -11,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.app.gymbuzz.R;
+import com.app.gymbuzz.entities.GymDetailModel;
+import com.app.gymbuzz.entities.WorkoutModel;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
+import com.app.gymbuzz.global.WebServiceConstants;
 import com.app.gymbuzz.helpers.UIHelper;
 import com.app.gymbuzz.ui.views.TitleBar;
 import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture;
@@ -85,16 +86,29 @@ public class ScanQRFragment extends BaseFragment implements BarcodeRetriever {
     public void onRetrieved(final Barcode barcode) {
 
         getMainActivity().runOnUiThread(() -> {
-            Log.d("ScanQRFragment", "onRetrieved: "+barcode.toString());
-            UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.scanned_complete));
+            Log.d("ScanQRFragment", "onRetrieved: " + barcode.toString());
+            // UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.scanned_complete));
             if (isWorkout) {
-                getDockActivity().replaceDockableFragment(WorkOutMachineFragment.newInstance(), WorkOutMachineFragment.class.getSimpleName());
-            }
-            else {
-                getDockActivity().replaceDockableFragment(GymDetailFragment.Companion.newInstance(), GymDetailFragment.class.getSimpleName());
+                serviceHelper.enqueueCall(webService.getMachineDetail(barcode.displayValue, prefHelper.getUserToken()), WebServiceConstants.GET_MACHINE_DETAILS);
+            } else {
+                serviceHelper.enqueueCall(webService.getGymDetail(barcode.displayValue, prefHelper.getUserToken()), WebServiceConstants.GET_GYM_DETAILS);
             }
         });
 
+    }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
+            case WebServiceConstants.GET_GYM_DETAILS:
+                barcodeCapture.stopScanning();
+                getDockActivity().replaceDockableFragment(GymDetailFragment.newInstance((GymDetailModel) result), GymDetailFragment.class.getSimpleName());
+                break;
+            case WebServiceConstants.GET_MACHINE_DETAILS:
+                barcodeCapture.stopScanning();
+                getDockActivity().replaceDockableFragment(WorkOutMachineFragment.newInstance((WorkoutModel)result), WorkOutMachineFragment.class.getSimpleName());
+                break;
+        }
     }
 
     @Override
@@ -120,12 +134,13 @@ public class ScanQRFragment extends BaseFragment implements BarcodeRetriever {
 
     @Override
     public void onPause() {
-//        barcodeCapture.stopScanning();
+        barcodeCapture.onPause();
         super.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        barcodeCapture.onResume();
     }
 }

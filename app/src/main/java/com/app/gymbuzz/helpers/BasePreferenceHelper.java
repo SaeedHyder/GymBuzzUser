@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.app.gymbuzz.entities.CMSEnt;
 import com.app.gymbuzz.entities.UserModel;
 import com.app.gymbuzz.retrofit.GsonFactory;
 
@@ -23,7 +24,9 @@ public class BasePreferenceHelper extends PreferenceHelper {
     protected static final String KEY_IS_UNIT_KG = "isUnitKg";
 
     protected static final String KEY_USER = "key_user";
+    protected static final String KEY_USER_CMS = "KEY_USER_CMS";
     private static final String KEY_USERID = "USERID";
+
     public BasePreferenceHelper(Context c) {
         this.context = c;
     }
@@ -32,8 +35,8 @@ public class BasePreferenceHelper extends PreferenceHelper {
         return context.getSharedPreferences(FILENAME, Activity.MODE_PRIVATE);
     }
 
-    public void setLoginStatus( boolean isLogin ) {
-        putBooleanPreference( context, FILENAME, KEY_LOGIN_STATUS, isLogin );
+    public void setLoginStatus(boolean isLogin) {
+        putBooleanPreference(context, FILENAME, KEY_LOGIN_STATUS, isLogin);
     }
 
     public boolean isLogin() {
@@ -48,6 +51,7 @@ public class BasePreferenceHelper extends PreferenceHelper {
     public void setFirebase_TOKEN(String _token) {
         putStringPreference(context, FILENAME, Firebase_TOKEN, _token);
     }
+
     public int getNotificationCount() {
         return getIntegerPreference(context, FILENAME, NotificationCount);
     }
@@ -57,9 +61,10 @@ public class BasePreferenceHelper extends PreferenceHelper {
     }
 
 
-    public void setUnitKg( boolean isUnitKg ) {
-        putBooleanPreference( context, FILENAME, KEY_IS_UNIT_KG, isUnitKg );
+    public void setUnitKg(boolean isUnitKg) {
+        putBooleanPreference(context, FILENAME, KEY_IS_UNIT_KG, isUnitKg);
     }
+
     public String getUserToken() {
         return getStringPreference(context, FILENAME, KEY_USERID);
     }
@@ -76,6 +81,16 @@ public class BasePreferenceHelper extends PreferenceHelper {
     public void putUser(UserModel user) {
         putStringPreference(context, FILENAME, KEY_USER, GsonFactory.getConfiguredGson().toJson(user));
     }
+
+    public CMSEnt getCMS() {
+        return GsonFactory.getConfiguredGson().fromJson(
+                getStringPreference(context, FILENAME, KEY_USER_CMS), CMSEnt.class);
+    }
+
+    public void putUserCMS(CMSEnt user) {
+        putStringPreference(context, FILENAME, KEY_USER_CMS, GsonFactory.getConfiguredGson().toJson(user));
+    }
+
     public boolean isUnitKg() {
         return getBooleanPreference(context, FILENAME, KEY_IS_UNIT_KG);
     }

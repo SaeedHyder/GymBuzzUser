@@ -56,6 +56,7 @@ public class ForgotPasswordEmailFragment extends BaseFragment {
     @Override
     public void setTitleBar(TitleBar titleBar) {
         super.setTitleBar(titleBar);
+        titleBar.hideButtons();
         titleBar.showBackButton();
         titleBar.setSubHeading(getString(R.string.forgotPassword));
     }
@@ -68,17 +69,17 @@ public class ForgotPasswordEmailFragment extends BaseFragment {
 
     @Override
     public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag){
+        switch (Tag) {
             case WebServiceConstants.FORGOT_PASSWORD:
-                getDockActivity().replaceDockableFragment(ForgotPasswordPinFragmant.newInstance(edtEmail.getText().toString()),"ForgotPasswordPinFragmant");
+                getDockActivity().replaceDockableFragment(ForgotPasswordPinFragmant.newInstance(edtEmail.getText().toString()), "ForgotPasswordPinFragmant");
                 break;
         }
     }
 
     @OnClick(R.id.btnSubmit)
     public void onViewClicked() {
-        if (edtEmail.testValidity()){
-           serviceHelper.enqueueCall(webService.forgotPassword(edtEmail.getText().toString()), WebServiceConstants.FORGOT_PASSWORD);
+        if (edtEmail.testValidity()) {
+            serviceHelper.enqueueCall(webService.forgotPassword(edtEmail.getText().toString(), WebServiceConstants.ROLE_ID), WebServiceConstants.FORGOT_PASSWORD);
 
         }
     }

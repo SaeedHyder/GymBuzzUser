@@ -9,6 +9,8 @@ import android.view.Window;
 import android.widget.Button;
 
 import com.app.gymbuzz.R;
+import com.app.gymbuzz.ui.views.AnyEditTextView;
+import com.app.gymbuzz.ui.views.CustomRatingBar;
 
 public class DialogHelper {
     private Dialog dialog;
@@ -19,6 +21,40 @@ public class DialogHelper {
         this.dialog = new Dialog(context);
     }
 
+    public Dialog initRatingDialog(FeedbackDoneListener feedbackDoneListener) {
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        this.dialog.setContentView(R.layout.dialog_feedback);
+        Button okbutton = dialog.findViewById(R.id.btn_submit);
+        AnyEditTextView editTextView = dialog.findViewById(R.id.txt_feedback);
+        final CustomRatingBar rating = dialog.findViewById(R.id.rbAddRating);
+        okbutton.setOnClickListener(v -> {
+            if (editTextView.getText().toString().trim().equals("")) {
+                editTextView.setError(dialog.getContext().getResources().getString(R.string.feedbackMessage));
+                return;
+            }
+            if (feedbackDoneListener != null)
+                feedbackDoneListener.onSubmitFeedback(editTextView.getText().toString(), Math.round(rating.getScore()));
+        });
+
+
+        rating.setOnScoreChanged(score -> {
+            if (score < 1.0f)
+                rating.setScore(1.0f);
+        });
+        return this.dialog;
+    }
+
+    public Dialog initlogout(int layoutID, View.OnClickListener onokclicklistener, View.OnClickListener oncancelclicklistener) {
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        this.dialog.setContentView(layoutID);
+        Button okbutton = (Button) dialog.findViewById(R.id.btn_yes);
+        okbutton.setOnClickListener(onokclicklistener);
+        Button cancelbutton = (Button) dialog.findViewById(R.id.btn_No);
+        cancelbutton.setOnClickListener(oncancelclicklistener);
+        return this.dialog;
+    }
     /*public Dialog initForgotPasswordDialog(int layoutID, View.OnClickListener onclicklistener) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -91,18 +127,6 @@ public class DialogHelper {
         return this.dialog;
     }*/
 
-    public Dialog initlogout(int layoutID, View.OnClickListener onokclicklistener, View.OnClickListener oncancelclicklistener) {
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        this.dialog.setContentView(layoutID);
-        Button okbutton = (Button) dialog.findViewById(R.id.btn_yes);
-        okbutton.setOnClickListener(onokclicklistener);
-        Button cancelbutton = (Button) dialog.findViewById(R.id.btn_No);
-        cancelbutton.setOnClickListener(oncancelclicklistener);
-        return this.dialog;
-    }
-
-
     public void showDialog() {
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
@@ -116,6 +140,10 @@ public class DialogHelper {
 
     public void hideDialog() {
         dialog.dismiss();
+    }
+
+    public interface FeedbackDoneListener {
+        void onSubmitFeedback(String feedback, int rating);
     }
 
 }

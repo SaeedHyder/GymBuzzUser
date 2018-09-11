@@ -59,6 +59,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     tools:text="03:00"
+                    android:visibility="gone"
                     android:textSize="@dimen/x10"
                     app:typeface="@string/font_normal"
                     android:layout_marginLeft="@dimen/x5"/>

@@ -328,7 +328,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/log" />
+                    android:src="@drawable/fb" />
             </FrameLayout>
 
             <FrameLayout
@@ -341,7 +341,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/log" />
+                    android:src="@drawable/insta" />
             </FrameLayout>
 
             <FrameLayout
@@ -354,7 +354,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/log" />
+                    android:src="@drawable/snapchat" />
             </FrameLayout>
 
             <FrameLayout
@@ -367,7 +367,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/log" />
+                    android:src="@drawable/twitter" />
             </FrameLayout>
 
             <FrameLayout
@@ -380,7 +380,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/log" />
+                    android:src="@drawable/youtube" />
             </FrameLayout>
 
         </LinearLayout>

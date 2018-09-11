@@ -11,12 +11,10 @@ import android.widget.Button;
 
 import com.app.gymbuzz.R;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
+import com.app.gymbuzz.helpers.UIHelper;
 import com.app.gymbuzz.ui.views.AnyEditTextView;
 import com.app.gymbuzz.ui.views.AnyTextView;
 import com.app.gymbuzz.ui.views.TitleBar;
-import com.bumptech.glide.util.Util;
-
-import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -100,32 +98,49 @@ public class CalculateBmiFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-       // unbinder.unbind();
+        // unbinder.unbind();
     }
 
     @OnClick(R.id.btnComputeBmi)
     public void onViewClicked() {
 
-        if(validate()){
+        if (validate()) {
+            double weight = 0.0;
+            double height = 0.0;
+            try {
+                weight = Double.parseDouble(edtWeight.getText().toString());
 
-            double weight = Double.parseDouble(edtWeight.getText().toString());
-            double height = Double.parseDouble(edtHeight.getText().toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+                edtWeight.setError(getString(R.string.weightError));
+                return;
+            }
+            try {
+                height = Double.parseDouble(edtHeight.getText().toString());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                edtHeight.setError(getString(R.string.heightError));
+                return;
+            }
 
             //Convert height cm to inch
-            double heightInInches = height/2.54;
+            double heightInInches = height / 2.54;
 
             //Convert weight kg to pounds
             double weightInPounds = weight * 2.2046;
 
-            double BMI = weightInPounds / (heightInInches  * heightInInches) * 703;
-            System.out.print("Body Mass Index is " + BMI+"\n");
+            double BMI = weightInPounds / (heightInInches * heightInInches) * 703;
+            System.out.print("Body Mass Index is " + BMI + "\n");
 
 
-            txtBmi.setText(BMI+"");
+            txtBmi.setText(String.format("%.2f", BMI));
 
 
             edtWeight.setText("");
             edtHeight.setText("");
+            UIHelper.hideSoftKeyboard(getDockActivity(), edtWeight);
+            UIHelper.hideSoftKeyboard(getDockActivity(), edtHeight);
 
 
         }

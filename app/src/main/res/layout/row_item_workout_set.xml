@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/x30"
+        android:src="@drawable/minuscircle"
+        android:visibility="visible" />
+
+    <RelativeLayout
+        android:id="@+id/containerSet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnDelete"
+        android:layout_marginTop="@dimen/x30"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/containerWeight"
+            android:layout_width="@dimen/x135"
+            android:layout_height="@dimen/x135"
+            android:layout_alignParentLeft="true"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:id="@+id/btnDecreaseWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/x5"
+                    android:src="@drawable/minuscircle" />
+
+                <com.app.gymbuzz.ui.views.AnyTextView
+                    android:id="@+id/txtWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x18"
+                    app:typeface="@string/font_normal"
+                    tools:text="10 Kg" />
+
+
+                <ImageView
+                    android:id="@+id/btnIncreaseWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/x5"
+                    android:src="@drawable/pluscircle" />
+
+
+            </LinearLayout>
+
+            <me.tankery.lib.circularseekbar.CircularSeekBar
+                android:id="@+id/rbWeight"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cs_circle_color="@color/transparent"
+                app:cs_circle_fill="@color/transparent"
+                app:cs_circle_progress_color="@color/color_accent"
+                app:cs_circle_stroke_width="@dimen/x11"
+                app:cs_circle_style="round"
+                app:cs_maintain_equal_circle="true"
+                app:cs_move_outside_circle="false"
+                app:cs_negative_enabled="false"
+                app:cs_pointer_color="@color/color_accent"
+                app:cs_pointer_halo_border_width="@dimen/x4"
+                app:cs_pointer_halo_color="@color/color_accent"
+                app:cs_pointer_halo_color_ontouch="@color/color_accent"
+                app:cs_pointer_halo_width="@dimen/x4"
+                />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/containerReps"
+            android:layout_width="@dimen/x135"
+            android:layout_height="@dimen/x135"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:id="@+id/btnDecreaseReps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/x5"
+                    android:src="@drawable/minuscircle" />
+
+                <com.app.gymbuzz.ui.views.AnyTextView
+                    android:id="@+id/txtReps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/x18"
+                    app:typeface="@string/font_normal"
+                    tools:text="01" />
+
+
+                <ImageView
+                    android:id="@+id/btnIncreaseReps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/x5"
+                    android:src="@drawable/pluscircle" />
+
+
+            </LinearLayout>
+
+
+            <me.tankery.lib.circularseekbar.CircularSeekBar
+                android:id="@+id/rbReps"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cs_circle_color="@color/transparent"
+                app:cs_circle_fill="@color/transparent"
+                app:cs_circle_progress_color="@color/color_accent"
+                app:cs_circle_stroke_width="@dimen/x11"
+                app:cs_circle_style="round"
+                app:cs_maintain_equal_circle="true"
+                app:cs_move_outside_circle="false"
+                app:cs_negative_enabled="false"
+                app:cs_pointer_color="@color/color_accent"
+                app:cs_pointer_halo_border_width="@dimen/x4"
+                app:cs_pointer_halo_color="@color/color_accent"
+                app:cs_pointer_halo_color_ontouch="@color/color_accent"
+                app:cs_pointer_halo_width="@dimen/x4" />
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

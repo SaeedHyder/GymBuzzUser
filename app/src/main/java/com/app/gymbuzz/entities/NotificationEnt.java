@@ -4,109 +4,115 @@ import com.app.gymbuzz.helpers.DateHelper;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by saeedhyder on 9/15/2017.
- */
 
 public class NotificationEnt {
 
-    @SerializedName("id")
     @Expose
-    private Integer id;
-    @SerializedName("sender_id")
+    @SerializedName("receiverEmail")
+    private String receiveremail;
     @Expose
-    private Integer senderId;
-    @SerializedName("reciever_id")
+    @SerializedName("receiverName")
+    private String receivername;
     @Expose
-    private Integer recieverId;
-    @SerializedName("message")
+    @SerializedName("senderEmail")
+    private String senderemail;
     @Expose
-    private String message;
-    @SerializedName("ma_message")
+    @SerializedName("senderName")
+    private String sendername;
     @Expose
-    private String Mamessage;
-    @SerializedName("in_message")
-    @Expose
-    private String Inmessage;
-    @SerializedName("action_type")
-    @Expose
-    private String actionType;
-    @SerializedName("action_id")
-    @Expose
-    private Integer actionId;
-    @SerializedName("created_at")
-    @Expose
-    private String createdAt;
+    @SerializedName("notification")
+    private Notification notification;
 
-    public String getMamessage() {
-        return Mamessage;
+    public String getReceiveremail() {
+        return receiveremail;
     }
 
-    public void setMamessage(String mamessage) {
-        Mamessage = mamessage;
+    public String getReceivername() {
+        return receivername;
     }
 
-    public String getInmessage() {
-        return Inmessage;
+    public String getSenderemail() {
+        return senderemail;
     }
 
-    public void setInmessage(String inmessage) {
-        Inmessage = inmessage;
+    public String getSendername() {
+        return sendername;
     }
 
-    public Integer getId() {
-        return id;
+    public Notification getNotification() {
+        return notification;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public static class Notification {
+        @Expose
+        @SerializedName("isDeleted")
+        private boolean isdeleted;
+        @Expose
+        @SerializedName("isActive")
+        private boolean isactive;
+        @Expose
+        @SerializedName("status")
+        private int status;
+        @Expose
+        @SerializedName("actionType")
+        private int actiontype;
+        @Expose
+        @SerializedName("actionID")
+        private int actionid;
+        @Expose
+        @SerializedName("message")
+        private String message;
+        @Expose
+        @SerializedName("recevierID")
+        private int recevierid;
+        @Expose
+        @SerializedName("senderID")
+        private int senderid;
+        @Expose
+        @SerializedName("notificationsID")
+        private int notificationsid;
+        @Expose
+        @SerializedName("createdDate")
+        private String createdDate;
 
-    public Integer getSenderId() {
-        return senderId;
-    }
+        public boolean getIsdeleted() {
+            return isdeleted;
+        }
 
-    public void setSenderId(Integer senderId) {
-        this.senderId = senderId;
-    }
+        public boolean getIsactive() {
+            return isactive;
+        }
 
-    public Integer getRecieverId() {
-        return recieverId;
-    }
+        public int getStatus() {
+            return status;
+        }
 
-    public void setRecieverId(Integer recieverId) {
-        this.recieverId = recieverId;
-    }
+        public int getActiontype() {
+            return actiontype;
+        }
 
-    public String getMessage() {
-        return message;
-    }
+        public int getActionid() {
+            return actionid;
+        }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+        public String getMessage() {
+            return message;
+        }
 
-    public String getActionType() {
-        return actionType;
-    }
+        public int getRecevierid() {
+            return recevierid;
+        }
 
-    public void setActionType(String actionType) {
-        this.actionType = actionType;
-    }
+        public int getSenderid() {
+            return senderid;
+        }
 
-    public Integer getActionId() {
-        return actionId;
-    }
+        public int getNotificationsid() {
+            return notificationsid;
+        }
 
-    public void setActionId(Integer actionId) {
-        this.actionId = actionId;
-    }
-
-    public String getCreatedAt() {
-        return DateHelper.getLocalTimeDate(createdAt);
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+        public String getCreatedDate() {
+            return DateHelper.getLocalTimeDateRequst(createdDate);
+        }
     }
 }

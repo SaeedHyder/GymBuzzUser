@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,10 @@ import android.widget.Spinner;
 import com.app.gymbuzz.R;
 import com.app.gymbuzz.entities.UserModel;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
+import com.app.gymbuzz.global.AppConstants;
 import com.app.gymbuzz.global.WebServiceConstants;
+import com.app.gymbuzz.helpers.DateHelper;
+import com.app.gymbuzz.helpers.DatePickerHelper;
 import com.app.gymbuzz.helpers.UIHelper;
 import com.app.gymbuzz.ui.views.AnyEditTextView;
 import com.app.gymbuzz.ui.views.TitleBar;
@@ -28,7 +32,10 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +45,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import droidninja.filepicker.FilePickerBuilder;
 import droidninja.filepicker.FilePickerConst;
 import droidninja.filepicker.utils.Orientation;
+import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -89,6 +97,9 @@ public class UpdateProfileFragment extends BaseFragment {
     String profilePath = "";
 
     ArrayList<String> imagesCollection;
+    @BindView(R.id.edtAbout)
+    AnyEditTextView edtAbout;
+    private String dob = "";
 
     public static UpdateProfileFragment newInstance() {
         return new UpdateProfileFragment();
@@ -132,17 +143,55 @@ public class UpdateProfileFragment extends BaseFragment {
     }
 
     private void setData() {
-        // TODO: 8/27/18 GET Age and Gender in User Response
-        edtAge.setText("26");
-        spGender.setSelection(0);
-
         UserModel user = prefHelper.getUser();
         ImageLoader.getInstance().displayImage(user.getProfileimagepath(), civProfilePic);
         edtFullName.setText(user.getFullname());
         edtEmail.setText(user.getEmail());
         edtHeight.setText(user.getHeight() + "");
         edtWeight.setText(user.getWeight() + "");
+        edtAbout.setText(user.getAbout() + "");
+        spGender.setSelection(user.getGender());
+        edtAge.setText(user.getUserAge());
+        edtAge.setInputType(InputType.TYPE_NULL);
+        edtAge.setOnClickListener(v -> {
+            initDatePicker(edtAge);
+        });
+        dob = user.getDob();
 
+    }
+
+    private void initDatePicker(final AnyEditTextView textView) {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.add(Calendar.DATE, 1);
+
+        Calendar calendar = Calendar.getInstance();
+        final DatePickerHelper datePickerHelper = new DatePickerHelper();
+        datePickerHelper.initDateDialog(
+                getDockActivity(),
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+                , (view, year, month, dayOfMonth) -> {
+                    //textView.setText(datePickerHelper.getStringDate(year, month, dayOfMonth));
+
+                    month = month + 1;
+
+                    String _month = "";
+
+                    if (month < 10) {
+                        _month = "0" + month;
+                    } else {
+                        _month = month + "";
+                    }
+
+                    dob = dayOfMonth + "/" + _month + "/" + year;
+
+
+                    textView.setText(DateHelper.getAge(AppConstants.LOG_DATE_FORMAT, dob));
+
+                }, "PreferredDate", gc.getTime(), null);
+
+        datePickerHelper.showDate();
     }
 
     private boolean isValidated() {
@@ -169,8 +218,8 @@ public class UpdateProfileFragment extends BaseFragment {
 
         genderList = new ArrayList<String>();
 
-        genderList.add("Male");
-        genderList.add("Female");
+        genderList.add(getString(R.string.male));
+        genderList.add(getString(R.string.female));
 
         genderAdapter = new ArrayAdapter<String>(getDockActivity(), R.layout.spinner_item, genderList);
         genderAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -180,6 +229,14 @@ public class UpdateProfileFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void ResponseFailure(String tag) {
+        switch (tag) {
+            case WebServiceConstants.EDIT_PROFILE:
+                btnUpdate.setEnabled(true);
+                break;
+        }
+    }
 
     @OnClick({R.id.civProfilePic, R.id.btnUpdate})
     public void onViewClicked(View view) {
@@ -192,33 +249,45 @@ public class UpdateProfileFragment extends BaseFragment {
             case R.id.btnUpdate:
 
                 if (isValidated()) {
-                    MultipartBody.Part filePart;
+                    MultipartBody.Part filePart = null;
                     if (profilePic != null) {
-                        filePart = MultipartBody.Part.createFormData("file",
-                                profilePic.getName(), RequestBody.create(MediaType.parse("image/*"), profilePic));
-                    } else {
-                        filePart = MultipartBody.Part.createFormData("file", "",
-                                RequestBody.create(MediaType.parse("*/*"), ""));
+                        filePart = MultipartBody.Part.createFormData("file", profilePic.getName(), RequestBody.create(MediaType.parse("image"), profilePic));
                     }
-                    serviceHelper.enqueueCall(webService.editProfile(RequestBody.create(MediaType.parse("text/plain"), edtFullName.getText().toString()),
-                            RequestBody.create(MediaType.parse("text/plain"), String.valueOf(spGender.getSelectedItemPosition())),
-                            RequestBody.create(MediaType.parse("text/plain"), edtAge.getText().toString()),
-                            RequestBody.create(MediaType.parse("text/plain"), edtHeight.getText().toString()),
-                            RequestBody.create(MediaType.parse("text/plain"), edtWeight.getText().toString()),
-                            filePart,
-                            prefHelper.getUserToken()), WebServiceConstants.EDIT_PROFILE);
+
+                    RequestBody fullname = RequestBody.create(MediaType.parse("text/plain"), edtFullName.getText().toString() + "");
+                    RequestBody gender = RequestBody.create(MediaType.parse("text/plain"), spGender.getSelectedItemPosition() == 1 ? "0" : "1");
+                    RequestBody dob1 = RequestBody.create(MediaType.parse("text/plain"), dob + "");
+                    RequestBody height = RequestBody.create(MediaType.parse("text/plain"), edtHeight.getText().toString() + "");
+                    RequestBody weight = RequestBody.create(MediaType.parse("text/plain"), edtWeight.getText().toString() + "");
+                    RequestBody about = RequestBody.create(MediaType.parse("text/plain"), edtAbout.getText().toString() + "");
+                    serviceHelper.enqueueCall(webService.editProfile(prefHelper.getUserToken(), fullname, gender, dob1, height, weight, about, filePart != null ? filePart : null), WebServiceConstants.EDIT_PROFILE);
+
+                    btnUpdate.setEnabled(false);
+                    break;
+
                 }
+        }
+    }
 
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
+            case WebServiceConstants.EDIT_PROFILE:
+                btnUpdate.setEnabled(true);
+                UserModel user = (UserModel) result;
+                prefHelper.putUser(user);
+                prefHelper.setUserToken(WebServiceConstants.TOKEN_TYPE + " " + user.getAuthtoken());
+                UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.changes_saved));
+                getDockActivity().popFragment();
                 break;
-
         }
     }
 
     public void checkPermission() {
 
-        AndPermission.with(this)
+        AndPermission.with(UpdateProfileFragment.this)
                 .runtime()
-                .permission(Permission.READ_EXTERNAL_STORAGE, Permission.CAMERA)
+                .permission(Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE, Permission.CAMERA)
                 .onGranted(permissions -> {
 
                     FilePickerBuilder.getInstance().setMaxCount(1)
@@ -249,8 +318,13 @@ public class UpdateProfileFragment extends BaseFragment {
             if (data != null) {
                 imagesCollection = new ArrayList<>();
                 imagesCollection.addAll(data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA));
-
                 profilePath = imagesCollection.get(0);
+                try {
+                    profilePic = new Compressor(getDockActivity()).compressToFile(new File(profilePath));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
 
                 Glide.with(getDockActivity())
                         .load("file:///" + profilePath)

@@ -10,18 +10,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.app.gymbuzz.R;
 import com.app.gymbuzz.entities.ExserciseLogEnt;
 import com.app.gymbuzz.entities.GetExerciseLogAppModel;
-import com.app.gymbuzz.entities.UserExerciseDetail;
-import com.app.gymbuzz.entities.UserExerciseDetails;
 import com.app.gymbuzz.entities.UserLogEnt;
+import com.app.gymbuzz.entities.UserLogExerciseDetail;
+import com.app.gymbuzz.entities.UserLogExerciseDetails;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
 import com.app.gymbuzz.global.AppConstants;
 import com.app.gymbuzz.global.WebServiceConstants;
+import com.app.gymbuzz.helpers.DateHelper;
 import com.app.gymbuzz.helpers.DatePickerHelper;
 import com.app.gymbuzz.interfaces.OnFilterSetListener;
 import com.app.gymbuzz.ui.adapters.ArrayListExpandableAdapter;
@@ -29,7 +31,6 @@ import com.app.gymbuzz.ui.binders.BinderUserLog;
 import com.app.gymbuzz.ui.views.AnyTextView;
 import com.app.gymbuzz.ui.views.CustomExpandableListView;
 import com.app.gymbuzz.ui.views.TitleBar;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,10 +59,6 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
     LinearLayout llHeadder;
     @BindView(R.id.elLog)
     CustomExpandableListView elLog;
-    Unbinder unbinder;
-
-    String startDate = "";
-    String endDate = "";
     @BindView(R.id.ivBody)
     ImageView ivBody;
     @BindView(R.id.imgPrevious)
@@ -72,24 +69,28 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
     ImageView imgNext;
     @BindView(R.id.parentScrollView)
     NestedScrollView parentScrollView;
+    @BindView(R.id.imgBodyBackground)
+    ImageView imgBodyBackground;
+    @BindView(R.id.containerBody)
+    FrameLayout containerBody;
+    Unbinder unbinder;
 
+    String startDate = "";
+    String endDate = "";
     private int dataLimit = 10;
     private int currentPageNumber = 1;
     private boolean loadMore = true;
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private boolean isFilterByBodyPart;
+    private int currentHeadingIndex = 0;
+
     private ArrayListExpandableAdapter<String, ExserciseLogEnt> adapter;
     private ArrayList<String> collectionGroup;
     private ArrayList<String> bodyPartsCollection;
     private ArrayList<String> filteredBodyPartsCollection;
     private ArrayList<String> bodyImageCollection;
     private ArrayList<String> exerciseDatesCollection;
-
     private ArrayList<UserLogEnt> results;
-
-    private boolean isFilterByBodyPart;
-
-    private int currentHeadingIndex = 0;
-
     private HashMap<String, ArrayList<ExserciseLogEnt>> listDataChild;
 
     public static UserLogFragment newInstance() {
@@ -134,10 +135,10 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
         calendar.setTime(new Date());
         calendar.add(Calendar.MONTH, -1);
         currentPageNumber = 1;
-      /*  startDate = DateHelper.getDateInStringFormat(calendar.getTime(), AppConstants.LOG_SEARCH_DATE_FORMAT);
-        endDate = DateHelper.getDateInStringFormat(new Date(), AppConstants.LOG_SEARCH_DATE_FORMAT);*/
-        startDate = "2018-1-30";
-        endDate = "2018-8-30";
+        startDate = DateHelper.getDateInStringFormat(calendar.getTime(), AppConstants.LOG_SEARCH_DATE_FORMAT);
+        endDate = DateHelper.getDateInStringFormat(new Date(), AppConstants.LOG_SEARCH_DATE_FORMAT);
+       /* startDate = "2018-1-30";
+        endDate = "2018-8-30";*/
         callAndGetLogData(WebServiceConstants.GET_ALL_EXERCISE_LOGS);
 
         setScrollListner();
@@ -187,10 +188,17 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
         this.results.addAll(result);
         for (int i = 0; i < results.size(); i++) {
             UserLogEnt logItem = results.get(i);
-            bodyPartsCollection.add(logItem.getBodypartname());
-            exerciseDatesCollection.add(logItem.getExerciseDate());
+            addItemToCollection(logItem);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    private void addItemToCollection(UserLogEnt logItem) {
+        bodyImageCollection.add(logItem.getBodypartid() + "");
+        if (!bodyPartsCollection.contains(logItem.getBodypartname() + ""))
+            bodyPartsCollection.add(logItem.getBodypartname());
+        if (!exerciseDatesCollection.contains(logItem.getExerciseDate() + ""))
+            exerciseDatesCollection.add(logItem.getExerciseDate());
     }
 
     private void filterAndBindLogData(ArrayList<UserLogEnt> result) {
@@ -202,11 +210,8 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
             UserLogEnt logItem = result.get(i);
             if (i == 0) {
                 txtItemHeading.setText(result.get(i).getExerciseDate());
-                ImageLoader.getInstance().displayImage(result.get(i).getBodypartimage(), ivBody);
             }
-            bodyImageCollection.add(logItem.getBodypartimage());
-            bodyPartsCollection.add(logItem.getBodypartname());
-            exerciseDatesCollection.add(logItem.getExerciseDate());
+            addItemToCollection(logItem);
         }
         getMainActivity().filterFragment.setExerciseCollection(bodyPartsCollection);
         showSelectedHeaderItemList();
@@ -221,11 +226,12 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
             ArrayList<ExserciseLogEnt> children = new ArrayList<>();
             String itemNameToLook = isFilterByBodyPart ? logItem.getBodypartname() : logItem.getExerciseDate();
             if (itemNameToLook.equals(txtItemHeading.getText().toString())) {
+                ivBody.setImageResource(getBodyPartResourceFromID(String.valueOf(logItem.getBodypartid())));
                 for (GetExerciseLogAppModel appModel : logItem.getGetexerciselogappmodel()
                         ) {
-                    for (UserExerciseDetails details : appModel.getUserexercisedetails()
+                    for (UserLogExerciseDetails details : appModel.getUserexercisedetails()
                             ) {
-                        UserExerciseDetail setsDetails = details.getUserexercisedetail();
+                        UserLogExerciseDetail setsDetails = details.getUserexercisedetail();
                         children.add(new ExserciseLogEnt(logItem.getBodypartname(), setsDetails.getReps() + "", setsDetails.getWeight() + "", setsDetails.getSetnumber() + ""));
                     }
 
@@ -258,16 +264,16 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
         titleBar.showBackButton();
         titleBar.setSubHeading(getString(R.string.log));
         titleBar.showFilterButton();
-        titleBar.showRightButton(R.drawable.nav, false, view -> {
+        titleBar.showRightButton(R.drawable.nav, view -> {
 
             if (AppConstants.isShow) {
                 AppConstants.isShow = false;
                 titleBar.updateRightButton(R.drawable.nav);
-                ivBody.setVisibility(View.GONE);
+                containerBody.setVisibility(View.GONE);
             } else {
                 AppConstants.isShow = true;
                 titleBar.updateRightButton(R.drawable.builder);
-                ivBody.setVisibility(View.VISIBLE);
+                containerBody.setVisibility(View.VISIBLE);
             }
 
 
@@ -312,6 +318,21 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
         datePickerHelper.showDate();
     }
 
+    private int getBodyPartResourceFromID(String id) {
+        switch (id) {
+            case WebServiceConstants.BODY_PART_TYPE_BICEP:
+                return R.drawable.bicep_front;
+            case WebServiceConstants.BODY_PART_TYPE_CHEST:
+                return R.drawable.chest_front;
+            case WebServiceConstants.BODY_PART_TYPE_SHOULDER:
+                return R.drawable.shoulder_front;
+            default:
+                return R.drawable.full_front;
+
+
+        }
+    }
+
     public void bindDataUserInfo() {
 
         BinderUserLog binder = new BinderUserLog(getDockActivity());
@@ -340,7 +361,6 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
                 changeHeadingIndex(exerciseDatesCollection.size(), true);
                 txtItemHeading.setText(exerciseDatesCollection.get(currentHeadingIndex));
             }
-            ImageLoader.getInstance().displayImage(bodyImageCollection.get(currentHeadingIndex), ivBody);
             showSelectedHeaderItemList();
         } catch (Exception e) {
             e.printStackTrace();
@@ -357,7 +377,6 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
                 changeHeadingIndex(exerciseDatesCollection.size(), false);
                 txtItemHeading.setText(exerciseDatesCollection.get(currentHeadingIndex));
             }
-            ImageLoader.getInstance().displayImage(bodyImageCollection.get(currentHeadingIndex), ivBody);
             showSelectedHeaderItemList();
         } catch (Exception e) {
             e.printStackTrace();
@@ -365,6 +384,7 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
     }
 
     private void changeHeadingIndex(int size, boolean doIncrement) {
+        size = size - 1;
         if (doIncrement) {
             if (currentHeadingIndex < size) {
                 currentHeadingIndex = currentHeadingIndex + 1;
@@ -387,9 +407,10 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
                 initDatePicker(txtEndDate, false);
                 break;
             case R.id.txtItemHeading:
-                if (!isFilterByBodyPart) {
+                // TODO: 8/31/18 Show Data to Selected Date 
+               /* if (!isFilterByBodyPart) {
                     initDatePicker(txtItemHeading, true);
-                }
+                }*/
                 break;
             case R.id.imgPrevious:
                 setPreviousItem();
@@ -409,12 +430,11 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
             filteredBodyPartsCollection = new ArrayList<>();
             filteredBodyPartsCollection.addAll(filters);
             txtItemHeading.setText(filteredBodyPartsCollection.get(0));
-            ImageLoader.getInstance().displayImage(bodyImageCollection.get(0), ivBody);
-
             showSelectedHeaderItemList();
         } else {
             this.startDate = startDate;
             this.endDate = endDate;
+            currentPageNumber = 1;
             callAndGetLogData(WebServiceConstants.GET_ALL_EXERCISE_LOGS);
         }
 

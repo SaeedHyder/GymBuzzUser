@@ -80,13 +80,13 @@
         </LinearLayout>
 
 
-        <android.support.v7.widget.RecyclerView
+        <com.app.gymbuzz.ui.views.CustomRecyclerView
             android:id="@+id/rvGymImages"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_marginTop="@dimen/x40"
-            android:background="@color/white"
+            android:background="@color/transparent"
             android:orientation="horizontal"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 

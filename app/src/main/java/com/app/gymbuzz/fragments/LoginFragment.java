@@ -14,7 +14,6 @@ import com.app.gymbuzz.R;
 import com.app.gymbuzz.entities.UserModel;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
 import com.app.gymbuzz.global.WebServiceConstants;
-import com.app.gymbuzz.helpers.UIHelper;
 import com.app.gymbuzz.ui.views.AnyEditTextView;
 import com.app.gymbuzz.ui.views.AnyTextView;
 import com.app.gymbuzz.ui.views.TitleBar;
@@ -105,8 +104,8 @@ public class LoginFragment extends BaseFragment {
             case WebServiceConstants.LOGIN:
                 UserModel user = (UserModel) result;
                 prefHelper.putUser(user);
-                prefHelper.setUserToken(WebServiceConstants.TOKEN_TYPE + user.getAuthtoken());
-                if (user.isIsverified()) {
+                prefHelper.setUserToken(WebServiceConstants.TOKEN_TYPE + " " + user.getAuthtoken());
+                if (user.isVerified()) {
                     prefHelper.setLoginStatus(true);
                     getDockActivity().popBackStackTillEntry(0);
                     getDockActivity().replaceDockableFragment(HomeMenuFragment.newInstance(), HomeMenuFragment.class.getSimpleName());
@@ -124,8 +123,8 @@ public class LoginFragment extends BaseFragment {
             case R.id.btnLogin:
 
                 if (isValidated()) {
-                    serviceHelper.enqueueCall(webService.loginUser(edtEmail.getText().toString(), edtPassword.getText().toString(),
-                            "FirebaseInstanceId.getInstance().getToken()", WebServiceConstants.DEVICE_TYPE), WebServiceConstants.LOGIN);
+                    serviceHelper.enqueueCall(webService.loginUser(edtEmail.getText().toString(), edtPassword.getText().toString(), WebServiceConstants.ROLE_ID,
+                            FirebaseInstanceId.getInstance().getToken(), WebServiceConstants.DEVICE_TYPE), WebServiceConstants.LOGIN);
                 }
 
                 break;

@@ -53,6 +53,7 @@ public class ChangeForgotPasswordFragment extends BaseFragment {
     @Override
     public void setTitleBar(TitleBar titleBar) {
         super.setTitleBar(titleBar);
+        titleBar.hideButtons();
         titleBar.showBackButton();
         titleBar.setSubHeading(getString(R.string.forgotPassword));
     }
@@ -89,8 +90,9 @@ public class ChangeForgotPasswordFragment extends BaseFragment {
 
     @Override
     public void ResponseSuccess(Object result, String Tag) {
-        switch (Tag){
+        switch (Tag) {
             case WebServiceConstants.CHANGE_PASSWORD:
+                UIHelper.showShortToastInCenter(getMainActivity(), getString(R.string.passwordSuccessMessage));
                 getDockActivity().popBackStackTillEntry(0);
                 getDockActivity().replaceDockableFragment(HomeMenuFragment.newInstance(), "HomeMenuFragment");
                 break;
@@ -99,6 +101,7 @@ public class ChangeForgotPasswordFragment extends BaseFragment {
 
     @OnClick(R.id.btnSave)
     public void onViewClicked() {
-       serviceHelper.enqueueCall(webService.changePassword("",edtConfirmPassword.getText().toString(),prefHelper.getUserToken()), WebServiceConstants.CHANGE_PASSWORD);
+        if (isvalidated())
+            serviceHelper.enqueueCall(webService.changePassword("", edtConfirmPassword.getText().toString(), prefHelper.getUserToken()), WebServiceConstants.CHANGE_PASSWORD);
     }
 }

@@ -39,14 +39,16 @@ public class BinderNotification extends ViewBinder<NotificationEnt> {
     @Override
     public void bindView(NotificationEnt entity, int position, int grpPosition, View view, Activity activity) {
 
-        BinderNotification.ViewHolder viewHolder = (BinderNotification.ViewHolder) view.getTag();
+        ViewHolder viewHolder = (ViewHolder) view.getTag();
 
-        viewHolder.tv_date.setText(DateHelper.getFormatedDate(AppConstants.DateFormat_YMDHMS, AppConstants.DateFormat_DMY2,
-                entity.getCreatedAt()));
-        viewHolder.tv_time.setText(DateHelper.getFormatedDate(AppConstants.DateFormat_YMDHMS, AppConstants.DateFormat_HM,
-                entity.getCreatedAt()));
+        if (entity.getNotification() != null) {
+            viewHolder.tv_msg.setText(entity.getNotification().getMessage() + "");
+        } else {
+            viewHolder.tv_msg.setText("-");
+        }
 
-        viewHolder.tv_msg.setText(entity.getMessage());
+        viewHolder.tv_date.setText(entity.getNotification().getCreatedDate());
+
         /*if(entity.getCreatedAt() != null && entity.getCreatedAt().length() > 0) {
             viewHolder.tv_date.setText(DateHelper.dateFormat(entity.getCreatedAt(), DateHelper.DATE_FORMAT, DateHelper.DATE_TIME_FORMAT));
             viewHolder.tv_time.setText(DateHelper.dateFormat(entity.getCreatedAt(), DateHelper.TIME_FORMAT, DateHelper.DATE_TIME_FORMAT));

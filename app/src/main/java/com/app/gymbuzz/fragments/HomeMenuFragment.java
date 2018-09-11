@@ -14,6 +14,8 @@ import com.app.gymbuzz.fragments.abstracts.BaseFragment;
 import com.app.gymbuzz.helpers.UIHelper;
 import com.app.gymbuzz.ui.views.AnyTextView;
 import com.app.gymbuzz.ui.views.TitleBar;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -89,26 +91,24 @@ public class HomeMenuFragment extends BaseFragment {
         super.onDestroyView();
     }
 
-    @OnClick({R.id.ivNotification, R.id.btnMembership, R.id.btnWrkout, R.id.btnLog, R.id.btnGuide,R.id.btnBMI,R.id.btnSetting})
+    @OnClick({R.id.ivNotification, R.id.btnMembership, R.id.btnWrkout, R.id.btnLog, R.id.btnGuide, R.id.btnBMI, R.id.btnSetting})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
             case R.id.ivNotification:
-                UIHelper.showShortToastInCenter(getMainActivity(), getString(R.string.will_be_imp_beta));
+                getDockActivity().replaceDockableFragment(NotificationsFragment.newInstance(), "NotificationsFragment");
                 break;
 
             case R.id.btnMembership:
 
-                ScanQRFragment scanQRFragment = ScanQRFragment.newInstance();
-                scanQRFragment.isWorkout = false;
-                getDockActivity().replaceDockableFragment(scanQRFragment, ScanQRFragment.class.getSimpleName());
+                openQRFragment(false);
+
 
                 break;
 
             case R.id.btnWrkout:
-                scanQRFragment = ScanQRFragment.newInstance();
-                scanQRFragment.isWorkout = true;
-                getDockActivity().replaceDockableFragment(scanQRFragment, ScanQRFragment.class.getSimpleName());
+
+                openQRFragment(true);
                 break;
 
             case R.id.btnLog:
@@ -126,5 +126,21 @@ public class HomeMenuFragment extends BaseFragment {
                 getDockActivity().replaceDockableFragment(SettingFragment.newInstance(), SettingFragment.class.getSimpleName());
                 break;
         }
+    }
+
+    private void openQRFragment(boolean workout) {
+        AndPermission.with(getMainActivity())
+                .runtime()
+                .permission(Permission.CAMERA)
+                .onGranted(permissions -> {
+                    ScanQRFragment scanQRFragment = ScanQRFragment.newInstance();
+                    scanQRFragment.isWorkout = workout;
+                    getDockActivity().replaceDockableFragment(scanQRFragment, ScanQRFragment.class.getSimpleName());
+                })
+                .onDenied(permissions -> {
+                    UIHelper.showShortToastInCenter(getDockActivity(), "Permission is required to access this feature");
+                })
+                .start();
+
     }
 }

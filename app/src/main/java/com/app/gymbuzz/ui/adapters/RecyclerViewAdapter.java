@@ -63,6 +63,10 @@ public class RecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerViewBin
         collections.clear();
         notifyDataSetChanged();
     }
+    public void changeList(List<T> list){
+        this.collections = list;
+        notifyDataSetChanged();
+    }
 
     /**
      * Adds a entity to the list and calls {@link #notifyDataSetChanged()}.

@@ -1,69 +1,116 @@
 package com.app.gymbuzz.entities;
 
+import com.app.gymbuzz.global.AppConstants;
+import com.app.gymbuzz.helpers.DateHelper;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class UserModel {
 
-
+    @Expose
+    @SerializedName("language")
+    private String language;
+    @Expose
+    @SerializedName("notification")
+    private String notification;
+    @Expose
+    @SerializedName("about")
+    private String about;
+    @Expose
+    @SerializedName("gender")
+    private int gender;
+    @Expose
+    @SerializedName("dob")
+    private String dob;
     @Expose
     @SerializedName("weight")
-    public String weight;
+    private String weight;
     @Expose
     @SerializedName("height")
-    public String height;
+    private String height;
     @Expose
     @SerializedName("isVerified")
-    public boolean isverified;
+    private boolean isverified;
     @Expose
     @SerializedName("roleID")
-    public int roleid;
+    private int roleid;
     @Expose
     @SerializedName("profileImagePath")
-    public String profileimagepath;
+    private String profileimagepath;
     @Expose
     @SerializedName("zipCode")
-    public String zipcode;
+    private String zipcode;
     @Expose
     @SerializedName("city")
-    public String city;
+    private String city;
     @Expose
     @SerializedName("address")
-    public String address;
+    private String address;
     @Expose
     @SerializedName("countryCode")
-    public int countrycode;
+    private int countrycode;
     @Expose
     @SerializedName("phoneNumber")
-    public String phonenumber;
+    private String phonenumber;
     @Expose
     @SerializedName("email")
-    public String email;
+    private String email;
     @Expose
     @SerializedName("fullName")
-    public String fullname;
+    private String fullname;
     @Expose
     @SerializedName("lastName")
-    public String lastname;
+    private String lastname;
     @Expose
     @SerializedName("firstName")
-    public String firstname;
+    private String firstname;
     @Expose
     @SerializedName("userId")
-    public int userid;
+    private int userid;
     @Expose
     @SerializedName("authToken")
-    public String authtoken;
+    private String authtoken;
     @Expose
-    @SerializedName("userSettings")
-    private ArrayList<UserSettings> usersettings;
+    @SerializedName("gymID")
+    private String gymID;
+    @Expose
+    @SerializedName("gymAssigned")
+    private boolean gymAssigned;
 
+    public String getLanguage() {
+        return language;
+    }
 
-    public ArrayList<UserSettings> getUsersettings() {
-        return usersettings;
+    public String getNotification() {
+        return notification;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public String getUserAge() {
+        return DateHelper.getAge(AppConstants.LOG_DATE_FORMAT, dob);
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public boolean isVerified() {
+        return isverified;
     }
 
     public int getRoleid() {
@@ -118,46 +165,11 @@ public class UserModel {
         return authtoken;
     }
 
-    public String getWeight() {
-        return weight;
+    public String getGymID() {
+        return gymID;
     }
 
-    public String getHeight() {
-        return height;
-    }
-
-    public boolean isIsverified() {
-        return isverified;
-    }
-
-    public class UserSettings {
-        @Expose
-        @SerializedName("userID")
-        private int userid;
-        @Expose
-        @SerializedName("settingValue")
-        private String settingvalue;
-        @Expose
-        @SerializedName("settingName")
-        private String settingname;
-        @Expose
-        @SerializedName("userSettingID")
-        private int usersettingid;
-
-        public int getUserid() {
-            return userid;
-        }
-
-        public String getSettingvalue() {
-            return settingvalue;
-        }
-
-        public String getSettingname() {
-            return settingname;
-        }
-
-        public int getUsersettingid() {
-            return usersettingid;
-        }
+    public boolean isGymAssigned() {
+        return gymAssigned;
     }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -14,13 +14,15 @@
         android:padding="@dimen/x20">
 
 
-        <Spinner
+        <com.app.gymbuzz.ui.views.AnySpinner
             android:id="@+id/spExcerciseType"
             style="@style/filter_spinner_style"
             android:layout_width="match_parent"
             android:layout_height="@dimen/x40"
             android:layout_marginTop="@dimen/x10"
             android:clickable="false"
+            android:spinnerMode="dropdown"
+            android:overlapAnchor="false"
             android:textColor="@color/white"
             android:textSize="@dimen/x15" />
 
@@ -37,13 +39,12 @@
             android:layout_height="@dimen/x170"
             android:layout_marginTop="@dimen/x30">
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/ivMap1"
+            <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/imgMachine"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x170"
-                android:src="@drawable/gym_floor_1"
                 android:scaleType="fitXY"
+                android:src="@drawable/gym_floor_1"
                 app:riv_border_color="@color/white"
                 app:riv_corner_radius="5dip"
                 app:riv_mutate_background="true"
@@ -52,6 +53,7 @@
 
 
             <com.app.gymbuzz.ui.views.AnyTextView
+                android:id="@+id/txtMachineName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -79,8 +81,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:padding="@dimen/x8"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/x8">
 
                 <com.app.gymbuzz.ui.views.AnyTextView
                     android:id="@+id/txtHour"
@@ -111,17 +113,17 @@
             <View
                 android:layout_width="@dimen/x1"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/x5"
                 android:layout_marginEnd="@dimen/x5"
-                android:background="@color/time_separator"/>
+                android:layout_marginStart="@dimen/x5"
+                android:background="@color/time_separator" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:padding="@dimen/x8"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/x8">
 
                 <com.app.gymbuzz.ui.views.AnyTextView
                     android:id="@+id/txtMinute"
@@ -153,17 +155,17 @@
             <View
                 android:layout_width="@dimen/x1"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/x5"
                 android:layout_marginEnd="@dimen/x5"
-                android:background="@color/time_separator"/>
+                android:layout_marginStart="@dimen/x5"
+                android:background="@color/time_separator" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="@dimen/x8"
                 android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/x8">
 
                 <com.app.gymbuzz.ui.views.AnyTextView
                     android:id="@+id/txtSeconds"
@@ -195,17 +197,17 @@
             <View
                 android:layout_width="@dimen/x1"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/x5"
                 android:layout_marginEnd="@dimen/x5"
-                android:background="@color/time_separator"/>
+                android:layout_marginStart="@dimen/x5"
+                android:background="@color/time_separator" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="@dimen/x8"
                 android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/x8">
 
                 <com.app.gymbuzz.ui.views.AnyTextView
                     android:id="@+id/txtMS"
@@ -235,458 +237,11 @@
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/rlBlock1"
+        <com.app.gymbuzz.ui.views.CustomRecyclerView
+            android:id="@+id/rvSets"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/x30"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:id="@+id/rlpbKg1"
-                android:layout_width="@dimen/x135"
-                android:layout_height="@dimen/x135"
-                android:layout_alignParentLeft="true"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-
-                    <ImageView
-                        android:id="@+id/btnMinusKg1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/x5"
-                        android:src="@drawable/minuscircle" />
-
-                    <com.app.gymbuzz.ui.views.AnyTextView
-                        android:id="@+id/txtKg1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x18"
-                        app:typeface="@string/font_normal"
-                        tools:text="10 Kg" />
-
-
-                    <ImageView
-                        android:id="@+id/btnPlusKg1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/x5"
-                        android:src="@drawable/pluscircle" />
-
-
-                </LinearLayout>
-
-                <me.tankery.lib.circularseekbar.CircularSeekBar
-                    android:id="@+id/csbKg1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cs_circle_style = "round"
-                    app:cs_progress = "35"
-                    app:cs_max = "40"
-                    app:cs_negative_enabled = "false"
-                    app:cs_move_outside_circle = "false"
-                    app:cs_maintain_equal_circle = "true"
-                    app:cs_circle_stroke_width = "@dimen/x11"
-                    app:cs_pointer_halo_width = "@dimen/x4"
-                    app:cs_pointer_halo_border_width = "@dimen/x4"
-                    app:cs_circle_fill = "@color/transparent"
-                    app:cs_circle_color = "@color/transparent"
-                    app:cs_circle_progress_color = "@color/color_accent"
-                    app:cs_pointer_color = "@color/color_accent"
-                    app:cs_pointer_halo_color = "@color/color_accent"
-                    app:cs_pointer_halo_color_ontouch = "@color/color_accent" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlPbReps1"
-                android:layout_width="@dimen/x135"
-                android:layout_height="@dimen/x135"
-                android:layout_alignParentRight="true"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-
-                    <ImageView
-                        android:id="@+id/btnMinusReps1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/x5"
-                        android:src="@drawable/minuscircle" />
-
-                    <com.app.gymbuzz.ui.views.AnyTextView
-                        android:id="@+id/txtReps1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x18"
-                        app:typeface="@string/font_normal"
-                        tools:text="01" />
-
-
-                    <ImageView
-                        android:id="@+id/btnPlusReps1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/x5"
-                        android:src="@drawable/pluscircle" />
-
-
-                </LinearLayout>
-
-
-                <me.tankery.lib.circularseekbar.CircularSeekBar
-                    android:id="@+id/csbReps1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cs_circle_style = "round"
-                    app:cs_progress = "35"
-                    app:cs_max = "40"
-                    app:cs_negative_enabled = "false"
-                    app:cs_move_outside_circle = "false"
-                    app:cs_maintain_equal_circle = "true"
-                    app:cs_circle_stroke_width = "@dimen/x11"
-                    app:cs_pointer_halo_width = "@dimen/x4"
-                    app:cs_pointer_halo_border_width = "@dimen/x4"
-                    app:cs_circle_fill = "@color/transparent"
-                    app:cs_circle_color = "@color/transparent"
-                    app:cs_circle_progress_color = "@color/color_accent"
-                    app:cs_pointer_color = "@color/color_accent"
-                    app:cs_pointer_halo_color = "@color/color_accent"
-                    app:cs_pointer_halo_color_ontouch = "@color/color_accent" />
-
-
-            </RelativeLayout>
-
-        </RelativeLayout>
-
-
-        <ImageView
-            android:id="@+id/btnMinusBlock2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="@dimen/x30"
-            android:visibility="gone"
-            android:src="@drawable/minuscircle" />
-
-        <RelativeLayout
-            android:id="@+id/rlBlock2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:id="@+id/rlpbKg2"
-                android:layout_width="@dimen/x135"
-                android:layout_height="@dimen/x135"
-                android:layout_alignParentLeft="true"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-
-                    <ImageView
-                        android:id="@+id/btnMinusKg2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/x5"
-                        android:src="@drawable/minuscircle" />
-
-                    <com.app.gymbuzz.ui.views.AnyTextView
-                        android:id="@+id/txtKg2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x18"
-                        app:typeface="@string/font_normal"
-                        tools:text="01" />
-
-
-                    <ImageView
-                        android:id="@+id/btnPlusKg2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/x5"
-                        android:src="@drawable/pluscircle" />
-
-
-                </LinearLayout>
-
-
-                <me.tankery.lib.circularseekbar.CircularSeekBar
-                    android:id="@+id/csbKg2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cs_circle_style = "round"
-                    app:cs_progress = "35"
-                    app:cs_max = "40"
-                    app:cs_negative_enabled = "false"
-                    app:cs_move_outside_circle = "false"
-                    app:cs_maintain_equal_circle = "true"
-                    app:cs_circle_stroke_width = "@dimen/x11"
-                    app:cs_pointer_halo_width = "@dimen/x4"
-                    app:cs_pointer_halo_border_width = "@dimen/x4"
-                    app:cs_circle_fill = "@color/transparent"
-                    app:cs_circle_color = "@color/transparent"
-                    app:cs_circle_progress_color = "@color/color_accent"
-                    app:cs_pointer_color = "@color/color_accent"
-                    app:cs_pointer_halo_color = "@color/color_accent"
-                    app:cs_pointer_halo_color_ontouch = "@color/color_accent" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlPbReps2"
-                android:layout_width="@dimen/x135"
-                android:layout_height="@dimen/x135"
-                android:layout_alignParentRight="true"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-
-                    <ImageView
-                        android:id="@+id/btnMinusReps2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/x5"
-                        android:src="@drawable/minuscircle" />
-
-                    <com.app.gymbuzz.ui.views.AnyTextView
-                        android:id="@+id/txtReps2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x18"
-                        app:typeface="@string/font_normal"
-                        tools:text="01" />
-
-
-                    <ImageView
-                        android:id="@+id/btnPlusReps2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/x5"
-                        android:src="@drawable/pluscircle" />
-
-
-                </LinearLayout>
-
-                <me.tankery.lib.circularseekbar.CircularSeekBar
-                    android:id="@+id/csbReps2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cs_circle_style = "round"
-                    app:cs_progress = "35"
-                    app:cs_max = "40"
-                    app:cs_negative_enabled = "false"
-                    app:cs_move_outside_circle = "false"
-                    app:cs_maintain_equal_circle = "true"
-                    app:cs_circle_stroke_width = "@dimen/x11"
-                    app:cs_pointer_halo_width = "@dimen/x4"
-                    app:cs_pointer_halo_border_width = "@dimen/x4"
-                    app:cs_circle_fill = "@color/transparent"
-                    app:cs_circle_color = "@color/transparent"
-                    app:cs_circle_progress_color = "@color/color_accent"
-                    app:cs_pointer_color = "@color/color_accent"
-                    app:cs_pointer_halo_color = "@color/color_accent"
-                    app:cs_pointer_halo_color_ontouch = "@color/color_accent" />
-
-
-            </RelativeLayout>
-
-
-        </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/btnMinusBlock3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginTop="@dimen/x30"
-            android:visibility="gone"
-            android:src="@drawable/minuscircle" />
-
-        <RelativeLayout
-            android:id="@+id/rlBlock3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:id="@+id/rlpbKg3"
-                android:layout_width="@dimen/x135"
-                android:layout_height="@dimen/x135"
-                android:layout_alignParentLeft="true"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-
-                    <ImageView
-                        android:id="@+id/btnMinusKg3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/x5"
-                        android:src="@drawable/minuscircle" />
-
-                    <com.app.gymbuzz.ui.views.AnyTextView
-                        android:id="@+id/txtKg3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x18"
-                        app:typeface="@string/font_normal"
-                        tools:text="01" />
-
-
-                    <ImageView
-                        android:id="@+id/btnPlusKg3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/x5"
-                        android:src="@drawable/pluscircle" />
-
-
-                </LinearLayout>
-
-                <me.tankery.lib.circularseekbar.CircularSeekBar
-                    android:id="@+id/csbKg3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cs_circle_style = "round"
-                    app:cs_progress = "35"
-                    app:cs_max = "40"
-                    app:cs_negative_enabled = "false"
-                    app:cs_move_outside_circle = "false"
-                    app:cs_maintain_equal_circle = "true"
-                    app:cs_circle_stroke_width = "@dimen/x11"
-                    app:cs_pointer_halo_width = "@dimen/x4"
-                    app:cs_pointer_halo_border_width = "@dimen/x4"
-                    app:cs_circle_fill = "@color/transparent"
-                    app:cs_circle_color = "@color/transparent"
-                    app:cs_circle_progress_color = "@color/color_accent"
-                    app:cs_pointer_color = "@color/color_accent"
-                    app:cs_pointer_halo_color = "@color/color_accent"
-                    app:cs_pointer_halo_color_ontouch = "@color/color_accent" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlPbReps3"
-                android:layout_width="@dimen/x135"
-                android:layout_height="@dimen/x135"
-                android:layout_alignParentRight="true"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-
-                    <ImageView
-                        android:id="@+id/btnMinusReps3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/x5"
-                        android:src="@drawable/minuscircle" />
-
-                    <com.app.gymbuzz.ui.views.AnyTextView
-                        android:id="@+id/txtReps3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/x18"
-                        app:typeface="@string/font_normal"
-                        tools:text="01" />
-
-
-                    <ImageView
-                        android:id="@+id/btnPlusReps3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/x5"
-                        android:src="@drawable/pluscircle" />
-
-
-                </LinearLayout>
-
-
-                <me.tankery.lib.circularseekbar.CircularSeekBar
-                    android:id="@+id/csbReps3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cs_circle_style = "round"
-                    app:cs_progress = "35"
-                    app:cs_max = "40"
-                    app:cs_negative_enabled = "false"
-                    app:cs_move_outside_circle = "false"
-                    app:cs_maintain_equal_circle = "true"
-                    app:cs_circle_stroke_width = "@dimen/x11"
-                    app:cs_pointer_halo_width = "@dimen/x4"
-                    app:cs_pointer_halo_border_width = "@dimen/x4"
-                    app:cs_circle_fill = "@color/transparent"
-                    app:cs_circle_color = "@color/transparent"
-                    app:cs_circle_progress_color = "@color/color_accent"
-                    app:cs_pointer_color = "@color/color_accent"
-                    app:cs_pointer_halo_color = "@color/color_accent"
-                    app:cs_pointer_halo_color_ontouch = "@color/color_accent" />
-
-
-            </RelativeLayout>
-
-
-        </RelativeLayout>
+            android:background="@color/transparent" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -706,52 +261,52 @@
                 android:id="@+id/cbSaveReps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/btnAdd"
                 android:layout_alignParentLeft="true"
+                android:layout_below="@id/btnAdd"
                 android:layout_marginLeft="@dimen/x5"
                 android:layout_marginTop="@dimen/x30"
+                android:button="@drawable/drawable_checkbox"
+                android:checked="true"
                 android:padding="@dimen/x10"
                 android:text="@string/save_reps_entry_for_future_workouts"
-                android:button="@drawable/drawable_checkbox"
-                android:textColor="@color/black"
-                android:checked="true" />
+                android:textColor="@color/black" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cbSaveReps"
-                android:layout_marginTop="@dimen/x20"
                 android:layout_marginLeft="@dimen/x5"
+                android:layout_marginTop="@dimen/x20"
                 android:orientation="horizontal">
 
 
                 <Button
                     android:id="@+id/btnSkip"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginRight="@dimen/x10"
+                    android:layout_weight="1"
                     android:background="@drawable/btn_skip"
                     android:elevation="@dimen/x10"
-                    android:text="@string/skip"
-                    android:textStyle="bold"
+                    android:text="@string/next"
                     android:textAllCaps="true"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
                 <Button
                     android:id="@+id/btnFinish"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginLeft="@dimen/x10"
+                    android:layout_weight="1"
                     android:background="@drawable/btn"
                     android:elevation="@dimen/x10"
                     android:text="@string/finish"
-                    android:textStyle="bold"
                     android:textAllCaps="true"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -762,4 +317,4 @@
     </LinearLayout>
 
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

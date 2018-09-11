@@ -1,9 +1,14 @@
 package com.app.gymbuzz.fragments;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,34 +16,51 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.app.gymbuzz.R;
+import com.app.gymbuzz.entities.WorkoutModel;
+import com.app.gymbuzz.entities.WorkoutServerModel;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
+import com.app.gymbuzz.global.AppConstants;
+import com.app.gymbuzz.global.WebServiceConstants;
+import com.app.gymbuzz.helpers.UIHelper;
+import com.app.gymbuzz.interfaces.RecyclerItemListener;
+import com.app.gymbuzz.ui.binders.WorkoutSetBinder;
+import com.app.gymbuzz.ui.views.AnySpinner;
 import com.app.gymbuzz.ui.views.AnyTextView;
+import com.app.gymbuzz.ui.views.CustomRecyclerView;
 import com.app.gymbuzz.ui.views.TitleBar;
+import com.makeramen.roundedimageview.RoundedImageView;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
-import me.tankery.lib.circularseekbar.CircularSeekBar;
 
 /**
  * Created on 5/25/2018.
  */
 
-
+@SuppressLint({"SetTextI18n", "UseSparseArrays", "unchecked"})
 public class WorkOutMachineFragment extends BaseFragment {
 
 
+    private final int REFRESH_RATE = 1;
     @BindView(R.id.spExcerciseType)
-    Spinner spExcerciseType;
+    AnySpinner spExcerciseType;
     @BindView(R.id.view2)
     View view2;
+    @BindView(R.id.imgMachine)
+    RoundedImageView imgMachine;
+    @BindView(R.id.txtMachineName)
+    AnyTextView txtMachineName;
     @BindView(R.id.txtHour)
     AnyTextView txtHour;
     @BindView(R.id.txtMinute)
@@ -47,71 +69,8 @@ public class WorkOutMachineFragment extends BaseFragment {
     AnyTextView txtSeconds;
     @BindView(R.id.txtMS)
     AnyTextView txtMS;
-    @BindView(R.id.btnMinusKg1)
-    ImageView btnMinusKg1;
-    @BindView(R.id.txtKg1)
-    AnyTextView txtKg1;
-    @BindView(R.id.btnPlusKg1)
-    ImageView btnPlusKg1;
-
-    @BindView(R.id.rlpbKg1)
-    RelativeLayout rlpbKg1;
-    @BindView(R.id.btnMinusReps1)
-    ImageView btnMinusReps1;
-    @BindView(R.id.txtReps1)
-    AnyTextView txtReps1;
-    @BindView(R.id.btnPlusReps1)
-    ImageView btnPlusReps1;
-
-    @BindView(R.id.rlPbReps1)
-    RelativeLayout rlPbReps1;
-    @BindView(R.id.rlBlock1)
-    RelativeLayout rlBlock1;
-    @BindView(R.id.btnMinusBlock2)
-    ImageView btnMinusBlock2;
-    @BindView(R.id.btnMinusKg2)
-    ImageView btnMinusKg2;
-    @BindView(R.id.txtKg2)
-    AnyTextView txtKg2;
-    @BindView(R.id.btnPlusKg2)
-    ImageView btnPlusKg2;
-
-    @BindView(R.id.rlpbKg2)
-    RelativeLayout rlpbKg2;
-    @BindView(R.id.btnMinusReps2)
-    ImageView btnMinusReps2;
-    @BindView(R.id.txtReps2)
-    AnyTextView txtReps2;
-    @BindView(R.id.btnPlusReps2)
-    ImageView btnPlusReps2;
-
-    @BindView(R.id.rlPbReps2)
-    RelativeLayout rlPbReps2;
-    @BindView(R.id.rlBlock2)
-    RelativeLayout rlBlock2;
-    @BindView(R.id.btnMinusBlock3)
-    ImageView btnMinusBlock3;
-    @BindView(R.id.btnMinusKg3)
-    ImageView btnMinusKg3;
-    @BindView(R.id.txtKg3)
-    AnyTextView txtKg3;
-    @BindView(R.id.btnPlusKg3)
-    ImageView btnPlusKg3;
-
-    @BindView(R.id.rlpbKg3)
-    RelativeLayout rlpbKg3;
-    @BindView(R.id.btnMinusReps3)
-    ImageView btnMinusReps3;
-    @BindView(R.id.txtReps3)
-    AnyTextView txtReps3;
-    @BindView(R.id.btnPlusReps3)
-    ImageView btnPlusReps3;
-
-    @BindView(R.id.rlPbReps3)
-    RelativeLayout rlPbReps3;
-    @BindView(R.id.rlBlock3)
-    RelativeLayout rlBlock3;
-    Unbinder unbinder;
+    @BindView(R.id.rvSets)
+    CustomRecyclerView rvSets;
     @BindView(R.id.btnAdd)
     ImageView btnAdd;
     @BindView(R.id.cbSaveReps)
@@ -120,41 +79,41 @@ public class WorkOutMachineFragment extends BaseFragment {
     Button btnSkip;
     @BindView(R.id.btnFinish)
     Button btnFinish;
-    @BindView(R.id.csbKg1)
-    CircularSeekBar csbKg1;
-    @BindView(R.id.csbReps1)
-    CircularSeekBar csbReps1;
-    @BindView(R.id.csbKg2)
-    CircularSeekBar csbKg2;
-    @BindView(R.id.csbReps2)
-    CircularSeekBar csbReps2;
-    @BindView(R.id.csbKg3)
-    CircularSeekBar csbKg3;
-    @BindView(R.id.csbReps3)
-    CircularSeekBar csbReps3;
+
+    ArrayAdapter<String> exerciseAdapter;
+    private ArrayList<WorkoutModel.UserExerciseDetailModel> setCollections;
+    private WorkoutModel machineDetail;
+    private HashMap<Integer, ArrayList<WorkoutModel.UserExerciseDetailModel>> machineSavedExercises;
 
     private Handler mHandler = new Handler();
     private long startTime;
     private long elapsedTime;
-    private final int REFRESH_RATE = 1;
-    private String hours, minutes, seconds, milliseconds;
-    private long secs, mins, hrs, msecs;
     private boolean stopped = false;
 
-    ArrayList exerciseList = new ArrayList();
-    ArrayAdapter<String> exerciseAdapter;
+    private RecyclerItemListener itemClickListener = ((ent, position, id) -> {
+        switch (id) {
+            case R.id.btnDelete:
+                setCollections.remove(position);
+                rvSets.notifyItemRemoved(position);
+                break;
+        }
+    });
+    private Runnable startTimer = new Runnable() {
+        public void run() {
+            elapsedTime = System.currentTimeMillis() - startTime;
+            updateTimer(elapsedTime);
+            mHandler.postDelayed(this, REFRESH_RATE);
+        }
+    };
 
-    int kg1 = 0;
-    int reps1 = 0;
+    public static WorkOutMachineFragment newInstance(WorkoutModel machineDetail) {
+        WorkOutMachineFragment fragment = new WorkOutMachineFragment();
+        fragment.setMachineDetail(machineDetail);
+        return fragment;
+    }
 
-    int kg2 = 0;
-    int reps2 = 0;
-
-    int kg3 = 0;
-    int reps3 = 0;
-
-    public static WorkOutMachineFragment newInstance() {
-        return new WorkOutMachineFragment();
+    public void setMachineDetail(WorkoutModel machineDetail) {
+        this.machineDetail = machineDetail;
     }
 
     @Override
@@ -162,15 +121,11 @@ public class WorkOutMachineFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
     }
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_workout_machine, container, false);
-
-
-        unbinder = ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);
         return view;
     }
 
@@ -179,153 +134,23 @@ public class WorkOutMachineFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        txtMachineName.setText(machineDetail.getMachineName() + "");
+        ImageLoader.getInstance().displayImage(machineDetail.getImagePath(), imgMachine);
         setExerciseData();
         StartTimmer();
 
-        csbKg1.setProgress(35);
-        kg1 = 35;
-        txtKg1.setText(35+" KG");
+        if (machineSavedExercises == null || setCollections == null) {
+            machineSavedExercises = new HashMap<>();
+            setCollections = new ArrayList<>();
+            btnAdd.setVisibility(View.GONE);
+        }
 
-        csbKg2.setProgress(35);
-        kg2 = 35;
-        txtKg2.setText(35+" KG");
+        rvSets.bindRecyclerView(new WorkoutSetBinder(itemClickListener, machineDetail.getMinweight(), machineDetail.getMaxweight(), machineDetail.getMinrep(), machineDetail.getMaxrep()),
+                setCollections, new LinearLayoutManager(getDockActivity(), LinearLayoutManager.VERTICAL, false), new DefaultItemAnimator());
+        new LinearSnapHelper().attachToRecyclerView(rvSets);
+        rvSets.setNestedScrollingEnabled(false);
+        rvSets.getItemAnimator().setChangeDuration(0);
 
-        csbKg3.setProgress(35);
-        kg3 = 35;
-        txtKg3.setText(35+" KG");
-
-        csbReps1.setProgress(35);
-        reps1 = 35;
-        txtReps1.setText(35+" REPS");
-
-        csbReps2.setProgress(35);
-        reps2 = 35;
-        txtReps2.setText(35+" REPS");
-
-        csbReps3.setProgress(35);
-        reps3 = 35;
-        txtReps3.setText(35+" REPS");
-
-        csbKg1.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(CircularSeekBar circularSeekBar, float progress, boolean fromUser) {
-                if(fromUser){
-                    kg1 = Math.round(csbKg1.getProgress());
-                    txtKg1.setText(kg1+" KG");
-                }
-            }
-
-            @Override
-            public void onStopTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-        });
-
-        csbKg2.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(CircularSeekBar circularSeekBar, float progress, boolean fromUser) {
-                if(fromUser){
-                    kg2 = Math.round(csbKg2.getProgress());
-                    txtKg2.setText(kg2+" KG");
-                }
-            }
-
-            @Override
-            public void onStopTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-        });
-
-        csbKg3.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(CircularSeekBar circularSeekBar, float progress, boolean fromUser) {
-                if(fromUser){
-                    kg3 = Math.round(csbKg3.getProgress());
-                    txtKg3.setText(kg3+" KG");
-                }
-            }
-
-            @Override
-            public void onStopTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-        });
-
-        csbReps1.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(CircularSeekBar circularSeekBar, float progress, boolean fromUser) {
-                if(fromUser){
-                    reps1 = Math.round(csbReps1.getProgress());
-                    txtReps1.setText(reps1+" REPS");
-                }
-            }
-
-            @Override
-            public void onStopTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-        });
-
-
-        csbReps2.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(CircularSeekBar circularSeekBar, float progress, boolean fromUser) {
-                if(fromUser){
-                    reps2 = Math.round(csbReps2.getProgress());
-                    txtReps2.setText(reps2+" REPS");
-                }
-            }
-
-            @Override
-            public void onStopTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-        });
-
-        csbReps3.setOnSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(CircularSeekBar circularSeekBar, float progress, boolean fromUser) {
-                if(fromUser){
-                    reps3 = Math.round(csbReps3.getProgress());
-                    txtReps3.setText(reps3+" REPS");
-                }
-            }
-
-            @Override
-            public void onStopTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(CircularSeekBar seekBar) {
-
-            }
-        });
     }
 
     @Override
@@ -335,30 +160,81 @@ public class WorkOutMachineFragment extends BaseFragment {
         titleBar.hideButtons();
         titleBar.showBackButton();
         titleBar.setSubHeading(getString(R.string.workout_));
-        titleBar.showRightButton(R.drawable.aboutus, true, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getDockActivity().replaceDockableFragment(MachineMalfunctionFragment.newInstance(), MachineMalfunctionFragment.class.getSimpleName());
+        titleBar.showNotificationButton(0);
+        titleBar.showCallForHelpButton(view -> {
+            if (spExcerciseType.getSelectedItemPosition() == 0) {
+                UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.supportWrongSelectionError));
+                return;
             }
+            WorkoutModel.MachineExerciseDetailModel machineExerciseDetail = machineDetail.getExercises().get(spExcerciseType.getSelectedItemPosition() - 1);
+            serviceHelper.enqueueCall(webService.requestForSupport(machineExerciseDetail.getMachineExerciseId(), machineDetail.getFloorID(), String.valueOf(machineDetail.getGymMachineId()), prefHelper.getUserToken()),
+                    WebServiceConstants.REQUEST_FOR_SUPPORT);
         });
     }
 
     private void setExerciseData() {
+        ArrayList<String> exerciseCollection = new ArrayList<>();
 
-        exerciseList = new ArrayList<String>();
+        exerciseCollection.add(getString(R.string.muscleSelection));
+        for (WorkoutModel.MachineExerciseDetailModel machineDetail : machineDetail.getExercises()
+                ) {
+            exerciseCollection.add(machineDetail.getExerciseName());
+        }
 
-        exerciseList.add("Select Exercise");
-        exerciseList.add("Exercise 1");
-        exerciseList.add("Exercise 2");
+        exerciseAdapter = new ArrayAdapter<String>(getDockActivity()
+                , android.R.layout.simple_spinner_item, exerciseCollection) {
+            @Override
+            public boolean isEnabled(int position) {
+                return !(position == 0);
+            }
 
-        exerciseAdapter = new ArrayAdapter<String>(getDockActivity(), R.layout.spinner_item, exerciseList);
-        exerciseAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+
+            @Override
+            public View getDropDownView(int position, View convertView,
+                                        @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView tv = (TextView) view;
+                tv.setTextColor(position == 0 ? Color.GRAY : Color.BLACK);
+                return view;
+            }
+
+        };
+
         spExcerciseType.setAdapter(exerciseAdapter);
         spExcerciseType.setSelection(0);
         exerciseAdapter.notifyDataSetChanged();
-
+        spExcerciseType.setCustomItemSelectListener(position -> {
+            position = position - 1;
+            Integer machineExerciseID = machineDetail.getExercises().get(position).getMachineExerciseId();
+            btnAdd.setVisibility(View.VISIBLE);
+            findAndLoadSelectedSets(machineExerciseID);
+        });
     }
 
+    private void findAndLoadSelectedSets(Integer machineExerciseID) {
+        setCollections = new ArrayList<>();
+
+        if (machineSavedExercises.containsKey(machineExerciseID)) {
+            setCollections.addAll(machineSavedExercises.get(machineExerciseID));
+        } else {
+            if (machineDetail.getUserExercises() != null) {
+                for (WorkoutModel.UserExerciseModel exerciseModel : machineDetail.getUserExercises()
+                        ) {
+                    if (exerciseModel.getMachineExerciseID().equals(machineExerciseID)) {
+                        setCollections.addAll(exerciseModel.getExerciseDetails());
+                    }
+                }
+            }
+        }
+
+        if (setCollections.size() == 0) {
+            setCollections.add(new WorkoutModel.UserExerciseDetailModel(machineDetail.getMinrep() + "", machineDetail.getMinweight() + "", 1));
+        }
+
+        machineSavedExercises.put(machineExerciseID, setCollections);
+        rvSets.getAdapter().changeList(setCollections);
+        rvSets.notifyDataSetChanged();
+    }
 
     public void StartTimmer() {
 
@@ -386,195 +262,92 @@ public class WorkOutMachineFragment extends BaseFragment {
             mHandler.removeCallbacks(startTimer);
 
         stopped = true;
-        unbinder.unbind();
+
     }
 
-    @OnClick({R.id.btnAdd, R.id.btnSkip, R.id.btnFinish, R.id.btnMinusKg1, R.id.btnPlusKg1, R.id.btnMinusReps1, R.id.btnPlusReps1, R.id.btnMinusBlock2, R.id.btnMinusKg2, R.id.btnPlusKg2, R.id.btnMinusReps2, R.id.btnPlusReps2, R.id.btnMinusBlock3, R.id.btnMinusKg3, R.id.btnPlusKg3, R.id.btnMinusReps3, R.id.btnPlusReps3})
+    @OnClick({R.id.btnAdd, R.id.btnSkip, R.id.btnFinish})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
 
             case R.id.btnAdd:
-
-                if (rlBlock2.getVisibility() == View.GONE) {
-                    btnMinusBlock2.setVisibility(View.VISIBLE);
-                    rlBlock2.setVisibility(View.VISIBLE);
-                } else if (rlBlock3.getVisibility() == View.GONE) {
-                    btnAdd.setVisibility(View.GONE);
-                    btnMinusBlock3.setVisibility(View.VISIBLE);
-                    rlBlock3.setVisibility(View.VISIBLE);
+                if (setCollections.size() < AppConstants.MAX_WORKOUT_SETS_LIMIT) {
+                    setCollections.add(new WorkoutModel.UserExerciseDetailModel(machineDetail.getMinrep() + "", machineDetail.getMinweight() + "", setCollections.size()));
+                    rvSets.notifyItemRangeChanged(((LinearLayoutManager) rvSets.getLayoutManager()).findLastVisibleItemPosition(), 1);
+                } else {
+                    UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.maxSetsError));
                 }
-
                 break;
 
             case R.id.btnSkip:
-
-                getDockActivity().replaceDockableFragment(ScanQRFragment.newInstance(), ScanQRFragment.class.getSimpleName());
-
+                serviceHelper.enqueueCall(webService.sendExerciseDetails(getWorkOutDataForServer(), prefHelper.getUserToken()), WebServiceConstants.SEND_EXERCISE_DETAIL);
                 break;
 
             case R.id.btnFinish:
-
-                getDockActivity().replaceDockableFragment(WorkoutSummaryFragment.newInstance(), WorkoutSummaryFragment.class.getSimpleName());
-
-                break;
-
-            case R.id.btnMinusKg1:
-
-                if (kg1 > 0) {
-                    kg1--;
-                    txtKg1.setText(kg1 + " KG");
-                    csbKg1.setProgress(kg1);
+                if (spExcerciseType.getSelectedItemPosition() == 0) {
+                    UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.finishWrongSelectionError));
+                    return;
                 }
-
-                break;
-
-            case R.id.btnPlusKg1:
-
-                if (kg1 < csbKg1.getMax()) {
-                    kg1++;
-                    txtKg1.setText(kg1 + " KG");
-                    csbKg1.setProgress(kg1);
-                }
-
-                break;
-
-            case R.id.btnMinusReps1:
-
-                if (reps1 > 0) {
-                    reps1--;
-                    txtReps1.setText(reps1 + " REPS");
-                    csbReps1.setProgress(reps1);
-                }
-
-                break;
-            case R.id.btnPlusReps1:
-
-                if (reps1 < csbReps1.getMax()) {
-                    reps1++;
-                    txtReps1.setText(reps1 + " REPS");
-                    csbReps1.setProgress(reps1);
-                }
-
-                break;
-
-            case R.id.btnMinusBlock2:
-
-                if (rlBlock2.getVisibility() == View.VISIBLE) {
-                    btnAdd.setVisibility(View.VISIBLE);
-                    btnMinusBlock2.setVisibility(View.GONE);
-                    rlBlock2.setVisibility(View.GONE);
-                }
-
-                break;
-
-            case R.id.btnMinusKg2:
-
-                if (kg2 > 0) {
-                    kg2--;
-                    txtKg2.setText(kg2 + " KG");
-                    csbKg2.setProgress(kg2);
-                }
-
-                break;
-
-            case R.id.btnPlusKg2:
-
-                if (kg2 < csbKg2.getMax()) {
-                    kg2++;
-                    txtKg2.setText(kg2 + " KG");
-                    csbKg2.setProgress(kg2);
-                }
-
-                break;
-
-            case R.id.btnMinusReps2:
-
-                if (reps2 > 0) {
-                    reps2--;
-                    txtReps2.setText(reps2 + " REPS");
-                    csbReps2.setProgress(reps2);
-                }
-
-                break;
-
-            case R.id.btnPlusReps2:
-
-                if (reps2 < csbReps2.getMax()) {
-                    reps2++;
-                    txtReps2.setText(reps2 + " REPS");
-                    csbReps2.setProgress(reps2);
-                }
-
-
-                break;
-
-            case R.id.btnMinusBlock3:
-
-                if (rlBlock3.getVisibility() == View.VISIBLE) {
-                    btnAdd.setVisibility(View.VISIBLE);
-                    btnMinusBlock3.setVisibility(View.GONE);
-                    rlBlock3.setVisibility(View.GONE);
-                }
-
-                break;
-
-            case R.id.btnMinusKg3:
-
-                if (kg3 > 0) {
-                    kg3--;
-                    txtKg2.setText(kg3 + " KG");
-                    csbKg3.setProgress(kg3);
-                }
-
-
-                break;
-
-            case R.id.btnPlusKg3:
-
-                if (kg3 < csbKg3.getMax()) {
-                    kg3++;
-                    txtKg3.setText(kg3 + " KG");
-                    csbKg3.setProgress(kg3);
-                }
-
-                break;
-
-            case R.id.btnMinusReps3:
-
-                if (reps3 > 0) {
-                    reps3--;
-                    txtReps3.setText(reps3 + " REPS");
-                    csbReps3.setProgress(reps3);
-                }
-
-                break;
-
-            case R.id.btnPlusReps3:
-
-                if (reps3 < csbReps3.getMax()) {
-                    reps3++;
-                    txtReps3.setText(reps3 + " REPS");
-                    csbReps3.setProgress(reps3);
-                }
+                serviceHelper.enqueueCall(webService.sendExerciseDetails(getWorkOutDataForServer(), prefHelper.getUserToken()), WebServiceConstants.SEND_FINAL_EXERCISE_DETAIL);
 
                 break;
 
         }
     }
 
+    @NonNull
+    private WorkoutServerModel.WorkoutServerWrapper getWorkOutDataForServer() {
+        ArrayList<WorkoutServerModel> dataForServer = new ArrayList<>();
+
+        for (Map.Entry<Integer, ArrayList<WorkoutModel.UserExerciseDetailModel>> entry : machineSavedExercises.entrySet()) {
+            dataForServer.add(new WorkoutServerModel.Builder()
+                    .gymMachineID(machineDetail.getGymMachineId())
+                    .isSaveForFuture(cbSaveReps.isChecked())
+                    .machineExerciseID(entry.getKey())
+                    .userExerciseDetails(entry.getValue())
+                    .timeSpent(String.format("%s:%s:%s:%s", txtHour.getText().toString(), txtMinute.getText().toString(), txtSeconds.getText().toString(), txtMS.getText().toString()))
+                    .build());
+        }
+        return new WorkoutServerModel.WorkoutServerWrapper(dataForServer);
+    }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
+            case WebServiceConstants.SEND_EXERCISE_DETAIL:
+                AndPermission.with(getMainActivity())
+                        .runtime()
+                        .permission(Permission.CAMERA)
+                        .onGranted(permissions -> {
+                            getDockActivity().popBackStackTillEntry(1);
+                            getDockActivity().replaceDockableFragment(ScanQRFragment.newInstance(), ScanQRFragment.class.getSimpleName());
+                        })
+                        .onDenied(permissions -> {
+                            UIHelper.showShortToastInCenter(getDockActivity(), "Permission is required to access this feature");
+                        })
+                        .start();
+                break;
+            case WebServiceConstants.SEND_FINAL_EXERCISE_DETAIL:
+                getDockActivity().popBackStackTillEntry(1);
+                getDockActivity().replaceDockableFragment(WorkoutSummaryFragment.newInstance(), WorkoutSummaryFragment.class.getSimpleName());
+                break;
+            case WebServiceConstants.REQUEST_FOR_SUPPORT:
+                UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.supportMessage));
+                break;
+        }
+    }
 
     private void updateTimer(float time) {
-        secs = (long) (time / 1000);
-        mins = (long) ((time / 1000) / 60);
-        hrs = (long) (((time / 1000) / 60) / 60);
+        long secs = (long) (time / 1000);
+        long mins = (long) ((time / 1000) / 60);
+        long hrs = (long) (((time / 1000) / 60) / 60);
 
-		/* Convert the seconds to String
+        /* Convert the seconds to String
          * and format to ensure it has
-		 * a leading zero when required
-		 */
+         * a leading zero when required
+         */
         secs = secs % 60;
-        seconds = String.valueOf(secs);
+        String seconds = String.valueOf(secs);
         if (secs == 0) {
             seconds = "00";
         }
@@ -582,10 +355,10 @@ public class WorkOutMachineFragment extends BaseFragment {
             seconds = "0" + seconds;
         }
 
-		/* Convert the minutes to String and format the String */
+        /* Convert the minutes to String and format the String */
 
         mins = mins % 60;
-        minutes = String.valueOf(mins);
+        String minutes = String.valueOf(mins);
         if (mins == 0) {
             minutes = "00";
         }
@@ -593,9 +366,9 @@ public class WorkOutMachineFragment extends BaseFragment {
             minutes = "0" + minutes;
         }
 
-    	/* Convert the hours to String and format the String */
+        /* Convert the hours to String and format the String */
 
-        hours = String.valueOf(hrs);
+        String hours = String.valueOf(hrs);
         if (hrs == 0) {
             hours = "00";
         }
@@ -603,10 +376,10 @@ public class WorkOutMachineFragment extends BaseFragment {
             hours = "0" + hours;
         }
 
-    	/* Although we are not using milliseconds on the timer in this example
+        /* Although we are not using milliseconds on the timer in this example
          * I included the code in the event that you wanted to include it on your own
-    	 */
-        milliseconds = String.valueOf((long) time);
+         */
+        String milliseconds = String.valueOf((long) time);
         //milliseconds = System.currentTimeMillis() % 1000+"";
         if (milliseconds.length() == 2) {
             milliseconds = "0" + milliseconds;
@@ -618,20 +391,12 @@ public class WorkOutMachineFragment extends BaseFragment {
         milliseconds = milliseconds.substring(milliseconds.length() - 3, milliseconds.length() - 2) + "00";
 
 
-		/* Setting the timer text to the elapsed time */
+        /* Setting the timer text to the elapsed time */
         txtHour.setText(hours);
         txtMinute.setText(minutes);
         txtSeconds.setText(seconds);
         txtMS.setText(milliseconds);
 
     }//end Update Timer
-
-    private Runnable startTimer = new Runnable() {
-        public void run() {
-            elapsedTime = System.currentTimeMillis() - startTime;
-            updateTimer(elapsedTime);
-            mHandler.postDelayed(this, REFRESH_RATE);
-        }
-    };
 
 }

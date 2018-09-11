@@ -69,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.52" />
+        app:layout_constraintGuide_percent="0.50" />
 
     <View
         android:layout_width="match_parent"
@@ -84,56 +84,66 @@
 
     <com.app.gymbuzz.ui.views.AnyTextView
         android:id="@+id/btnMembership"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="@string/membership"
+        android:gravity="center"
         android:textColor="@color/color_accent"
         android:textSize="@dimen/x14"
-        android:layout_marginTop="@dimen/x35"
+        android:layout_marginTop="@dimen/x30"
         android:drawableTop="@drawable/membership2"
         app:typeface="@string/font_normal"
+        app:layout_constraintBottom_toTopOf="@+id/btnLog"
         app:layout_constraintEnd_toStartOf="@id/btnWrkout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/glskeletons"/>
 
     <com.app.gymbuzz.ui.views.AnyTextView
         android:id="@+id/btnWrkout"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="@string/workout"
+        android:gravity="center"
         android:textColor="@color/color_accent"
         android:textSize="@dimen/x14"
-        android:layout_marginTop="@dimen/x35"
+        android:layout_marginTop="@dimen/x30"
         android:drawableTop="@drawable/workout"
         app:typeface="@string/font_normal"
+        app:layout_constraintBottom_toTopOf="@+id/btnGuide"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btnMembership"
         app:layout_constraintTop_toBottomOf="@id/glskeletons"/>
 
     <com.app.gymbuzz.ui.views.AnyTextView
         android:id="@+id/btnLog"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="@string/log"
+        android:gravity="center"
         android:textColor="@color/color_accent"
         android:textSize="@dimen/x14"
         android:layout_marginTop="@dimen/x30"
         android:drawableTop="@drawable/log"
         app:typeface="@string/font_normal"
+        app:layout_constraintBottom_toTopOf="@+id/btnSetting"
+
         app:layout_constraintEnd_toStartOf="@id/btnWrkout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnMembership"/>
 
     <com.app.gymbuzz.ui.views.AnyTextView
         android:id="@+id/btnGuide"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="@string/guide"
+        android:gravity="center"
         android:textColor="@color/color_accent"
         android:textSize="@dimen/x14"
         android:layout_marginTop="@dimen/x30"
         android:drawableTop="@drawable/guide"
         app:typeface="@string/font_normal"
+        app:layout_constraintBottom_toTopOf="@+id/btnBMI"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btnMembership"
         app:layout_constraintTop_toBottomOf="@id/btnWrkout"/>
@@ -141,30 +151,32 @@
 
     <com.app.gymbuzz.ui.views.AnyTextView
         android:id="@+id/btnSetting"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/x30"
+        android:drawableTop="@drawable/settings_home"
+        android:gravity="center"
         android:text="@string/settings_"
         android:textColor="@color/color_accent"
         android:textSize="@dimen/x14"
-        android:layout_marginTop="@dimen/x30"
-        android:drawableTop="@drawable/log"
-        app:typeface="@string/font_normal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btnGuide"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnLog"/>
+        app:layout_constraintTop_toBottomOf="@id/btnLog"
+        app:typeface="@string/font_normal" />
 
     <com.app.gymbuzz.ui.views.AnyTextView
         android:id="@+id/btnBMI"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="@string/bmi"
         android:textColor="@color/color_accent"
         android:textSize="@dimen/x14"
         android:gravity="center"
         android:layout_marginTop="@dimen/x30"
-        android:drawableTop="@drawable/guide"
+        android:drawableTop="@drawable/bmi"
         app:typeface="@string/font_normal"
-        app:layout_constraintHorizontal_bias="0.525"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btnLog"
         app:layout_constraintTop_toBottomOf="@id/btnGuide"/>

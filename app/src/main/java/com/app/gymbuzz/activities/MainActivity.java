@@ -30,6 +30,7 @@ import com.app.gymbuzz.helpers.UIHelper;
 import com.app.gymbuzz.interfaces.ImageSetter;
 import com.app.gymbuzz.residemenu.ResideMenu;
 import com.app.gymbuzz.ui.views.TitleBar;
+import com.google.firebase.FirebaseApp;
 import com.kbeanie.imagechooser.api.ChooserType;
 import com.kbeanie.imagechooser.api.ChosenImage;
 import com.kbeanie.imagechooser.api.ChosenImages;
@@ -77,10 +78,11 @@ public class MainActivity extends DockActivity implements OnClickListener, Image
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(null);
         setContentView(R.layout.activity_dock);
         ButterKnife.bind(this);
         titleBar = header_main;
+        FirebaseApp.initializeApp(this);
         // setBehindContentView(R.layout.fragment_frame);
         mContext = this;
         Log.i("Screen Density", ScreenHelper.getDensity(this) + "");
@@ -131,7 +133,6 @@ public class MainActivity extends DockActivity implements OnClickListener, Image
             }
         });
 
-        if (savedInstanceState == null)
             initFragment();
 
     }

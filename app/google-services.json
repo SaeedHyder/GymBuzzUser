@@ -8,6 +8,50 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:196064036066:android:b9d9ba6f7155f44c",
+        "android_client_info": {
+          "package_name": "com.app.gymbuztrainer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196064036066-tbb9gfmt9j8kr311vf0vucdci32askm9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.gymbuztrainer",
+            "certificate_hash": "d3b45d4958b305c928fc34c7f1facd13048c5c25"
+          }
+        },
+        {
+          "client_id": "196064036066-f9eg94kbg7l2q5rd97ejm9udh0urk608.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwfsoqtfKyuoG0ufm1DCw9LNH9CYAwYnQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "196064036066-f9eg94kbg7l2q5rd97ejm9udh0urk608.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:196064036066:android:d6e5d0cf647e39f6",
         "android_client_info": {
           "package_name": "com.app.gymbuzuser"

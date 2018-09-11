@@ -120,6 +120,7 @@
                         android:paddingEnd="@dimen/x10"
                         android:paddingTop="@dimen/x10"
                         android:text=""
+                        android:visibility="visible"
                         android:textColor="@color/black"
                         android:textSize="@dimen/x14"
                         app:typeface="@string/font_normal"/>
@@ -136,8 +137,10 @@
                         app:ccp_hintExampleNumber="false"
                         app:ccp_hintExampleNumberType="MOBILE"
                         app:ccp_showArrow="false"
+                        app:ccp_showNameCode="false"
                         app:ccp_showFlag="false"
                         app:ccp_textGravity="LEFT"
+                        app:ccpDialog_textColor="@color/text_color"
                         app:ccp_textSize="@dimen/x14"/>
                     <View
                         android:layout_width="match_parent"
@@ -157,14 +160,14 @@
                         android:layout_height="match_parent"
                        >
 
-                        <com.app.gymbuzz.ui.views.AnyEditTextView
+                        <android.support.v7.widget.AppCompatEditText
                             android:id="@+id/edtMobile"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/mobile"
                             android:imeOptions="actionNext"
-                            android:inputType="numberDecimal"
-                            android:text=""
+                            android:inputType="phone"
+                            android:maxLength="30"
                             android:maxLines="1"
                             android:textSize="@dimen/x14"
                             app:typeface="@string/font_normal" />
@@ -218,7 +221,7 @@
 
 
             <Button
-                android:id="@+id/btnLogin"
+                android:id="@+id/btnSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -249,7 +252,7 @@
                     app:typeface="@string/font_normal" />
 
                 <com.app.gymbuzz.ui.views.AnyTextView
-                    android:id="@+id/btnSignUp"
+                    android:id="@+id/btnLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"

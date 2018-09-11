@@ -1,6 +1,7 @@
 package com.app.gymbuzz.fragments;
 
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,7 @@ public class SignupFragment extends BaseFragment {
     @BindView(R.id.edtEmail)
     AnyEditTextView edtEmail;
     @BindView(R.id.edtMobile)
-    AnyEditTextView edtMobile;
+    AppCompatEditText edtMobile;
     @BindView(R.id.edtPassword)
     AnyEditTextView edtPassword;
     @BindView(R.id.edtConfirmPassword)

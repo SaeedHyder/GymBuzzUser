@@ -1,5 +1,9 @@
 package com.app.gymbuzz.helpers;
 
+import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
+
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -8,11 +12,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
-
-import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -26,6 +25,10 @@ public class DateHelper {
     public static final java.lang.String DATE_FORMAT = "yyyy-MM-dd";
     public static final java.lang.String TIME_FORMAT = "HH:mm:ss";
     public static final java.lang.String DATE_FORMAT2 = "MMM dd yyyy";
+    /**
+     * The maximum date possible.
+     */
+    public static Date MAX_DATE = new Date(Long.MAX_VALUE);
 
     private DateHelper() {
     }
@@ -408,6 +411,12 @@ public class DateHelper {
     }
 
     /**
+     * Determines whether or not a date has any time values (hour, minute,
+     * seconds or millisecondsReturns the given date with the time values
+     * cleared.
+     */
+
+    /**
      * Returns the given date with the time values cleared.
      */
     public static Date clearTime(Date date) {
@@ -422,12 +431,6 @@ public class DateHelper {
         c.set(Calendar.MILLISECOND, 0);
         return c.getTime();
     }
-
-    /**
-     * Determines whether or not a date has any time values (hour, minute,
-     * seconds or millisecondsReturns the given date with the time values
-     * cleared.
-     */
 
     /**
      * Determines whether or not a date has any time values.
@@ -501,7 +504,6 @@ public class DateHelper {
         return (d1.before(d2)) ? d1 : d2;
     }
 
-
     public static String getElapsedTimeNew(String sDate) {
         long between; // divide by 1000 to convert seconds
         long week = 0;
@@ -553,11 +555,6 @@ public class DateHelper {
 
         return finalTime;
     }
-
-    /**
-     * The maximum date possible.
-     */
-    public static Date MAX_DATE = new Date(Long.MAX_VALUE);
 
     /**
      * @return 2d 15hr ago
@@ -666,9 +663,9 @@ public class DateHelper {
         return finalTime;
     }
 
-    public static String getFormattedDate(Date mDate) {
+    public static String getFormattedDate(Date mDate, String format) {
 
-        SimpleDateFormat daysFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+        SimpleDateFormat daysFormat = new SimpleDateFormat(format, Locale.US);
         return daysFormat.format(mDate);
     }
 
@@ -902,18 +899,53 @@ public class DateHelper {
         return OurDate;
     }
 
-    public static Date getDateFromString(String Currentformat, String dateFormat) {
+    public static Date getDateFromString(String Currentformat, String dateString) {
         Date date = new Date();
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat(Currentformat,Locale.ENGLISH);
-            date = formatter.parse(dateFormat);
+            SimpleDateFormat formatter = new SimpleDateFormat(Currentformat, Locale.ENGLISH);
+            date = formatter.parse(dateString);
         } catch (Exception e) {
             e.fillInStackTrace();
         }
         return date;
     }
-    public static String getDateInStringFormat(Date data,String format) {
+
+    public static String getDateInStringFormat(Date data, String format) {
         DateFormat dateFormat = new SimpleDateFormat(format, Locale.ENGLISH);
         return dateFormat.format(data.getTime());
+    }
+
+    public static String getLocalTimeDateRequst(String OurDate) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date value = formatter.parse(OurDate);
+
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("HH:mm a | dd-MMM-yyyy "); //this format changeable
+            dateFormatter.setTimeZone(TimeZone.getDefault());
+            OurDate = dateFormatter.format(value);
+
+            //Log.d("OurDate", OurDate);
+        } catch (Exception e) {
+            OurDate = "00:00 am | 00-000-0000";
+        }
+        return OurDate;
+    }
+
+    public static String getAge(String format, String dateOfBirth) {
+
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+        dob.setTime(getDateFromString(format, dateOfBirth));
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+
+        Integer ageInt = age;
+
+        return ageInt.toString();
     }
 }

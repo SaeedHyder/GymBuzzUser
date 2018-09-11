@@ -25,9 +25,9 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/your_height_in_cm"
                 android:inputType="numberDecimal"
+                android:maxLength="6"
                 android:textColor="@color/color_accent"
                 android:textSize="@dimen/x14"
-                android:maxLength="6"
                 app:typeface="@string/font_normal" />
 
         </android.support.design.widget.TextInputLayout>
@@ -36,18 +36,18 @@
             android:id="@+id/tilEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tilFullName"
             android:layout_marginBottom="@dimen/x40"
             android:layout_marginEnd="@dimen/x25"
             android:layout_marginStart="@dimen/x25"
-            android:layout_marginTop="@dimen/x10"
-            android:layout_below="@+id/tilFullName">
+            android:layout_marginTop="@dimen/x10">
 
             <com.app.gymbuzz.ui.views.AnyEditTextView
                 android:id="@+id/edtWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/your_weight_in_kg"
-                android:inputType="numberDecimal|number"
+                android:inputType="numberDecimal"
                 android:maxLength="6"
                 android:textColor="@color/color_accent"
                 android:textSize="@dimen/x14"
@@ -59,25 +59,25 @@
             android:id="@+id/btnComputeBmi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tilEmail"
             android:layout_marginEnd="@dimen/x25"
             android:layout_marginStart="@dimen/x25"
             android:background="@drawable/btn"
             android:text="@string/calculate_bmi"
             android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:layout_below="@+id/tilEmail" />
+            android:textColor="@color/white" />
 
 
         <LinearLayout
             android:layout_width="@dimen/x160"
             android:layout_height="@dimen/x140"
+            android:layout_below="@+id/btnComputeBmi"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/x40"
             android:layout_marginTop="@dimen/x45"
-            android:layout_centerHorizontal="true"
             android:background="@drawable/round_corner_rectangle"
-            android:layout_below="@+id/btnComputeBmi"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <com.app.gymbuzz.ui.views.AnyTextView
                 android:id="@+id/txtHead"
@@ -94,8 +94,7 @@
                 android:id="@+id/txtBmi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20.5"
-                android:maxLength="4"
+                android:text="0.0"
                 android:textColor="@color/white"
                 android:textSize="@dimen/x14"
                 app:typeface="@string/font_bold" />

@@ -1,10 +1,14 @@
 package com.app.gymbuzz.fragments;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +17,14 @@ import android.widget.FrameLayout;
 import android.widget.ToggleButton;
 
 import com.app.gymbuzz.R;
+import com.app.gymbuzz.entities.CMSEnt;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
+import com.app.gymbuzz.global.WebServiceConstants;
 import com.app.gymbuzz.helpers.DialogHelper;
+import com.app.gymbuzz.helpers.UIHelper;
 import com.app.gymbuzz.ui.views.AnyTextView;
 import com.app.gymbuzz.ui.views.TitleBar;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -110,6 +118,52 @@ public class SettingFragment extends BaseFragment {
             e.printStackTrace();
         }
 
+        if (prefHelper.getUser() != null && prefHelper.getUser().getNotification() != null)
+            toggleNotification.setChecked(prefHelper.getUser().getNotification().equals("1"));
+        toggleNotification.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            serviceHelper.enqueueCall(webService.toggleNotifications(isChecked ? "1" : "0", prefHelper.getUserToken()), WebServiceConstants.TOGGLE_NOTIFICATIONS);
+        });
+
+        serviceHelper.enqueueCall(webService.getGymCMS(prefHelper.getUser().getGymID(), prefHelper.getUserToken()), WebServiceConstants.GET_GYM_CMS);
+        /*if (prefHelper.getCMS() == null) {
+        } else {
+            bindData(prefHelper.getCMS());
+        }*/
+
+    }
+
+    private void launchMarket() {
+        Uri uri = Uri.parse("market://details?id=" + getDockActivity().getPackageName());
+        Intent myAppLinkToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            startActivity(myAppLinkToMarket);
+        } catch (ActivityNotFoundException e) {
+            UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.something_error));
+        }
+    }
+
+    @Override
+    public void ResponseSuccess(Object result, String Tag) {
+        switch (Tag) {
+            case WebServiceConstants.GET_GYM_CMS:
+                prefHelper.putUserCMS((CMSEnt) result);
+                bindData((CMSEnt) result);
+                break;
+            case WebServiceConstants.LOGOUT:
+                prefHelper.setLoginStatus(false);
+                prefHelper.putUserCMS(null);
+                getDockActivity().popBackStackTillEntry(0);
+                getDockActivity().addDockableFragment(LoginFragment.newInstance(), "LoginFragment");
+                break;
+        }
+    }
+
+    private void bindData(CMSEnt result) {
+        btnFacebook.setTag(result.getFacebookurl());
+        btnInsta.setTag(result.getInstagramurl());
+        btnSnapchat.setTag(result.getSnapChatURL());
+        btnTwitter.setTag(result.getTwitterurl());
+        btnYoutube.setTag(result.getYoutubeurl());
     }
 
     @Override
@@ -142,42 +196,52 @@ public class SettingFragment extends BaseFragment {
                 getDockActivity().replaceDockableFragment(ContactusFragment.newInstance(), ContactusFragment.class.getSimpleName());
                 break;
             case R.id.txtRateUs:
+                launchMarket();
                 break;
             case R.id.btnFacebook:
+                openSocialMediaURL(btnFacebook);
                 break;
             case R.id.btnInsta:
+                openSocialMediaURL(btnInsta);
                 break;
             case R.id.btnSnapchat:
+                openSocialMediaURL(btnSnapchat);
                 break;
             case R.id.btnTwitter:
+                openSocialMediaURL(btnTwitter);
                 break;
             case R.id.btnYoutube:
+                openSocialMediaURL(btnYoutube);
                 break;
             case R.id.txtLogout:
-
-
                 final DialogHelper dialogHelper = new DialogHelper(getMainActivity());
-                dialogHelper.initlogout(R.layout.dialog_logout, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                dialogHelper.initlogout(R.layout.dialog_logout, v -> {
 
-                        dialogHelper.hideDialog();
-                        prefHelper.setLoginStatus(false);
-                        getDockActivity().popBackStackTillEntry(0);
-                        getDockActivity().addDockableFragment(LoginFragment.newInstance(), "LoginFragment");
+                    dialogHelper.hideDialog();
+                    serviceHelper.enqueueCall(webService.logout(prefHelper.getUserToken(), WebServiceConstants.DEVICE_TYPE, FirebaseInstanceId.getInstance().getToken()), WebServiceConstants.LOGOUT);
 
-                    }
-                }, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialogHelper.hideDialog();
-                    }
-                });
+                }, v -> dialogHelper.hideDialog());
 
                 dialogHelper.showDialog();
 
 
                 break;
+        }
+    }
+
+    private void openSocialMediaURL(FrameLayout btnSocialMedia) {
+        try {
+            if (btnSocialMedia.getTag() == null) {
+                UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.something_error));
+                return;
+            }
+            if (Patterns.WEB_URL.matcher((String) btnSocialMedia.getTag()).matches()) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse((String) btnSocialMedia.getTag())));
+            } else {
+                UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.invalidURL));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

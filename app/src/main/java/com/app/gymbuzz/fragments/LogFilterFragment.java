@@ -12,8 +12,8 @@ import com.app.gymbuzz.fragments.abstracts.BaseFragment;
 import com.app.gymbuzz.global.AppConstants;
 import com.app.gymbuzz.helpers.DateHelper;
 import com.app.gymbuzz.helpers.DatePickerHelper;
+import com.app.gymbuzz.helpers.UIHelper;
 import com.app.gymbuzz.interfaces.OnFilterSetListener;
-import com.app.gymbuzz.ui.binders.BinderGymDetail;
 import com.app.gymbuzz.ui.binders.FilterBinder;
 import com.app.gymbuzz.ui.views.AnyTextView;
 import com.app.gymbuzz.ui.views.CustomRecyclerView;
@@ -92,7 +92,7 @@ public class LogFilterFragment extends BaseFragment {
 
         filterBinder = new FilterBinder(checkChangeListener);
         exerciseCollection = new ArrayList<>();
-        rvExercise.BindRecyclerView(filterBinder, exerciseCollection,
+        rvExercise.bindRecyclerView(filterBinder, exerciseCollection,
                 new LinearLayoutManager(getDockActivity(), LinearLayoutManager.VERTICAL, false),
                 new DefaultItemAnimator());
         rvExercise.setNestedScrollingEnabled(false);
@@ -154,9 +154,13 @@ public class LogFilterFragment extends BaseFragment {
                 filterSetListener.onFilterChange(startDate, endDate, filterBinder.getFilterCheckIDs(), isFilterByBodyPart);
             } else if (!stringNullOrEmpty(startDate) && !stringNullOrEmpty(endDate)) {
                 filterSetListener.onFilterChange(startDate, endDate, filterBinder.getFilterCheckIDs(), isFilterByBodyPart);
+            }else {
+                UIHelper.showShortToastInCenter(getDockActivity(),getString(R.string.selectOptionFilter));
+                return;
             }
 
         }
+        getMainActivity().closeDrawer();
     }
 
     @Override
@@ -176,9 +180,6 @@ public class LogFilterFragment extends BaseFragment {
                 break;
             case R.id.btnApply:
                 applyFilters();
-                getMainActivity().closeDrawer();
-
-
                 break;
         }
     }

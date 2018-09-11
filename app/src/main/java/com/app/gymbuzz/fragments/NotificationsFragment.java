@@ -5,13 +5,14 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
-
 
 import com.app.gymbuzz.R;
 import com.app.gymbuzz.entities.NotificationEnt;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
+import com.app.gymbuzz.global.WebServiceConstants;
+import com.app.gymbuzz.helpers.DialogHelper;
+import com.app.gymbuzz.helpers.UIHelper;
 import com.app.gymbuzz.ui.adapters.ArrayListAdapter;
 import com.app.gymbuzz.ui.binders.BinderNotification;
 import com.app.gymbuzz.ui.views.AnyTextView;
@@ -46,20 +47,20 @@ public class NotificationsFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new ArrayListAdapter<>(getDockActivity(), new BinderNotification(getDockActivity(),prefHelper));
+        adapter = new ArrayListAdapter<>(getDockActivity(), new BinderNotification(getDockActivity(), prefHelper));
     }
 
-   /* @Override
+    @Override
     public void ResponseSuccess(Object result, String Tag) {
         switch (Tag) {
-            case WebServiceConstants.getNotification:
+            case WebServiceConstants.GET_ALL_NOTIFICATIONS:
                 bindData((ArrayList<NotificationEnt>) result);
                 break;
-            case WebServiceConstants.NotificaitonCount:
-                prefHelper.setNotificationCount(0);
+            case WebServiceConstants.SUBMIT_MACHINE_FEEDBACK:
+                UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.feedbackSuccessMessage));
                 break;
         }
-    }*/
+    }
 
     @Override
     public void setTitleBar(TitleBar titleBar) {
@@ -83,16 +84,23 @@ public class NotificationsFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         prefHelper.setNotificationCount(0);
         //serviceHelper.enqueueCall(webService.getNotificationCount(prefHelper.getMerchantId()), WebServiceConstants.NotificaitonCount);
-       //bindData();
-
-        lvNotification.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        //bindData();
+        serviceHelper.enqueueCall(webService.getAllNotifications(prefHelper.getUserToken()), WebServiceConstants.GET_ALL_NOTIFICATIONS);
+        lvNotification.setOnItemClickListener((parent, view1, position, id) -> {
+            if (notificationCollection.get(position).getNotification().getActiontype() == WebServiceConstants.NOTIFICATION_ACTION_JOB_COMPLETE) {
+                DialogHelper dialogHelper = new DialogHelper(getDockActivity());
+                dialogHelper.initRatingDialog((feedback, rating) -> {
+                    serviceHelper.enqueueCall(webService.submitSupportFeedback(feedback, rating, notificationCollection.get(position).getNotification().getActionid(), prefHelper.getUserToken()),
+                            WebServiceConstants.SUBMIT_MACHINE_FEEDBACK);
+                    dialogHelper.hideDialog();
+                });
+                dialogHelper.setCancelable(true);
+                dialogHelper.showDialog();
             }
         });
 
     }
+
 
     @Override
     public void onDestroyView() {

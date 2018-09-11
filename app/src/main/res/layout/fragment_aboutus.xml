@@ -34,6 +34,7 @@
         android:layout_marginStart="@dimen/x30"
         android:layout_marginBottom="@dimen/x40"
         android:layout_marginEnd="@dimen/x30"
+        android:scrollbars="vertical"
         android:text="@string/lorem_ipsum"
         android:textColor="@color/black0"
         android:textSize="@dimen/x14"
