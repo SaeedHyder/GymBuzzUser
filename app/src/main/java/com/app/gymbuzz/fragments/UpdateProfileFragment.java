@@ -149,7 +149,7 @@ public class UpdateProfileFragment extends BaseFragment {
         edtEmail.setText(user.getEmail());
         edtHeight.setText(user.getHeight() + "");
         edtWeight.setText(user.getWeight() + "");
-        edtAbout.setText(user.getAbout() + "");
+        edtAbout.setText(user.getAbout() == null ? "-" : user.getAbout());
         spGender.setSelection(user.getGender());
         edtAge.setText(user.getUserAge());
         edtAge.setInputType(InputType.TYPE_NULL);

@@ -73,7 +73,7 @@ public class ViewProfileFragment extends BaseFragment {
         txtEmail.setText(user.getEmail());
         txtHeightValue.setText(user.getHeight() + " lb");
         txtWeightValue.setText(user.getWeight() + " cm");
-        txtAboutUs.setText(user.getAbout() + "");
+        txtAboutUs.setText(user.getAbout() == null ? "-" : user.getAbout());
         txtAgeValue.setText(user.getUserAge());
 
     }

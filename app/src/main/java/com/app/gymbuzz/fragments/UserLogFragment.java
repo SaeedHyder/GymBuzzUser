@@ -77,7 +77,7 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
 
     String startDate = "";
     String endDate = "";
-    private int dataLimit = 10;
+    private int dataLimit = 100;
     private int currentPageNumber = 1;
     private boolean loadMore = true;
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
