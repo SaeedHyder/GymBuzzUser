@@ -3,6 +3,7 @@ package com.app.gymbuzz;
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -14,7 +15,7 @@ import com.nostra13.universalimageloader.utils.L;
 
 import io.fabric.sdk.android.Fabric;
 
-public class BaseApplication extends Application {
+public class BaseApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {
