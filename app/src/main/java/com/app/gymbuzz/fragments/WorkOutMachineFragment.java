@@ -24,6 +24,7 @@ import com.app.gymbuzz.entities.WorkoutServerModel;
 import com.app.gymbuzz.fragments.abstracts.BaseFragment;
 import com.app.gymbuzz.global.AppConstants;
 import com.app.gymbuzz.global.WebServiceConstants;
+import com.app.gymbuzz.helpers.DialogHelper;
 import com.app.gymbuzz.helpers.UIHelper;
 import com.app.gymbuzz.interfaces.RecyclerItemListener;
 import com.app.gymbuzz.ui.binders.WorkoutSetBinder;
@@ -162,13 +163,20 @@ public class WorkOutMachineFragment extends BaseFragment {
         titleBar.setSubHeading(getString(R.string.workout_));
         titleBar.showNotificationButton(0);
         titleBar.showCallForHelpButton(view -> {
-            if (spExcerciseType.getSelectedItemPosition() == 0) {
-                UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.supportWrongSelectionError));
-                return;
-            }
-            WorkoutModel.MachineExerciseDetailModel machineExerciseDetail = machineDetail.getExercises().get(spExcerciseType.getSelectedItemPosition() - 1);
-            serviceHelper.enqueueCall(webService.requestForSupport(machineExerciseDetail.getMachineExerciseId(), machineDetail.getFloorID(), String.valueOf(machineDetail.getGymMachineId()), prefHelper.getUserToken()),
-                    WebServiceConstants.REQUEST_FOR_SUPPORT);
+            DialogHelper dialogHelper = new DialogHelper(getDockActivity());
+            dialogHelper.initConfirmSupportDialog(yesClickListener -> {
+                if (spExcerciseType.getSelectedItemPosition() == 0) {
+                    UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.supportWrongSelectionError));
+                    return;
+                }
+                WorkoutModel.MachineExerciseDetailModel machineExerciseDetail = machineDetail.getExercises().get(spExcerciseType.getSelectedItemPosition() - 1);
+                serviceHelper.enqueueCall(webService.requestForSupport(machineExerciseDetail.getMachineExerciseId(), machineDetail.getFloorID(), String.valueOf(machineDetail.getGymMachineId()), prefHelper.getUserToken()),
+                        WebServiceConstants.REQUEST_FOR_SUPPORT);
+                dialogHelper.hideDialog();
+            }, noClickListener -> {
+                dialogHelper.hideDialog();
+            });
+            dialogHelper.showDialog();
         });
     }
 
@@ -272,7 +280,8 @@ public class WorkOutMachineFragment extends BaseFragment {
 
             case R.id.btnAdd:
                 if (setCollections.size() < AppConstants.MAX_WORKOUT_SETS_LIMIT) {
-                    setCollections.add(new WorkoutModel.UserExerciseDetailModel(machineDetail.getMinrep() + "", machineDetail.getMinweight() + "", setCollections.size()));
+                    setCollections.add(new WorkoutModel.UserExerciseDetailModel(setCollections.get(setCollections.size() - 1).getReps() + "", setCollections.get(setCollections.size() - 1).getWeight() + "", setCollections.size()));
+                    // setCollections.add(new WorkoutModel.UserExerciseDetailModel(machineDetail.getMinrep() + "", machineDetail.getMinweight() + "", setCollections.size()));
                     rvSets.notifyItemRangeChanged(((LinearLayoutManager) rvSets.getLayoutManager()).findLastVisibleItemPosition(), 1);
                 } else {
                     UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.maxSetsError));

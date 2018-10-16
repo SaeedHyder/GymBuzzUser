@@ -120,7 +120,7 @@ public class WorkoutModel {
     }
 
     public ArrayList<MachineExerciseDetailModel> getExercises() {
-        return exercises;
+        return exercises==null?new ArrayList<>():exercises;
     }
 
     public ArrayList<UserExerciseModel> getUserExercises() {

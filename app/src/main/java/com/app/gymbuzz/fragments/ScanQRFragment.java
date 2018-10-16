@@ -1,6 +1,7 @@
 package com.app.gymbuzz.fragments;
 
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.InflateException;
@@ -23,6 +24,8 @@ import java.util.List;
 
 import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever;
 
+import static android.content.Context.VIBRATOR_SERVICE;
+
 /**
  * Created on 5/24/2018.
  */
@@ -31,7 +34,7 @@ public class ScanQRFragment extends BaseFragment implements BarcodeRetriever {
 
     private BarcodeCapture barcodeCapture;
     private View viewParent;
-
+    private Vibrator myVib;
     public static boolean isWorkout;
 
    /* public void setIsWorkout(boolean isWorkout) {
@@ -46,7 +49,7 @@ public class ScanQRFragment extends BaseFragment implements BarcodeRetriever {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onViewCreated(view, savedInstanceState);
-
+        myVib = (Vibrator) getDockActivity().getSystemService(VIBRATOR_SERVICE);
         barcodeCapture = (BarcodeCapture) getChildFragmentManager().findFragmentById(R.id.barcode);
         barcodeCapture.setRetrieval(this);
         barcodeCapture.setShowDrawRect(true);
@@ -86,6 +89,7 @@ public class ScanQRFragment extends BaseFragment implements BarcodeRetriever {
     public void onRetrieved(final Barcode barcode) {
 
         getMainActivity().runOnUiThread(() -> {
+            myVib.vibrate(50);
             Log.d("ScanQRFragment", "onRetrieved: " + barcode.toString());
             // UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.scanned_complete));
             if (isWorkout) {

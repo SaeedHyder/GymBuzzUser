@@ -105,6 +105,7 @@ public class NotificationHelper {
                     .setContentIntent(resultPendingIntent)
                     .setSound(alarmSound)
                     .setStyle(bigTextStyle)
+                    .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400})
                     .setWhen(getTimeMilliSec(timeStamp))
                     .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
                     .setContentText(message)
