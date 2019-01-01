@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parentScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorLogItemBg"
+    android:fillViewport="true"
     android:orientation="vertical">
 
     <LinearLayout
@@ -150,13 +151,141 @@
 
         </RelativeLayout>
 
-        <com.app.gymbuzz.ui.views.CustomExpandableListView
-            android:id="@+id/elLog"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@color/colorLogItemBg"
-            android:dividerHeight="0dp"
-            android:groupIndicator="@null" />
+            android:layout_height="match_parent">
 
+            <com.app.gymbuzz.ui.views.CustomExpandableListView xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/elLog"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/summerySeperator"
+                android:layout_alignParentTop="true"
+                android:divider="@color/colorLogItemBg"
+                android:dividerHeight="0dp"
+                android:groupIndicator="@null"
+                tools:listitem="@layout/row_item_filter_exercise" />
+
+            <View
+                android:id="@+id/summerySeperator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x1"
+                android:layout_above="@+id/containerSummery"
+                android:background="@color/color_bg" />
+
+            <LinearLayout
+                android:id="@+id/containerSummery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:padding="@dimen/x10">
+
+                <com.app.gymbuzz.ui.views.AnyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2.5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAllCaps="true"
+                    android:layout_marginEnd="@dimen/x8"
+                    android:text="@string/summery"
+                    android:textColor="@color/color_bg"
+                    android:textSize="@dimen/x15"
+                    app:typeface="@string/font_normal" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                <com.app.gymbuzz.ui.views.AnyTextView
+                    android:id="@+id/txtSets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2.5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/x15"
+                    app:typeface="@string/font_normal" />
+
+                <com.app.gymbuzz.ui.views.AnyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2.5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/sets"
+                    android:textColor="@color/colorLogItemDetail"
+                    android:textSize="@dimen/x15"
+                    app:typeface="@string/font_normal" />
+
+                <View
+                    android:layout_width="@dimen/x1"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/x10"
+                    android:layout_marginStart="@dimen/x10"
+                    android:background="@color/colorLogItemDetail" />
+
+
+                <com.app.gymbuzz.ui.views.AnyTextView
+                    android:id="@+id/txtKgs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2.5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/x15"
+                    app:typeface="@string/font_normal" />
+
+                <com.app.gymbuzz.ui.views.AnyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2.5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/kg"
+                    android:textColor="@color/colorLogItemDetail"
+                    android:textSize="@dimen/x15"
+                    app:typeface="@string/font_normal" />
+
+                <View
+                    android:layout_width="@dimen/x1"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/x10"
+                    android:layout_marginStart="@dimen/x10"
+                    android:background="@color/colorLogItemDetail" />
+
+
+                <com.app.gymbuzz.ui.views.AnyTextView
+                    android:id="@+id/txtReps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2.5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/x15"
+                    app:typeface="@string/font_normal" />
+
+                <com.app.gymbuzz.ui.views.AnyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2.5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/reps"
+                    android:textColor="@color/colorLogItemDetail"
+                    android:textSize="@dimen/x15"
+                    app:typeface="@string/font_normal" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
     </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+</LinearLayout>

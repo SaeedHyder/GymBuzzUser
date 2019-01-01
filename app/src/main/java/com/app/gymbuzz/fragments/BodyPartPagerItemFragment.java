@@ -49,7 +49,7 @@ public class BodyPartPagerItemFragment extends BaseFragment {
     private int getFrontBodyPartResourceFromID(String id) {
         switch (id) {
             case WebServiceConstants.BODY_PART_TYPE_BICEP:
-                return R.drawable.bicep_front;
+                return R.drawable.bicep_back;
             case WebServiceConstants.BODY_PART_TYPE_CHEST:
                 return R.drawable.chest_front;
             case WebServiceConstants.BODY_PART_TYPE_SHOULDER:
@@ -64,7 +64,7 @@ public class BodyPartPagerItemFragment extends BaseFragment {
     private int getBackBodyPartResourceFromID(String id) {
         switch (id) {
             case WebServiceConstants.BODY_PART_TYPE_BICEP:
-                return R.drawable.bicep_back;
+                return R.drawable.bicep_front;
             case WebServiceConstants.BODY_PART_TYPE_CHEST:
                 return R.drawable.chest_front;
             case WebServiceConstants.BODY_PART_TYPE_SHOULDER:

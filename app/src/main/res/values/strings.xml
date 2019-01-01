@@ -144,6 +144,7 @@
     <string name="you_did_great">YOU DID GREAT!</string>
     <string name="gym_detail">Gym Detail</string>
     <string name="scan_code">Scan QR Code</string>
+    <string name="scan_machine_code">Scan Machine QR Code</string>
     <string name="scanned_complete">Scan Complete</string>
     <string name="user_cancel_permission">User Cancel Permission</string>
     <string name="machine_mal">Machine Malfunction</string>
@@ -201,7 +202,7 @@
     <string name="email_code_send_message">New Code has been send to your Email.</string>
     <string name="password_message">Password has been changed successfully.</string>
     <string name="something_error">Something went wrong. We\'re fixing it</string>
-    <string name="next">Next</string>
+    <string name="next">Next Exercise</string>
     <string name="maxSetsError">You have reached the max limits of sets</string>
     <string name="muscleSelection">Muscle Selection</string>
     <string name="callForHelp">Call For Help</string>
@@ -225,4 +226,7 @@
     <string name="invalidURL">Invalid URL</string>
     <string name="confirmSupportMessage">Are you sure you want to call for support?</string>
     <string name="confirmation">Confirmation</string>
+    <string name="confirmFinishMessage">Are you done for the day?</string>
+    <string name="summery">Summary :</string>
+    <string name="userWeightMessage">Your max weight on this machine is :</string>
 </resources>

@@ -15,13 +15,55 @@
         android:src="@drawable/minuscircle"
         android:visibility="visible" />
 
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnDelete"
+        android:layout_marginTop="@dimen/x30"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <com.aigestudio.wheelpicker.WheelPicker
+            android:id="@+id/wheelWeight"
+            android:layout_width="@dimen/x135"
+            android:layout_height="@dimen/x135"
+            android:background="@color/transparent"
+            app:wheel_atmospheric="true"
+            app:wheel_curved="true"
+            app:wheel_indicator="false"
+            app:wheel_cyclic="false"
+            app:wheel_same_width="true"
+            app:wheel_indicator_color="@color/color_accent"
+            app:wheel_item_align="center"
+            app:wheel_item_text_color="@color/text_color"
+            app:wheel_item_text_size="20sp"
+            app:wheel_selected_item_text_color="@color/color_accent" />
+
+        <com.aigestudio.wheelpicker.WheelPicker
+            android:id="@+id/wheelReps"
+            android:layout_width="@dimen/x135"
+            android:layout_height="@dimen/x135"
+            android:background="@color/transparent"
+            app:wheel_atmospheric="true"
+            app:wheel_curved="true"
+            app:wheel_indicator="false"
+            app:wheel_cyclic="false"
+            app:wheel_same_width="true"
+            app:wheel_indicator_color="@color/color_accent"
+            app:wheel_item_align="center"
+            app:wheel_item_text_color="@color/text_color"
+            app:wheel_item_text_size="20sp"
+            app:wheel_selected_item_text_color="@color/color_accent" />
+    </android.support.v7.widget.LinearLayoutCompat>
+
     <RelativeLayout
         android:id="@+id/containerSet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnDelete"
         android:layout_marginTop="@dimen/x30"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/containerWeight"
@@ -83,8 +125,7 @@
                 app:cs_pointer_halo_border_width="@dimen/x4"
                 app:cs_pointer_halo_color="@color/color_accent"
                 app:cs_pointer_halo_color_ontouch="@color/color_accent"
-                app:cs_pointer_halo_width="@dimen/x4"
-                />
+                app:cs_pointer_halo_width="@dimen/x4" />
 
 
         </RelativeLayout>

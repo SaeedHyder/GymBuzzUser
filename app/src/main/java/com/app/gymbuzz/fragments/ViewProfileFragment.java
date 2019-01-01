@@ -1,5 +1,6 @@
 package com.app.gymbuzz.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -64,6 +65,7 @@ public class ViewProfileFragment extends BaseFragment {
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -71,8 +73,8 @@ public class ViewProfileFragment extends BaseFragment {
         ImageLoader.getInstance().displayImage(user.getProfileimagepath(), civProfilePic);
         txtName.setText(user.getFullname());
         txtEmail.setText(user.getEmail());
-        txtHeightValue.setText(user.getHeight() + " lb");
-        txtWeightValue.setText(user.getWeight() + " cm");
+        txtHeightValue.setText(user.getHeight() + " cm");
+        txtWeightValue.setText(user.getWeight() + " lb");
         txtAboutUs.setText(user.getAbout() == null ? "-" : user.getAbout());
         txtAgeValue.setText(user.getUserAge());
 

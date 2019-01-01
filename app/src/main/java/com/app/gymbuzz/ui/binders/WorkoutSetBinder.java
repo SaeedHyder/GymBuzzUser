@@ -6,11 +6,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.aigestudio.wheelpicker.WheelPicker;
 import com.app.gymbuzz.R;
 import com.app.gymbuzz.entities.WorkoutModel;
 import com.app.gymbuzz.interfaces.RecyclerItemListener;
 import com.app.gymbuzz.ui.viewbinders.abstracts.RecyclerViewBinder;
 import com.app.gymbuzz.ui.views.AnyTextView;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -129,6 +132,43 @@ public class WorkoutSetBinder extends RecyclerViewBinder<WorkoutModel.UserExerci
                 itemListener.onItemClicked(entity, position, holder.btnDelete.getId());
             }
         });
+
+        ArrayList<String> weightCollection = new ArrayList<>(maxWeight);
+        for (int i = 1; i <= maxWeight; i++) {
+            if (i > 1)
+                weightCollection.add(i + " KGS");
+            else {
+                weightCollection.add(i + " KG");
+            }
+        }
+        holder.wheelWeight.setData(weightCollection);
+        holder.wheelWeight.setSelectedItemPosition(entity.getWeight() - 1);
+        holder.wheelWeight.setOnItemSelectedListener((picker, data, currentPosition) -> {
+            if (currentPosition <= minWeight) {
+                currentPosition = minWeight - 1;
+                holder.wheelWeight.setSelectedItemPosition(currentPosition);
+            }
+            entity.setWeight(currentPosition + 1 + "");
+        });
+
+        ArrayList<String> repsCollection = new ArrayList<>(maxWeight);
+        for (int i = 1; i <= maxReps; i++) {
+            if (i > 1)
+                repsCollection.add(i + " REPS");
+            else {
+                repsCollection.add(i + " REP");
+            }
+        }
+        holder.wheelReps.setData(repsCollection);
+        holder.wheelReps.setSelectedItemPosition(entity.getReps() - 1);
+        holder.wheelReps.setOnItemSelectedListener((picker, data, currentPosition) -> {
+
+            if (currentPosition <= minReps) {
+                currentPosition = minReps - 1;
+                holder.wheelReps.setSelectedItemPosition(currentPosition);
+            }
+            entity.setReps(currentPosition + 1 + "");
+        });
     }
 
     static class ViewHolder extends BaseViewHolder {
@@ -156,6 +196,10 @@ public class WorkoutSetBinder extends RecyclerViewBinder<WorkoutModel.UserExerci
         RelativeLayout containerReps;
         @BindView(R.id.containerSet)
         RelativeLayout containerSet;
+        @BindView(R.id.wheelWeight)
+        WheelPicker wheelWeight;
+        @BindView(R.id.wheelReps)
+        WheelPicker wheelReps;
 
         ViewHolder(View view) {
             super(view);

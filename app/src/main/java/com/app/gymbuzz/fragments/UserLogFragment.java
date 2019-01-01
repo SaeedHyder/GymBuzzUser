@@ -1,5 +1,6 @@
 package com.app.gymbuzz.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -37,6 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,7 +48,7 @@ import butterknife.Unbinder;
 /**
  * Created on 5/28/2018.
  */
-
+@SuppressLint("SetTextI18n")
 public class UserLogFragment extends BaseFragment implements OnFilterSetListener {
 
     @BindView(R.id.txtDateRange)
@@ -67,8 +69,8 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
     AnyTextView txtItemHeading;
     @BindView(R.id.imgNext)
     ImageView imgNext;
-    @BindView(R.id.parentScrollView)
-    NestedScrollView parentScrollView;
+   /* @BindView(R.id.parentScrollView)
+    NestedScrollView parentScrollView;*/
     @BindView(R.id.imgBodyBackground)
     ImageView imgBodyBackground;
     @BindView(R.id.containerBody)
@@ -77,7 +79,17 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
 
     String startDate = "";
     String endDate = "";
-    private int dataLimit = 100;
+    @BindView(R.id.summerySeperator)
+    View summerySeperator;
+    @BindView(R.id.txtSets)
+    AnyTextView txtSets;
+    @BindView(R.id.txtKgs)
+    AnyTextView txtKgs;
+    @BindView(R.id.txtReps)
+    AnyTextView txtReps;
+    @BindView(R.id.containerSummery)
+    LinearLayout containerSummery;
+    private int dataLimit = 1000;
     private int currentPageNumber = 1;
     private boolean loadMore = true;
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
@@ -121,12 +133,13 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
         getMainActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         getMainActivity().filterFragment.setFilterSetListener(this);
         int width = metrics.widthPixels;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+       /* if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
             elLog.setIndicatorBounds(width - GetPixelFromDips(35), width - GetPixelFromDips(5));
         } else {
             elLog.setIndicatorBoundsRelative(width - GetPixelFromDips(35), width - GetPixelFromDips(5));
-        }
+        }*/
         initAndLoadData();
+        //setSummeryLogsVisiblity();
 
     }
 
@@ -150,7 +163,7 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
     }
 
     private void setScrollListner() {
-        parentScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+      /*  parentScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (v.getChildAt(v.getChildCount() - 1) != null) {
                 if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
                         scrollY > oldScrollY) {
@@ -168,7 +181,7 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
                     }
                 }
             }
-        });
+        });*/
     }
 
     @Override
@@ -229,10 +242,12 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
                 ivBody.setImageResource(getBodyPartResourceFromID(String.valueOf(logItem.getBodypartid())));
                 for (GetExerciseLogAppModel appModel : logItem.getGetexerciselogappmodel()
                         ) {
-                    for (UserLogExerciseDetails details : appModel.getUserexercisedetails()
-                            ) {
-                        UserLogExerciseDetail setsDetails = details.getUserexercisedetail();
-                        children.add(new ExserciseLogEnt(logItem.getBodypartname(), setsDetails.getReps() + "", setsDetails.getWeight() + "", setsDetails.getSetnumber() + ""));
+                    if (appModel.getUserexercisedetails()!=null) {
+                        for (UserLogExerciseDetails details : appModel.getUserexercisedetails()
+                                ) {
+                            UserLogExerciseDetail setsDetails = details.getUserexercisedetail();
+                            children.add(new ExserciseLogEnt(logItem.getBodypartname(), setsDetails.getReps(), setsDetails.getWeight(), setsDetails.getSetnumber()));
+                        }
                     }
 
                 }
@@ -337,13 +352,43 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
 
         BinderUserLog binder = new BinderUserLog(getDockActivity());
         adapter = new ArrayListExpandableAdapter<>(getDockActivity(), collectionGroup, listDataChild, binder, elLog);
-        elLog.setExpanded(true);
+        //elLog.setExpanded(true);
         elLog.setAdapter(adapter);
         for (int i = 0; i < adapter.getGroupCount(); i++)
             elLog.expandGroup(i);
         elLog.setOnGroupClickListener((parent, v, groupPosition, id) -> true);
         adapter.notifyDataSetChanged();
+        extractTotalLogsSummery();
 
+    }
+
+    private void extractTotalLogsSummery() {
+        int totalSetsCount = 0, totalKgsCount = 0, totalRepsCount = 0;
+
+        for (Map.Entry<String, ArrayList<ExserciseLogEnt>> entry : listDataChild.entrySet()) {
+            ArrayList<ExserciseLogEnt> value = entry.getValue();
+            totalSetsCount = totalSetsCount + value.size();
+
+            for (ExserciseLogEnt item :
+                    value) {
+                int kg, reps;
+                try {
+                    kg = Integer.parseInt(item.getKgs());
+                    reps = Integer.parseInt(item.getReps());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    kg = 0;
+                    reps = 0;
+                }
+                if (totalKgsCount <= kg) {
+                    totalKgsCount = kg;
+                }
+                // totalKgsCount = totalKgsCount + kg;
+                totalRepsCount = totalRepsCount + reps;
+            }
+        }
+
+        setSummeryLogs(totalSetsCount, totalKgsCount, totalRepsCount);
     }
 
     @Override
@@ -426,6 +471,7 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
     public void onFilterChange(String startDate, String endDate, ArrayList<String> filters, boolean isFilterByBodyPart) {
         this.isFilterByBodyPart = isFilterByBodyPart;
         currentHeadingIndex = 0;
+       // setSummeryLogsVisiblity();
         if (isFilterByBodyPart) {
             filteredBodyPartsCollection = new ArrayList<>();
             filteredBodyPartsCollection.addAll(filters);
@@ -440,4 +486,22 @@ public class UserLogFragment extends BaseFragment implements OnFilterSetListener
 
         Log.d("LogFragment ", "onFilterChange: StartDate : " + startDate + " EndDate : " + endDate + " Filters : " + filters.toArray().toString());
     }
+
+    private void setSummeryLogsVisiblity() {
+        if (isFilterByBodyPart) {
+            summerySeperator.setVisibility(View.VISIBLE);
+            containerSummery.setVisibility(View.VISIBLE);
+        } else {
+            summerySeperator.setVisibility(View.GONE);
+            containerSummery.setVisibility(View.GONE);
+        }
+    }
+
+
+    private void setSummeryLogs(int totalSets, int totalKg, int totalReps) {
+        txtSets.setText(totalSets + "");
+        txtKgs.setText(totalKg + "");
+        txtReps.setText(totalReps + "");
+    }
+
 }

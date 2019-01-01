@@ -7,17 +7,17 @@ package com.app.gymbuzz.entities;
 
 public class ExserciseLogEnt {
 
-    String excerciseSubType;
-    String reps;
-    String kgs;
-    String sets;
+    private String excerciseSubType;
+    private String reps;
+    private String kgs;
+    private String sets;
 
-    public ExserciseLogEnt(String excerciseSubType, String reps, String kgs, String sets){
+    public ExserciseLogEnt(String excerciseSubType, String reps, String kgs, int sets) {
 
         setExcerciseSubType(excerciseSubType);
-        setReps(reps);
-        setKgs(kgs);
-        setSets(sets);
+        setReps(reps + "");
+        setKgs(kgs + "");
+        setSets(sets + "");
 
     }
 
@@ -25,7 +25,7 @@ public class ExserciseLogEnt {
         return excerciseSubType;
     }
 
-    public void setExcerciseSubType(String excerciseSubType) {
+    private void setExcerciseSubType(String excerciseSubType) {
         this.excerciseSubType = excerciseSubType;
     }
 
@@ -33,7 +33,7 @@ public class ExserciseLogEnt {
         return reps;
     }
 
-    public void setReps(String reps) {
+    private void setReps(String reps) {
         this.reps = reps;
     }
 
@@ -41,7 +41,7 @@ public class ExserciseLogEnt {
         return kgs;
     }
 
-    public void setKgs(String kgs) {
+    private void setKgs(String kgs) {
         this.kgs = kgs;
     }
 
@@ -49,7 +49,7 @@ public class ExserciseLogEnt {
         return sets;
     }
 
-    public void setSets(String sets) {
+    private void setSets(String sets) {
         this.sets = sets;
     }
 }

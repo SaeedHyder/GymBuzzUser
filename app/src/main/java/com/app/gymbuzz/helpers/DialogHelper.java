@@ -56,7 +56,8 @@ public class DialogHelper {
         cancelbutton.setOnClickListener(oncancelclicklistener);
         return this.dialog;
     }
-    public Dialog initConfirmSupportDialog( View.OnClickListener onokclicklistener, View.OnClickListener oncancelclicklistener) {
+
+    public Dialog initConfirmSupportDialog(View.OnClickListener onokclicklistener, View.OnClickListener oncancelclicklistener) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         this.dialog.setContentView(R.layout.dialog_logout);
@@ -64,6 +65,21 @@ public class DialogHelper {
         titleTextView.setText(R.string.confirmation);
         AnyTextView textView = dialog.findViewById(R.id.txt_logout_text);
         textView.setText(R.string.confirmSupportMessage);
+        Button okbutton = (Button) dialog.findViewById(R.id.btn_yes);
+        okbutton.setOnClickListener(onokclicklistener);
+        Button cancelbutton = (Button) dialog.findViewById(R.id.btn_No);
+        cancelbutton.setOnClickListener(oncancelclicklistener);
+        return this.dialog;
+    }
+
+    public Dialog initConfirmFinishDialog(View.OnClickListener onokclicklistener, View.OnClickListener oncancelclicklistener) {
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        this.dialog.setContentView(R.layout.dialog_logout);
+        AnyTextView titleTextView = dialog.findViewById(R.id.txt_Logout);
+        titleTextView.setText(R.string.confirmation);
+        AnyTextView textView = dialog.findViewById(R.id.txt_logout_text);
+        textView.setText(R.string.confirmFinishMessage);
         Button okbutton = (Button) dialog.findViewById(R.id.btn_yes);
         okbutton.setOnClickListener(onokclicklistener);
         Button cancelbutton = (Button) dialog.findViewById(R.id.btn_No);

@@ -32,10 +32,10 @@ import static android.content.Context.VIBRATOR_SERVICE;
 
 public class ScanQRFragment extends BaseFragment implements BarcodeRetriever {
 
+    public static boolean isWorkout;
     private BarcodeCapture barcodeCapture;
     private View viewParent;
     private Vibrator myVib;
-    public static boolean isWorkout;
 
    /* public void setIsWorkout(boolean isWorkout) {
         this.isWorkout = isWorkout;
@@ -82,7 +82,10 @@ public class ScanQRFragment extends BaseFragment implements BarcodeRetriever {
         super.setTitleBar(titleBar);
         titleBar.hideButtons();
         titleBar.showBackButton();
-        titleBar.setSubHeading(getString(R.string.scan_code));
+        if (isWorkout) {
+            titleBar.setSubHeading(getString(R.string.scan_machine_code));
+        } else
+            titleBar.setSubHeading(getString(R.string.scan_code));
     }
 
     @Override
@@ -110,7 +113,7 @@ public class ScanQRFragment extends BaseFragment implements BarcodeRetriever {
                 break;
             case WebServiceConstants.GET_MACHINE_DETAILS:
                 barcodeCapture.stopScanning();
-                getDockActivity().replaceDockableFragment(WorkOutMachineFragment.newInstance((WorkoutModel)result), WorkOutMachineFragment.class.getSimpleName());
+                getDockActivity().replaceDockableFragment(WorkOutMachineFragment.newInstance((WorkoutModel) result), WorkOutMachineFragment.class.getSimpleName());
                 break;
         }
     }

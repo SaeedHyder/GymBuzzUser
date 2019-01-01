@@ -70,6 +70,8 @@ public class WorkOutMachineFragment extends BaseFragment {
     AnyTextView txtSeconds;
     @BindView(R.id.txtMS)
     AnyTextView txtMS;
+    @BindView(R.id.txtMaxWeightOfUser)
+    AnyTextView txtMaxWeightOfUser;
     @BindView(R.id.rvSets)
     CustomRecyclerView rvSets;
     @BindView(R.id.btnAdd)
@@ -140,6 +142,9 @@ public class WorkOutMachineFragment extends BaseFragment {
         setExerciseData();
         StartTimmer();
 
+    }
+
+    private void initializeObjects() {
         if (machineSavedExercises == null || setCollections == null) {
             machineSavedExercises = new HashMap<>();
             setCollections = new ArrayList<>();
@@ -151,7 +156,6 @@ public class WorkOutMachineFragment extends BaseFragment {
         new LinearSnapHelper().attachToRecyclerView(rvSets);
         rvSets.setNestedScrollingEnabled(false);
         rvSets.getItemAnimator().setChangeDuration(0);
-
     }
 
     @Override
@@ -181,6 +185,7 @@ public class WorkOutMachineFragment extends BaseFragment {
     }
 
     private void setExerciseData() {
+        initializeObjects();
         ArrayList<String> exerciseCollection = new ArrayList<>();
 
         exerciseCollection.add(getString(R.string.muscleSelection));
@@ -209,14 +214,25 @@ public class WorkOutMachineFragment extends BaseFragment {
         };
 
         spExcerciseType.setAdapter(exerciseAdapter);
-        spExcerciseType.setSelection(0);
         exerciseAdapter.notifyDataSetChanged();
         spExcerciseType.setCustomItemSelectListener(position -> {
             position = position - 1;
             Integer machineExerciseID = machineDetail.getExercises().get(position).getMachineExerciseId();
             btnAdd.setVisibility(View.VISIBLE);
-            findAndLoadSelectedSets(machineExerciseID);
+              findAndLoadSelectedSets(machineExerciseID);
         });
+        if (exerciseCollection.size() >= 2) {
+            spExcerciseType.setSelection(1);
+        } else {
+            spExcerciseType.setSelection(0);
+        }
+
+        txtMaxWeightOfUser.setText(getString(R.string.userWeightMessage) + " " + machineDetail.getMaxWeightByUser());
+       /* setCollections = new ArrayList<>();
+        setCollections.add(new WorkoutModel.UserExerciseDetailModel(Math.round((machineDetail.getMinrep() + machineDetail.getMaxrep()) / 2) + "",
+                Math.round((machineDetail.getMinweight() + machineDetail.getMaxweight()) / 2) + "", 1));
+        rvSets.getAdapter().changeList(setCollections);
+        rvSets.notifyDataSetChanged();*/
     }
 
     private void findAndLoadSelectedSets(Integer machineExerciseID) {
@@ -229,14 +245,15 @@ public class WorkOutMachineFragment extends BaseFragment {
                 for (WorkoutModel.UserExerciseModel exerciseModel : machineDetail.getUserExercises()
                         ) {
                     if (exerciseModel.getMachineExerciseID().equals(machineExerciseID)) {
-                        setCollections.addAll(exerciseModel.getExerciseDetails());
+                       // setCollections.addAll(exerciseModel.getExerciseDetails());
                     }
                 }
             }
         }
 
         if (setCollections.size() == 0) {
-            setCollections.add(new WorkoutModel.UserExerciseDetailModel(machineDetail.getMinrep() + "", machineDetail.getMinweight() + "", 1));
+            setCollections.add(new WorkoutModel.UserExerciseDetailModel(Math.round((machineDetail.getMinrep() + machineDetail.getMaxrep()) / 2) + "",
+                    Math.round((machineDetail.getMinweight() + machineDetail.getMaxweight()) / 2) + "", 1));
         }
 
         machineSavedExercises.put(machineExerciseID, setCollections);
@@ -293,12 +310,18 @@ public class WorkOutMachineFragment extends BaseFragment {
                 break;
 
             case R.id.btnFinish:
-                if (spExcerciseType.getSelectedItemPosition() == 0) {
-                    UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.finishWrongSelectionError));
-                    return;
-                }
-                serviceHelper.enqueueCall(webService.sendExerciseDetails(getWorkOutDataForServer(), prefHelper.getUserToken()), WebServiceConstants.SEND_FINAL_EXERCISE_DETAIL);
-
+                DialogHelper dialogHelper = new DialogHelper(getDockActivity());
+                dialogHelper.initConfirmFinishDialog(yesClickListener -> {
+                    if (spExcerciseType.getSelectedItemPosition() == 0) {
+                        UIHelper.showShortToastInCenter(getDockActivity(), getString(R.string.finishWrongSelectionError));
+                        return;
+                    }
+                    serviceHelper.enqueueCall(webService.sendExerciseDetails(getWorkOutDataForServer(), prefHelper.getUserToken()), WebServiceConstants.SEND_FINAL_EXERCISE_DETAIL);
+                    dialogHelper.hideDialog();
+                }, noClickListener -> {
+                    dialogHelper.hideDialog();
+                });
+                dialogHelper.showDialog();
                 break;
 
         }

@@ -31,7 +31,7 @@ public class GymDetailModel {
     private ArrayList<GymCMS> gymcms;
     @Expose
     @SerializedName("gymImages")
-    private ArrayList<GymImages> gymimages;
+    private ArrayList<GymImages> gymimages ;
     @Expose
     @SerializedName("gymQrCode")
     private String gymqrcode;
@@ -92,7 +92,7 @@ public class GymDetailModel {
     }
 
     public ArrayList<GymImages> getGymimages() {
-        return gymimages;
+        return gymimages==null?new ArrayList<>():gymimages;
     }
 
     public String getGymqrcode() {

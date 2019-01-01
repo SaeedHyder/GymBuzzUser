@@ -106,6 +106,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
     implementation 'gun0912.ted:tedpermission:2.2.2'
+    implementation 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
 }
 apply plugin: 'com.google.gms.google-services'
 repositories {

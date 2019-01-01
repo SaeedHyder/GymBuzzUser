@@ -19,6 +19,9 @@ public class WorkoutModel {
     @SerializedName("minWeight")
     private String minweight;
     @Expose
+    @SerializedName("maxWeightByUser")
+    private String maxWeightByUser;
+    @Expose
     @SerializedName("maxWeight")
     private String maxweight;
     @SerializedName("gymMachineId")
@@ -91,6 +94,10 @@ public class WorkoutModel {
     @Expose
     private Boolean isDeleted;
 
+    public String getMaxWeightByUser() {
+        return maxWeightByUser == null ? "0" : maxWeightByUser;
+    }
+
     public Integer getFloorID() {
         return floorID;
     }
@@ -120,7 +127,7 @@ public class WorkoutModel {
     }
 
     public ArrayList<MachineExerciseDetailModel> getExercises() {
-        return exercises==null?new ArrayList<>():exercises;
+        return exercises == null ? new ArrayList<>() : exercises;
     }
 
     public ArrayList<UserExerciseModel> getUserExercises() {
@@ -182,6 +189,83 @@ public class WorkoutModel {
         }
         WorkoutModel rhs = ((WorkoutModel) other);
         return new EqualsBuilder().append(machineId, rhs.machineId).isEquals();
+    }
+
+    public static class UserExerciseDetailModel {
+
+        @SerializedName("machineSettingsID")
+        @Expose
+        private Integer machineSettingsID;
+        @SerializedName("reps")
+        @Expose
+        private String reps;
+        @SerializedName("weight")
+        @Expose
+        private String weight;
+        @SerializedName("setNumber")
+        @Expose
+        private Integer setNumber;
+
+        public UserExerciseDetailModel(String reps, String weight, Integer setNumber) {
+            this.reps = reps;
+            this.weight = weight;
+            this.setNumber = setNumber;
+        }
+
+        public Integer getMachineSettingsID() {
+            return machineSettingsID;
+        }
+
+        public int getReps() {
+            try {
+                return Integer.parseInt(reps);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
+
+        public void setReps(String reps) {
+            this.reps = reps;
+        }
+
+        public int getWeight() {
+            try {
+                return Integer.parseInt(weight);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
+
+        public void setWeight(String weight) {
+            this.weight = weight;
+        }
+
+        public Integer getSetNumber() {
+            return setNumber;
+        }
+
+        public void setSetNumber(Integer setNumber) {
+            this.setNumber = setNumber;
+        }
+
+        @Override
+        public int hashCode() {
+            return new HashCodeBuilder().append(machineSettingsID).toHashCode();
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (other == this) {
+                return true;
+            }
+            if (!(other instanceof UserExerciseDetailModel)) {
+                return false;
+            }
+            UserExerciseDetailModel rhs = ((UserExerciseDetailModel) other);
+            return new EqualsBuilder().append(machineSettingsID, rhs.machineSettingsID).isEquals();
+        }
     }
 
     public class MachineExerciseDetailModel {
@@ -361,83 +445,6 @@ public class WorkoutModel {
             }
             UserExerciseModel rhs = ((UserExerciseModel) other);
             return new EqualsBuilder().append(userExerciseID, rhs.userExerciseID).isEquals();
-        }
-    }
-
-    public static class UserExerciseDetailModel {
-
-        @SerializedName("machineSettingsID")
-        @Expose
-        private Integer machineSettingsID;
-        @SerializedName("reps")
-        @Expose
-        private String reps;
-        @SerializedName("weight")
-        @Expose
-        private String weight;
-        @SerializedName("setNumber")
-        @Expose
-        private Integer setNumber;
-
-        public UserExerciseDetailModel(String reps, String weight, Integer setNumber) {
-            this.reps = reps;
-            this.weight = weight;
-            this.setNumber = setNumber;
-        }
-
-        public void setReps(String reps) {
-            this.reps = reps;
-        }
-
-        public void setWeight(String weight) {
-            this.weight = weight;
-        }
-
-        public void setSetNumber(Integer setNumber) {
-            this.setNumber = setNumber;
-        }
-
-        public Integer getMachineSettingsID() {
-            return machineSettingsID;
-        }
-
-        public int getReps() {
-            try {
-                return Integer.parseInt(reps);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return 0;
-        }
-
-        public int getWeight() {
-            try {
-                return Integer.parseInt(weight);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return 0;
-        }
-
-        public Integer getSetNumber() {
-            return setNumber;
-        }
-
-        @Override
-        public int hashCode() {
-            return new HashCodeBuilder().append(machineSettingsID).toHashCode();
-        }
-
-        @Override
-        public boolean equals(Object other) {
-            if (other == this) {
-                return true;
-            }
-            if (!(other instanceof UserExerciseDetailModel)) {
-                return false;
-            }
-            UserExerciseDetailModel rhs = ((UserExerciseDetailModel) other);
-            return new EqualsBuilder().append(machineSettingsID, rhs.machineSettingsID).isEquals();
         }
     }
 
